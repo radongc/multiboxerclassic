@@ -4,17 +4,26 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Gma.UserActivityMonitor;
+using Gma.System.MouseKeyHook;
 
 namespace Multiboxer
 {
     public partial class MainForm : Form
     {
         bool isListening = false; // is the program listening for input?
+
+        private InputCallback input;
+
+        const int PROCESS_WM_READ = 0x0010;
+
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+
+        [DllImport("kernel32.dll")]
+        public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
         public MainForm()
         {
@@ -23,28 +32,21 @@ namespace Multiboxer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            input = new InputCallback();
         }
 
         private void button_StartMultiboxing_Click(object sender, EventArgs e)
         {
             if (!isListening)
             {
-                Process[] procs = Process.GetProcesses();
-
-                foreach (Process p in procs)
-                {
-                    if (p.ProcessName.Contains("WoW"))
-                    {
-                        //WindowUtil.PostKeyDown(WindowUtil.GetWindow("WoW1"), Keys.W);
-                        WindowUtil.PostKey(p.MainWindowHandle, Keys.Oemplus);
-                    }
-                }
+                input.Subscribe();
 
                 button_StartMultiboxing.Text = "Stop Multiboxing";
             }
             else if (isListening)
             {
+                input.Unsubscribe();
+
                 button_StartMultiboxing.Text = "Start Multiboxing";
             }
 

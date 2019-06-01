@@ -17,14 +17,6 @@ namespace Multiboxer
 
         private InputCallback input;
 
-        const int PROCESS_WM_READ = 0x0010;
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-
-        [DllImport("kernel32.dll")]
-        public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
-
         public MainForm()
         {
             InitializeComponent();
@@ -51,6 +43,34 @@ namespace Multiboxer
             }
 
             isListening = !isListening;
+        }
+
+        private void listBox_SelectMasterClient_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string procDataUnformatted = listBox_SelectMasterClient.SelectedItem.ToString();
+
+            string procDataFormatted = procDataUnformatted.Replace(" ", "");
+
+            string[] procData = procDataFormatted.Split('-');
+
+            input.ProcManager.SetMasterClient(procData[0], Convert.ToInt32(procData[1]));
+        }
+
+        private void button_RefreshClients_Click(object sender, EventArgs e)
+        {
+            input.ProcManager.RefreshGameProcessList();
+
+            PopulateClientList();
+        }
+
+        private void PopulateClientList()
+        {
+            listBox_SelectMasterClient.Items.Clear();
+
+            foreach (Process p in input.ProcManager.GameProcessList)
+            {
+                listBox_SelectMasterClient.Items.Add($"{p.ProcessName} - {p.Id}");
+            }
         }
     }
 }

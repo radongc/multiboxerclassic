@@ -11,11 +11,13 @@ namespace Multiboxer
 {
     class InputCallback
     {
+        public ProcessManager ProcManager;
+
         private IKeyboardMouseEvents m_GlobalHook;
 
         public InputCallback()
         {
-
+            ProcManager = new ProcessManager();
         }
 
         public void Subscribe()
@@ -30,11 +32,11 @@ namespace Multiboxer
 
         private void InputCallback_OnKeyDown(object sender, KeyEventArgs e)
         {
-            Process[] procs = Process.GetProcesses();
+            ProcManager.RefreshGameProcessList();
 
-            foreach (Process p in procs)
+            foreach (Process p in ProcManager.GameProcessList)
             {
-                if (p.ProcessName.Contains("WoW"))
+                if (!p.Id.Equals(ProcManager.MasterClient.Id))
                 {
                     WindowUtil.PostKeyDown(p.MainWindowHandle, (Keys)e.KeyValue);
                 }
@@ -43,11 +45,11 @@ namespace Multiboxer
 
         private void InputCallback_OnKeyUp(object sender, KeyEventArgs e)
         {
-            Process[] procs = Process.GetProcesses();
+            ProcManager.RefreshGameProcessList();
 
-            foreach (Process p in procs)
+            foreach (Process p in ProcManager.GameProcessList)
             {
-                if (p.ProcessName.Contains("WoW"))
+                if (!p.Id.Equals(ProcManager.MasterClient.Id))
                 {
                     WindowUtil.PostKeyUp(p.MainWindowHandle, (Keys)e.KeyValue);
                 }
@@ -56,11 +58,11 @@ namespace Multiboxer
 
         private void InputCallback_OnMouseDown(object sender, MouseEventArgs e)
         {
-            Process[] procs = Process.GetProcesses();
+            ProcManager.RefreshGameProcessList();
 
-            foreach (Process p in procs)
+            foreach (Process p in ProcManager.GameProcessList)
             {
-                if (p.ProcessName.Contains("WoW"))
+                if (!p.Id.Equals(ProcManager.MasterClient.Id))
                 {
                     if (e.Button == MouseButtons.Left)
                     {
@@ -76,11 +78,11 @@ namespace Multiboxer
 
         private void InputCallback_OnMouseUp(object sender, MouseEventArgs e)
         {
-            Process[] procs = Process.GetProcesses();
+            ProcManager.RefreshGameProcessList();
 
-            foreach (Process p in procs)
+            foreach (Process p in ProcManager.GameProcessList)
             {
-                if (p.ProcessName.Contains("WoW"))
+                if (!p.Id.Equals(ProcManager.MasterClient.Id)) // .Equals() compares the contents, == compares the reference
                 {
                     if (e.Button == MouseButtons.Left)
                     {
@@ -103,6 +105,5 @@ namespace Multiboxer
 
             m_GlobalHook.Dispose();
         }
-
     }
 }

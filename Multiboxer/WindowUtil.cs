@@ -44,6 +44,10 @@ namespace Multiboxer
                 MessageBox.Show("Error");
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             }
+            else
+            {
+                Console.WriteLine($"Send msg {msg} to client {hWnd}");
+            }
         }
 
         // Helpful methods

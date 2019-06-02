@@ -72,5 +72,15 @@ namespace Multiboxer
                 listBox_SelectMasterClient.Items.Add($"{p.ProcessName} - {p.Id}");
             }
         }
+
+        private void button_IgnoreListHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(GUIStringLibrary.IgnoreListHelpText, "Ignore List Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
+        }
+
+        private void button_SaveIgnoreList_Click(object sender, EventArgs e)
+        {
+            input.ProcManager.SetIgnoredKeys(richTextBox_IgnoreList);
+        }
     }
 }

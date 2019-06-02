@@ -10,7 +10,6 @@ namespace Multiboxer
 {
     class ProcessManager
     {
-
         // Properties
 
         private readonly string _gameProcessNamePartial = "WoW";
@@ -27,7 +26,7 @@ namespace Multiboxer
 
         public Process[] GameProcessList { get; private set; }
 
-        public Keys[] IgnoredKeys { get; }
+        public Keys[] IgnoredKeys { get; private set; }
 
         // Mutators (not simple mutators, more of methods that select the value)
 
@@ -50,20 +49,39 @@ namespace Multiboxer
 
         public void SetIgnoredKeys(RichTextBox rtb)
         {
-            int i = 0;
-
-            foreach(string line in rtb.Lines)
+            if (rtb.Lines.Length > 0) // avoiding exceptions
             {
-                try
+                if (!rtb.Lines[rtb.Lines.Length - 1].ToString().Equals("")) // avoiding exceptions
                 {
-                    IgnoredKeys[i] = (Keys)Enum.Parse(typeof(Keys), line, true);
-                    i++;
+                    IgnoredKeys = new Keys[rtb.Lines.Length];
+
+                    int j = 0;
+
+                    foreach (string line in rtb.Lines)
+                    {
+                        try
+                        {
+                            string formatLine = line.Replace("\n", "");
+
+                            IgnoredKeys[j] = (Keys)Enum.Parse(typeof(Keys), formatLine, false);
+                            j++;
+                        }
+                        catch (Exception b) // TODO add error handling/logging
+                        {
+                            MessageBox.Show(b.ToString());
+                            break;
+                        }
+                    }
+
+                    for (int i = 0; i < IgnoredKeys.Length; i++)
+                    {
+                        Console.WriteLine(IgnoredKeys[i]);
+                    }
                 }
-                catch (Exception b) // TODO add error handling/logging
-                {
-                    MessageBox.Show(b.ToString());
-                    break;
-                }
+            }
+            else
+            {
+                IgnoredKeys = new Keys[0];
             }
         }
 

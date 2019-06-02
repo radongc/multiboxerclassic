@@ -34,11 +34,32 @@ namespace Multiboxer
         {
             ProcManager.RefreshGameProcessList();
 
-            foreach (Process p in ProcManager.GameProcessList)
+            bool keyIsBlacklisted = false;
+
+            int i = 0;
+
+            foreach (Keys key in ProcManager.IgnoredKeys)
             {
-                if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
                 {
-                    WindowUtil.PostKeyDown(p.MainWindowHandle, (Keys)e.KeyValue);
+                    keyIsBlacklisted = true;
+                }
+
+                i++;
+            }
+
+            if (keyIsBlacklisted)
+            {
+                return;
+            }
+            else
+            {
+                foreach (Process p in ProcManager.GameProcessList)
+                {
+                    if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                    {
+                        WindowUtil.PostKeyDown(p.MainWindowHandle, (Keys)e.KeyValue);
+                    }
                 }
             }
         }
@@ -47,11 +68,32 @@ namespace Multiboxer
         {
             ProcManager.RefreshGameProcessList();
 
-            foreach (Process p in ProcManager.GameProcessList)
+            bool keyIsBlacklisted = false;
+
+            int i = 0;
+
+            foreach (Keys key in ProcManager.IgnoredKeys)
             {
-                if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
                 {
-                    WindowUtil.PostKeyUp(p.MainWindowHandle, (Keys)e.KeyValue);
+                    keyIsBlacklisted = true;
+                }
+
+                i++;
+            }
+
+            if (keyIsBlacklisted)
+            {
+                return;
+            }
+            else
+            {
+                foreach (Process p in ProcManager.GameProcessList)
+                {
+                    if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                    {
+                        WindowUtil.PostKeyUp(p.MainWindowHandle, (Keys)e.KeyValue);
+                    }
                 }
             }
         }

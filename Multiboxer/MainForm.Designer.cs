@@ -38,6 +38,7 @@
             this.label_IgnoreList = new System.Windows.Forms.Label();
             this.richTextBox_IgnoreList = new System.Windows.Forms.RichTextBox();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
+            this.button_SaveIgnoreList = new System.Windows.Forms.Button();
             this.tabControl_MainWindow.SuspendLayout();
             this.tabPage_Multiboxing.SuspendLayout();
             this.tabPage_Settings.SuspendLayout();
@@ -97,6 +98,7 @@
             // 
             // tabPage_Settings
             // 
+            this.tabPage_Settings.Controls.Add(this.button_SaveIgnoreList);
             this.tabPage_Settings.Controls.Add(this.button_IgnoreListHelp);
             this.tabPage_Settings.Controls.Add(this.label_IgnoreList);
             this.tabPage_Settings.Controls.Add(this.richTextBox_IgnoreList);
@@ -116,6 +118,7 @@
             this.button_IgnoreListHelp.TabIndex = 2;
             this.button_IgnoreListHelp.Text = "?";
             this.button_IgnoreListHelp.UseVisualStyleBackColor = true;
+            this.button_IgnoreListHelp.Click += new System.EventHandler(this.button_IgnoreListHelp_Click);
             // 
             // label_IgnoreList
             // 
@@ -133,6 +136,16 @@
             this.richTextBox_IgnoreList.Size = new System.Drawing.Size(360, 263);
             this.richTextBox_IgnoreList.TabIndex = 0;
             this.richTextBox_IgnoreList.Text = "";
+            // 
+            // button_SaveIgnoreList
+            // 
+            this.button_SaveIgnoreList.Location = new System.Drawing.Point(295, 17);
+            this.button_SaveIgnoreList.Name = "button_SaveIgnoreList";
+            this.button_SaveIgnoreList.Size = new System.Drawing.Size(75, 24);
+            this.button_SaveIgnoreList.TabIndex = 3;
+            this.button_SaveIgnoreList.Text = "Save";
+            this.button_SaveIgnoreList.UseVisualStyleBackColor = true;
+            this.button_SaveIgnoreList.Click += new System.EventHandler(this.button_SaveIgnoreList_Click);
             // 
             // MainForm
             // 
@@ -163,6 +176,7 @@
         private System.Windows.Forms.RichTextBox richTextBox_IgnoreList;
         private System.Windows.Forms.HelpProvider helpProvider_IgnoreList;
         private System.Windows.Forms.Button button_IgnoreListHelp;
+        private System.Windows.Forms.Button button_SaveIgnoreList;
     }
 }
 

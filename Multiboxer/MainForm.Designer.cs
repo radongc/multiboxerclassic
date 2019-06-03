@@ -31,22 +31,25 @@
             this.button_StartMultiboxing = new System.Windows.Forms.Button();
             this.tabControl_MainWindow = new System.Windows.Forms.TabControl();
             this.tabPage_Multiboxing = new System.Windows.Forms.TabPage();
+            this.statusStrip_MainStatus = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.button_RefreshClients = new System.Windows.Forms.Button();
             this.listBox_SelectMasterClient = new System.Windows.Forms.ListBox();
             this.tabPage_Settings = new System.Windows.Forms.TabPage();
+            this.button_SaveIgnoreList = new System.Windows.Forms.Button();
             this.button_IgnoreListHelp = new System.Windows.Forms.Button();
             this.label_IgnoreList = new System.Windows.Forms.Label();
             this.richTextBox_IgnoreList = new System.Windows.Forms.RichTextBox();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
-            this.button_SaveIgnoreList = new System.Windows.Forms.Button();
             this.tabControl_MainWindow.SuspendLayout();
             this.tabPage_Multiboxing.SuspendLayout();
+            this.statusStrip_MainStatus.SuspendLayout();
             this.tabPage_Settings.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_StartMultiboxing
             // 
-            this.button_StartMultiboxing.Location = new System.Drawing.Point(505, 327);
+            this.button_StartMultiboxing.Location = new System.Drawing.Point(505, 302);
             this.button_StartMultiboxing.Name = "button_StartMultiboxing";
             this.button_StartMultiboxing.Size = new System.Drawing.Size(152, 35);
             this.button_StartMultiboxing.TabIndex = 0;
@@ -76,6 +79,22 @@
             this.tabPage_Multiboxing.TabIndex = 0;
             this.tabPage_Multiboxing.Text = "Multiboxing";
             this.tabPage_Multiboxing.UseVisualStyleBackColor = true;
+            // 
+            // statusStrip_MainStatus
+            // 
+            this.statusStrip_MainStatus.ImageScalingSize = new System.Drawing.Size(18, 18);
+            this.statusStrip_MainStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel_Status});
+            this.statusStrip_MainStatus.Location = new System.Drawing.Point(0, 401);
+            this.statusStrip_MainStatus.Name = "statusStrip_MainStatus";
+            this.statusStrip_MainStatus.Size = new System.Drawing.Size(671, 24);
+            this.statusStrip_MainStatus.TabIndex = 3;
+            // 
+            // toolStripStatusLabel_Status
+            // 
+            this.toolStripStatusLabel_Status.Name = "toolStripStatusLabel_Status";
+            this.toolStripStatusLabel_Status.Size = new System.Drawing.Size(18, 19);
+            this.toolStripStatusLabel_Status.Text = "...";
             // 
             // button_RefreshClients
             // 
@@ -110,6 +129,16 @@
             this.tabPage_Settings.Text = "Settings";
             this.tabPage_Settings.UseVisualStyleBackColor = true;
             // 
+            // button_SaveIgnoreList
+            // 
+            this.button_SaveIgnoreList.Location = new System.Drawing.Point(295, 17);
+            this.button_SaveIgnoreList.Name = "button_SaveIgnoreList";
+            this.button_SaveIgnoreList.Size = new System.Drawing.Size(75, 24);
+            this.button_SaveIgnoreList.TabIndex = 3;
+            this.button_SaveIgnoreList.Text = "Save";
+            this.button_SaveIgnoreList.UseVisualStyleBackColor = true;
+            this.button_SaveIgnoreList.Click += new System.EventHandler(this.button_SaveIgnoreList_Click);
+            // 
             // button_IgnoreListHelp
             // 
             this.button_IgnoreListHelp.Location = new System.Drawing.Point(214, 17);
@@ -137,30 +166,24 @@
             this.richTextBox_IgnoreList.TabIndex = 0;
             this.richTextBox_IgnoreList.Text = "";
             // 
-            // button_SaveIgnoreList
-            // 
-            this.button_SaveIgnoreList.Location = new System.Drawing.Point(295, 17);
-            this.button_SaveIgnoreList.Name = "button_SaveIgnoreList";
-            this.button_SaveIgnoreList.Size = new System.Drawing.Size(75, 24);
-            this.button_SaveIgnoreList.TabIndex = 3;
-            this.button_SaveIgnoreList.Text = "Save";
-            this.button_SaveIgnoreList.UseVisualStyleBackColor = true;
-            this.button_SaveIgnoreList.Click += new System.EventHandler(this.button_SaveIgnoreList_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(671, 399);
+            this.ClientSize = new System.Drawing.Size(671, 425);
+            this.Controls.Add(this.statusStrip_MainStatus);
             this.Controls.Add(this.tabControl_MainWindow);
             this.Name = "MainForm";
             this.Text = "Multiboxer";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControl_MainWindow.ResumeLayout(false);
             this.tabPage_Multiboxing.ResumeLayout(false);
+            this.statusStrip_MainStatus.ResumeLayout(false);
+            this.statusStrip_MainStatus.PerformLayout();
             this.tabPage_Settings.ResumeLayout(false);
             this.tabPage_Settings.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -177,6 +200,8 @@
         private System.Windows.Forms.HelpProvider helpProvider_IgnoreList;
         private System.Windows.Forms.Button button_IgnoreListHelp;
         private System.Windows.Forms.Button button_SaveIgnoreList;
+        private System.Windows.Forms.StatusStrip statusStrip_MainStatus;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_Status;
     }
 }
 

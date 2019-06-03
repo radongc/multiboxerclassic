@@ -11,6 +11,9 @@ namespace Multiboxer
 {
     class WindowUtil
     {
+        /* WindowUtil
+         * Handles PostMessage functions and function wrappers. */
+
         /* Windows messages */
 
         // keyboard

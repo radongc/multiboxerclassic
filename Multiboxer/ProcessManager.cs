@@ -10,6 +10,10 @@ namespace Multiboxer
 {
     class ProcessManager
     {
+        /* ProcessManager
+         * Handles most all functions having to do with process manipulation. 
+         * Keeps track of master client, client list, key ignores etc.*/
+
         // Properties
 
         private readonly string _gameProcessNamePartial = "WoW";

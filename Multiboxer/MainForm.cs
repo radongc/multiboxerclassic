@@ -24,6 +24,8 @@ namespace Multiboxer
             InitializeComponent();
         }
 
+        // Event Handlers
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             // Init input callbacks and config manager
@@ -48,13 +50,23 @@ namespace Multiboxer
 
         private void button_StartMultiboxing_Click(object sender, EventArgs e)
         {
+            bool errorOccurred = false;
+
             if (!isListening)
             {
-                input.Subscribe();
+                if (input.ProcManager.MasterClient == null) // error checking
+                {
+                    errorOccurred = true;
+                    MessageBox.Show(GUIStringLibrary.ErrorText.MasterClient, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    input.Subscribe();
 
-                button_StartMultiboxing.Text = "Stop Multiboxing";
+                    button_StartMultiboxing.Text = "Stop Multiboxing";
 
-                config.UpdateStatus($"Multiboxing started.", Color.ForestGreen);
+                    config.UpdateStatus($"Multiboxing started.", Color.ForestGreen);
+                }
             }
             else if (isListening)
             {
@@ -65,7 +77,10 @@ namespace Multiboxer
                 config.UpdateStatus($"Multiboxing stopped.", Color.ForestGreen);
             }
 
-            isListening = !isListening;
+            if (!errorOccurred)
+            {
+                isListening = !isListening;
+            }
         }
 
         private void listBox_SelectMasterClient_SelectedIndexChanged(object sender, EventArgs e)
@@ -81,6 +96,12 @@ namespace Multiboxer
             config.UpdateStatus($"Set master client to {procData[0]} - {procData[1]}", Color.ForestGreen);
         }
 
+
+        private void button_MasterClientListHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(GUIStringLibrary.HelpText.MasterClient, "Master Client Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
+        }
+
         private void button_RefreshClients_Click(object sender, EventArgs e)
         {
             input.ProcManager.RefreshGameProcessList();
@@ -90,6 +111,22 @@ namespace Multiboxer
             config.UpdateStatus($"Found {input.ProcManager.GameProcessList.Length} process(es).", Color.ForestGreen);
         }
 
+        private void button_SaveIgnoreList_Click(object sender, EventArgs e)
+        {
+            input.ProcManager.SetIgnoredKeys(richTextBox_IgnoreList);
+
+            config.SaveToConfig(richTextBox_IgnoreList.Lines);
+
+            config.UpdateStatus($"Saved IgnoreList to config file successfully.", Color.ForestGreen);
+        }
+
+        private void button_IgnoreListHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(GUIStringLibrary.HelpText.IgnoreList, "Ignore List Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
+        }
+
+        // Private methods
+
         private void PopulateClientList()
         {
             listBox_SelectMasterClient.Items.Clear();
@@ -98,20 +135,6 @@ namespace Multiboxer
             {
                 listBox_SelectMasterClient.Items.Add($"{p.ProcessName} - {p.Id}");
             }
-        }
-
-        private void button_IgnoreListHelp_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(GUIStringLibrary.HelpText.IgnoreList, "Ignore List Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
-        }
-
-        private void button_SaveIgnoreList_Click(object sender, EventArgs e)
-        {
-            input.ProcManager.SetIgnoredKeys(richTextBox_IgnoreList);
-
-            config.SaveToConfig(richTextBox_IgnoreList.Lines);
-
-            config.UpdateStatus($"Saved IgnoreList to config file successfully.", Color.ForestGreen);
         }
     }
 }

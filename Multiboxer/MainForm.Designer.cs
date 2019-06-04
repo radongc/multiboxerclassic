@@ -31,8 +31,8 @@
             this.button_StartMultiboxing = new System.Windows.Forms.Button();
             this.tabControl_MainWindow = new System.Windows.Forms.TabControl();
             this.tabPage_Multiboxing = new System.Windows.Forms.TabPage();
-            this.statusStrip_MainStatus = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
+            this.button_MasterClientListHelp = new System.Windows.Forms.Button();
+            this.label_SelectMasterClient = new System.Windows.Forms.Label();
             this.button_RefreshClients = new System.Windows.Forms.Button();
             this.listBox_SelectMasterClient = new System.Windows.Forms.ListBox();
             this.tabPage_Settings = new System.Windows.Forms.TabPage();
@@ -40,11 +40,13 @@
             this.button_IgnoreListHelp = new System.Windows.Forms.Button();
             this.label_IgnoreList = new System.Windows.Forms.Label();
             this.richTextBox_IgnoreList = new System.Windows.Forms.RichTextBox();
+            this.statusStrip_MainStatus = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
             this.tabControl_MainWindow.SuspendLayout();
             this.tabPage_Multiboxing.SuspendLayout();
-            this.statusStrip_MainStatus.SuspendLayout();
             this.tabPage_Settings.SuspendLayout();
+            this.statusStrip_MainStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_StartMultiboxing
@@ -69,6 +71,8 @@
             // 
             // tabPage_Multiboxing
             // 
+            this.tabPage_Multiboxing.Controls.Add(this.button_MasterClientListHelp);
+            this.tabPage_Multiboxing.Controls.Add(this.label_SelectMasterClient);
             this.tabPage_Multiboxing.Controls.Add(this.button_RefreshClients);
             this.tabPage_Multiboxing.Controls.Add(this.listBox_SelectMasterClient);
             this.tabPage_Multiboxing.Controls.Add(this.button_StartMultiboxing);
@@ -80,25 +84,28 @@
             this.tabPage_Multiboxing.Text = "Multiboxing";
             this.tabPage_Multiboxing.UseVisualStyleBackColor = true;
             // 
-            // statusStrip_MainStatus
+            // button_MasterClientListHelp
             // 
-            this.statusStrip_MainStatus.ImageScalingSize = new System.Drawing.Size(18, 18);
-            this.statusStrip_MainStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel_Status});
-            this.statusStrip_MainStatus.Location = new System.Drawing.Point(0, 401);
-            this.statusStrip_MainStatus.Name = "statusStrip_MainStatus";
-            this.statusStrip_MainStatus.Size = new System.Drawing.Size(671, 24);
-            this.statusStrip_MainStatus.TabIndex = 3;
+            this.button_MasterClientListHelp.Location = new System.Drawing.Point(145, 8);
+            this.button_MasterClientListHelp.Name = "button_MasterClientListHelp";
+            this.button_MasterClientListHelp.Size = new System.Drawing.Size(27, 24);
+            this.button_MasterClientListHelp.TabIndex = 4;
+            this.button_MasterClientListHelp.Text = "?";
+            this.button_MasterClientListHelp.UseVisualStyleBackColor = true;
+            this.button_MasterClientListHelp.Click += new System.EventHandler(this.button_MasterClientListHelp_Click);
             // 
-            // toolStripStatusLabel_Status
+            // label_SelectMasterClient
             // 
-            this.toolStripStatusLabel_Status.Name = "toolStripStatusLabel_Status";
-            this.toolStripStatusLabel_Status.Size = new System.Drawing.Size(18, 19);
-            this.toolStripStatusLabel_Status.Text = "...";
+            this.label_SelectMasterClient.AutoSize = true;
+            this.label_SelectMasterClient.Location = new System.Drawing.Point(29, 14);
+            this.label_SelectMasterClient.Name = "label_SelectMasterClient";
+            this.label_SelectMasterClient.Size = new System.Drawing.Size(119, 15);
+            this.label_SelectMasterClient.TabIndex = 3;
+            this.label_SelectMasterClient.Text = "Select Master Client:";
             // 
             // button_RefreshClients
             // 
-            this.button_RefreshClients.Location = new System.Drawing.Point(49, 176);
+            this.button_RefreshClients.Location = new System.Drawing.Point(57, 187);
             this.button_RefreshClients.Name = "button_RefreshClients";
             this.button_RefreshClients.Size = new System.Drawing.Size(88, 34);
             this.button_RefreshClients.TabIndex = 2;
@@ -109,7 +116,7 @@
             // listBox_SelectMasterClient
             // 
             this.listBox_SelectMasterClient.FormattingEnabled = true;
-            this.listBox_SelectMasterClient.Location = new System.Drawing.Point(24, 23);
+            this.listBox_SelectMasterClient.Location = new System.Drawing.Point(32, 34);
             this.listBox_SelectMasterClient.Name = "listBox_SelectMasterClient";
             this.listBox_SelectMasterClient.Size = new System.Drawing.Size(140, 147);
             this.listBox_SelectMasterClient.TabIndex = 1;
@@ -166,6 +173,22 @@
             this.richTextBox_IgnoreList.TabIndex = 0;
             this.richTextBox_IgnoreList.Text = "";
             // 
+            // statusStrip_MainStatus
+            // 
+            this.statusStrip_MainStatus.ImageScalingSize = new System.Drawing.Size(18, 18);
+            this.statusStrip_MainStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel_Status});
+            this.statusStrip_MainStatus.Location = new System.Drawing.Point(0, 401);
+            this.statusStrip_MainStatus.Name = "statusStrip_MainStatus";
+            this.statusStrip_MainStatus.Size = new System.Drawing.Size(671, 24);
+            this.statusStrip_MainStatus.TabIndex = 3;
+            // 
+            // toolStripStatusLabel_Status
+            // 
+            this.toolStripStatusLabel_Status.Name = "toolStripStatusLabel_Status";
+            this.toolStripStatusLabel_Status.Size = new System.Drawing.Size(18, 19);
+            this.toolStripStatusLabel_Status.Text = "...";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -178,10 +201,11 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControl_MainWindow.ResumeLayout(false);
             this.tabPage_Multiboxing.ResumeLayout(false);
-            this.statusStrip_MainStatus.ResumeLayout(false);
-            this.statusStrip_MainStatus.PerformLayout();
+            this.tabPage_Multiboxing.PerformLayout();
             this.tabPage_Settings.ResumeLayout(false);
             this.tabPage_Settings.PerformLayout();
+            this.statusStrip_MainStatus.ResumeLayout(false);
+            this.statusStrip_MainStatus.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -202,6 +226,8 @@
         private System.Windows.Forms.Button button_SaveIgnoreList;
         private System.Windows.Forms.StatusStrip statusStrip_MainStatus;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_Status;
+        private System.Windows.Forms.Label label_SelectMasterClient;
+        private System.Windows.Forms.Button button_MasterClientListHelp;
     }
 }
 

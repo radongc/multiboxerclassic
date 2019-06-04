@@ -14,23 +14,23 @@ namespace Multiboxer
          * Handles most all functions having to do with process manipulation. 
          * Keeps track of master client, client list, key ignores etc.*/
 
-        // Properties
+        // Fields
 
         private readonly string _gameProcessNamePartial = "WoW";
 
-        // Constructor
-        public ProcessManager()
-        {
-            RefreshGameProcessList();
-        }
-
-        // Accessors
+        // Properties
 
         public Process MasterClient { get; private set; }
 
         public Process[] GameProcessList { get; private set; }
 
         public Keys[] IgnoredKeys { get; private set; }
+
+        // Constructor
+        public ProcessManager()
+        {
+            RefreshGameProcessList();
+        }
 
         // Mutators (not simple mutators, more of methods that select the value)
 

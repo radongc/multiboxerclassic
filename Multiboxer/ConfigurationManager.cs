@@ -120,11 +120,38 @@ namespace Multiboxer
                 get => Encoding.Unicode;
             }
 
-            public void DebugLog(string text, Color color)
+            public enum LogType
+            {
+                DEBUG,
+                MESSAGE,
+                ERROR
+            }
+
+            public void DebugLog(string text, LogType logType)
             {
                 Color oldColor = _myControl.SelectionColor;
+                Color newColor;
 
-                _myControl.SelectionColor = color;
+                switch (logType)
+                {
+                    case LogType.DEBUG:
+                        newColor = Color.YellowGreen;
+                        break;
+
+                    case LogType.MESSAGE:
+                        newColor = Color.Blue;
+                        break;
+
+                    case LogType.ERROR:
+                        newColor = Color.Red;
+                        break;
+
+                    default:
+                        newColor = oldColor;
+                        break;
+                }
+
+                _myControl.SelectionColor = newColor;
                 Console.Write(text);
                 _myControl.SelectionColor = oldColor;
             }

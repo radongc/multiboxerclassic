@@ -18,6 +18,8 @@ namespace Multiboxer
 
         private readonly string _gameProcessNamePartial = "WoW";
 
+        private ConfigurationManager.ConsoleWriter consoleWriter;
+
         // Properties
 
         public Process MasterClient { get; private set; }
@@ -33,6 +35,11 @@ namespace Multiboxer
         }
 
         // Mutators (not simple mutators, more of methods that select the value)
+
+        public void SetConsoleWriter(ConfigurationManager.ConsoleWriter writer)
+        {
+            consoleWriter = writer;
+        }
 
         public void SetMasterClient(string procName, int procId)
         {
@@ -68,16 +75,16 @@ namespace Multiboxer
                         }
                         catch (Exception b) // TODO add error handling/logging
                         {
-                            MessageBox.Show(b.ToString());
+                            consoleWriter.DebugLog(b.ToString(), ConfigurationManager.ConsoleWriter.LogType.ERROR);
                             break;
                         }
                     }
 
-                    Console.Write("Saved IgnoreList:");
+                    consoleWriter.DebugLog("Saved IgnoreList:", ConfigurationManager.ConsoleWriter.LogType.DEBUG);
 
                     for (int i = 0; i < IgnoredKeys.Length; i++)
                     {
-                        Console.Write(IgnoredKeys[i]);
+                        consoleWriter.DebugLog(IgnoredKeys[i].ToString(), ConfigurationManager.ConsoleWriter.LogType.DEBUG);
                     }
                 }
             }

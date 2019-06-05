@@ -22,11 +22,13 @@ namespace Multiboxer
         private ConfigurationManager.ConsoleWriter consoleWriter;
 
         /* TODO NEXT *
+         * Find out a way to make DebugLog and UpdateStatus linked 
+         * Find out a way to make DebugLog instance accessible from all classes
          * Create a hotkey for starting/stopping multiboxing that is customizable
          * Add more/better UI elements such as tab control for settings
          * Test out hotkey creator that can send commands to window such as:
          * <Press Enter><Type "/script AcceptGroup"> etc. and possibly look at creating an addon for simpler macros, such as "/mb p a" for accepting group
-         * Figure out how to send complex keystrokes to windows, such as shift-4
+         * Figure out how to send complex keystrokes to windows, such as shift-4 (DONE)
          * Re-make blacklist with better options and pressing keys to add instead of manually typing out names
          * Blacklist options: 
          * Blacklist profiles, ability to enable/disable profiles, ability to create whitelist instead of blacklist
@@ -47,6 +49,8 @@ namespace Multiboxer
             config = new ConfigurationManager("config.cfg", toolStripStatusLabel_Status);
             consoleWriter = new ConfigurationManager.ConsoleWriter(richTextBox_MainDebugConsole);
 
+            input.ProcManager.SetConsoleWriter(consoleWriter); // allow procManager to write to console
+
             if (!config.IsFirstRun())
             {
                 config.LoadFromConfig(richTextBox_IgnoreList); // load into ignore list from cfg
@@ -62,7 +66,7 @@ namespace Multiboxer
             PopulateClientList();
 
             config.UpdateStatus($"Found {input.ProcManager.GameProcessList.Length} process(es).", Color.ForestGreen);
-            consoleWriter.DebugLog($"Found {input.ProcManager.GameProcessList.Length} process(es).", Color.ForestGreen);
+            consoleWriter.DebugLog($"Found {input.ProcManager.GameProcessList.Length} process(es).", ConfigurationManager.ConsoleWriter.LogType.MESSAGE);
         }
 
         private void button_StartMultiboxing_Click(object sender, EventArgs e)
@@ -83,7 +87,7 @@ namespace Multiboxer
                     button_StartMultiboxing.Text = "Stop Multiboxing";
 
                     config.UpdateStatus($"Multiboxing started.", Color.ForestGreen);
-                    consoleWriter.DebugLog($"Multiboxing started.", Color.ForestGreen);
+                    consoleWriter.DebugLog($"Multiboxing started.", ConfigurationManager.ConsoleWriter.LogType.MESSAGE);
                 }
             }
             else if (isListening)
@@ -93,7 +97,7 @@ namespace Multiboxer
                 button_StartMultiboxing.Text = "Start Multiboxing";
 
                 config.UpdateStatus($"Multiboxing stopped.", Color.ForestGreen);
-                consoleWriter.DebugLog($"Multiboxing stopped.", Color.ForestGreen);
+                consoleWriter.DebugLog($"Multiboxing stopped.", ConfigurationManager.ConsoleWriter.LogType.MESSAGE);
             }
 
             if (!errorOccurred)
@@ -104,16 +108,23 @@ namespace Multiboxer
 
         private void listBox_SelectMasterClient_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string procDataUnformatted = listBox_SelectMasterClient.SelectedItem.ToString();
+            try
+            {
+                string procDataUnformatted = listBox_SelectMasterClient.SelectedItem.ToString();
 
-            string procDataFormatted = procDataUnformatted.Replace(" ", "");
+                string procDataFormatted = procDataUnformatted.Replace(" ", "");
 
-            string[] procData = procDataFormatted.Split('-');
+                string[] procData = procDataFormatted.Split('-');
 
-            input.ProcManager.SetMasterClient(procData[0], Convert.ToInt32(procData[1]));
+                input.ProcManager.SetMasterClient(procData[0], Convert.ToInt32(procData[1]));
 
-            config.UpdateStatus($"Set master client to {procData[0]} - {procData[1]}", Color.ForestGreen);
-            consoleWriter.DebugLog($"Set master client to {procData[0]} - {procData[1]}", Color.ForestGreen);
+                config.UpdateStatus($"Set master client to {procData[0]} - {procData[1]}", Color.ForestGreen);
+                consoleWriter.DebugLog($"Set master client to {procData[0]} - {procData[1]}", ConfigurationManager.ConsoleWriter.LogType.MESSAGE);
+            }
+            catch (Exception b)
+            {
+                consoleWriter.DebugLog(b.ToString(), ConfigurationManager.ConsoleWriter.LogType.ERROR);
+            }
         }
 
 
@@ -129,7 +140,7 @@ namespace Multiboxer
             PopulateClientList();
 
             config.UpdateStatus($"Found {input.ProcManager.GameProcessList.Length} process(es).", Color.ForestGreen);
-            consoleWriter.DebugLog($"Found {input.ProcManager.GameProcessList.Length} process(es).", Color.ForestGreen);
+            consoleWriter.DebugLog($"Found {input.ProcManager.GameProcessList.Length} process(es).", ConfigurationManager.ConsoleWriter.LogType.DEBUG);
         }
 
         private void button_SaveIgnoreList_Click(object sender, EventArgs e)
@@ -139,7 +150,7 @@ namespace Multiboxer
             config.SaveToConfig(richTextBox_IgnoreList.Lines);
 
             config.UpdateStatus($"Saved IgnoreList to config file successfully.", Color.ForestGreen);
-            consoleWriter.DebugLog($"Saved IgnoreList to config file successfully.", Color.ForestGreen);
+            consoleWriter.DebugLog($"Saved IgnoreList to config file successfully.", ConfigurationManager.ConsoleWriter.LogType.MESSAGE);
         }
 
         private void button_IgnoreListHelp_Click(object sender, EventArgs e)

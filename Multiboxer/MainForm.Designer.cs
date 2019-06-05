@@ -31,6 +31,10 @@
             this.button_StartMultiboxing = new System.Windows.Forms.Button();
             this.tabControl_MainWindow = new System.Windows.Forms.TabControl();
             this.tabPage_Multiboxing = new System.Windows.Forms.TabPage();
+            this.checkBox_LogErrors = new System.Windows.Forms.CheckBox();
+            this.checkBox_LogDebugs = new System.Windows.Forms.CheckBox();
+            this.checkBox_LogMessages = new System.Windows.Forms.CheckBox();
+            this.richTextBox_MainDebugConsole = new System.Windows.Forms.RichTextBox();
             this.button_MasterClientListHelp = new System.Windows.Forms.Button();
             this.label_SelectMasterClient = new System.Windows.Forms.Label();
             this.button_RefreshClients = new System.Windows.Forms.Button();
@@ -43,7 +47,6 @@
             this.statusStrip_MainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
-            this.richTextBox_MainDebugConsole = new System.Windows.Forms.RichTextBox();
             this.tabControl_MainWindow.SuspendLayout();
             this.tabPage_Multiboxing.SuspendLayout();
             this.tabPage_Settings.SuspendLayout();
@@ -72,6 +75,9 @@
             // 
             // tabPage_Multiboxing
             // 
+            this.tabPage_Multiboxing.Controls.Add(this.checkBox_LogErrors);
+            this.tabPage_Multiboxing.Controls.Add(this.checkBox_LogDebugs);
+            this.tabPage_Multiboxing.Controls.Add(this.checkBox_LogMessages);
             this.tabPage_Multiboxing.Controls.Add(this.richTextBox_MainDebugConsole);
             this.tabPage_Multiboxing.Controls.Add(this.button_MasterClientListHelp);
             this.tabPage_Multiboxing.Controls.Add(this.label_SelectMasterClient);
@@ -85,6 +91,53 @@
             this.tabPage_Multiboxing.TabIndex = 0;
             this.tabPage_Multiboxing.Text = "Multiboxing";
             this.tabPage_Multiboxing.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_LogErrors
+            // 
+            this.checkBox_LogErrors.AutoSize = true;
+            this.checkBox_LogErrors.Checked = true;
+            this.checkBox_LogErrors.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_LogErrors.Location = new System.Drawing.Point(574, 9);
+            this.checkBox_LogErrors.Name = "checkBox_LogErrors";
+            this.checkBox_LogErrors.Size = new System.Drawing.Size(83, 19);
+            this.checkBox_LogErrors.TabIndex = 8;
+            this.checkBox_LogErrors.Text = "Error Logs";
+            this.checkBox_LogErrors.UseVisualStyleBackColor = true;
+            this.checkBox_LogErrors.CheckedChanged += new System.EventHandler(this.checkBox_LogError_CheckedChanged);
+            // 
+            // checkBox_LogDebugs
+            // 
+            this.checkBox_LogDebugs.AutoSize = true;
+            this.checkBox_LogDebugs.Checked = true;
+            this.checkBox_LogDebugs.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_LogDebugs.Location = new System.Drawing.Point(475, 9);
+            this.checkBox_LogDebugs.Name = "checkBox_LogDebugs";
+            this.checkBox_LogDebugs.Size = new System.Drawing.Size(93, 19);
+            this.checkBox_LogDebugs.TabIndex = 7;
+            this.checkBox_LogDebugs.Text = "Debug Logs";
+            this.checkBox_LogDebugs.UseVisualStyleBackColor = true;
+            this.checkBox_LogDebugs.CheckedChanged += new System.EventHandler(this.checkBox_LogDebug_CheckedChanged);
+            // 
+            // checkBox_LogMessages
+            // 
+            this.checkBox_LogMessages.AutoSize = true;
+            this.checkBox_LogMessages.Checked = true;
+            this.checkBox_LogMessages.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_LogMessages.Location = new System.Drawing.Point(362, 9);
+            this.checkBox_LogMessages.Name = "checkBox_LogMessages";
+            this.checkBox_LogMessages.Size = new System.Drawing.Size(107, 19);
+            this.checkBox_LogMessages.TabIndex = 6;
+            this.checkBox_LogMessages.Text = "Message Logs";
+            this.checkBox_LogMessages.UseVisualStyleBackColor = true;
+            this.checkBox_LogMessages.CheckedChanged += new System.EventHandler(this.checkBox_LogMessages_CheckedChanged);
+            // 
+            // richTextBox_MainDebugConsole
+            // 
+            this.richTextBox_MainDebugConsole.Location = new System.Drawing.Point(183, 34);
+            this.richTextBox_MainDebugConsole.Name = "richTextBox_MainDebugConsole";
+            this.richTextBox_MainDebugConsole.Size = new System.Drawing.Size(474, 276);
+            this.richTextBox_MainDebugConsole.TabIndex = 5;
+            this.richTextBox_MainDebugConsole.Text = "";
             // 
             // button_MasterClientListHelp
             // 
@@ -191,14 +244,6 @@
             this.toolStripStatusLabel_Status.Size = new System.Drawing.Size(18, 19);
             this.toolStripStatusLabel_Status.Text = "...";
             // 
-            // richTextBox_MainDebugConsole
-            // 
-            this.richTextBox_MainDebugConsole.Location = new System.Drawing.Point(183, 34);
-            this.richTextBox_MainDebugConsole.Name = "richTextBox_MainDebugConsole";
-            this.richTextBox_MainDebugConsole.Size = new System.Drawing.Size(474, 276);
-            this.richTextBox_MainDebugConsole.TabIndex = 5;
-            this.richTextBox_MainDebugConsole.Text = "";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -239,6 +284,9 @@
         private System.Windows.Forms.Label label_SelectMasterClient;
         private System.Windows.Forms.Button button_MasterClientListHelp;
         private System.Windows.Forms.RichTextBox richTextBox_MainDebugConsole;
+        private System.Windows.Forms.CheckBox checkBox_LogErrors;
+        private System.Windows.Forms.CheckBox checkBox_LogDebugs;
+        private System.Windows.Forms.CheckBox checkBox_LogMessages;
     }
 }
 

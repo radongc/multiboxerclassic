@@ -13,9 +13,18 @@ namespace Multiboxer
     {
         /* ConfigurationManager
          * Handles loading, saving, and config condition checking. */
+
+        private ConsoleWriter consoleWriter;
         
         public string ConfigFilePath { get; }
         public ToolStripStatusLabel MainStatusLabel { get; private set; }
+
+        public enum LogType
+        {
+            MESSAGE,
+            DEBUG,
+            ERROR
+        }
 
         public ConfigurationManager(string cfgFilePath, ToolStripStatusLabel mainStatusLabel)
         {
@@ -35,10 +44,38 @@ namespace Multiboxer
             }
         }
 
-        public void UpdateStatus(string text, Color color)
+        public void SetConsoleWriter(ConsoleWriter writer) => consoleWriter = writer;
+
+        public void UpdateStatus(string text, LogType logType) // Use UpdateStatus if you want the statusbar and the console to log. Use DebugLog if you only want the message to be logged to the console
         {
-            MainStatusLabel.ForeColor = color;
+            Color newColor;
+
+            switch (logType)
+            {
+                case LogType.DEBUG:
+                    newColor = Color.YellowGreen;
+                    break;
+
+                case LogType.MESSAGE:
+                    newColor = Color.Blue;
+                    break;
+
+                case LogType.ERROR:
+                    newColor = Color.Red;
+                    break;
+
+                default:
+                    newColor = Color.White;
+                    break;
+            }
+
+            MainStatusLabel.ForeColor = newColor;
             MainStatusLabel.Text = text;
+
+            if (consoleWriter != null)
+            {
+                consoleWriter.DebugLog(text, logType);
+            }
         }
 
         // Save config file
@@ -100,9 +137,17 @@ namespace Multiboxer
         {
             private RichTextBox _myControl;
 
+            public bool LogMessages { get; set; }
+            public bool LogDebugs { get; set; }
+            public bool LogErrors { get; set; }
+
             public ConsoleWriter(RichTextBox control)
             {
                 _myControl = control;
+
+                LogMessages = true;
+                LogDebugs = true;
+                LogErrors = true;
             }
 
             public override void Write(char value)
@@ -120,13 +165,6 @@ namespace Multiboxer
                 get => Encoding.Unicode;
             }
 
-            public enum LogType
-            {
-                DEBUG,
-                MESSAGE,
-                ERROR
-            }
-
             public void DebugLog(string text, LogType logType)
             {
                 Color oldColor = _myControl.SelectionColor;
@@ -135,15 +173,36 @@ namespace Multiboxer
                 switch (logType)
                 {
                     case LogType.DEBUG:
-                        newColor = Color.YellowGreen;
+                        if (LogDebugs)
+                        {
+                            newColor = Color.YellowGreen;
+                        }
+                        else
+                        {
+                            return;
+                        }
                         break;
 
                     case LogType.MESSAGE:
-                        newColor = Color.Blue;
+                        if (LogMessages)
+                        {
+                            newColor = Color.Blue;
+                        }
+                        else
+                        {
+                            return;
+                        }
                         break;
 
                     case LogType.ERROR:
-                        newColor = Color.Red;
+                        if (LogErrors)
+                        {
+                            newColor = Color.Red;
+                        }
+                        else
+                        {
+                            return;
+                        }
                         break;
 
                     default:

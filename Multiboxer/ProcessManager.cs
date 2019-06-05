@@ -75,16 +75,16 @@ namespace Multiboxer
                         }
                         catch (Exception b) // TODO add error handling/logging
                         {
-                            consoleWriter.DebugLog(b.ToString(), ConfigurationManager.ConsoleWriter.LogType.ERROR);
+                            consoleWriter.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
                             break;
                         }
                     }
 
-                    consoleWriter.DebugLog("Saved IgnoreList:", ConfigurationManager.ConsoleWriter.LogType.DEBUG);
+                    consoleWriter.DebugLog("Saved IgnoreList:", ConfigurationManager.LogType.DEBUG);
 
                     for (int i = 0; i < IgnoredKeys.Length; i++)
                     {
-                        consoleWriter.DebugLog(IgnoredKeys[i].ToString(), ConfigurationManager.ConsoleWriter.LogType.DEBUG);
+                        consoleWriter.DebugLog(IgnoredKeys[i].ToString(), ConfigurationManager.LogType.DEBUG);
                     }
                 }
             }

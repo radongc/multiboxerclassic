@@ -11,8 +11,17 @@ namespace Multiboxer
 {
     class WindowUtil
     {
-        /* WindowUtil
+        /* WindowUtil (static)
          * Handles PostMessage functions and function wrappers. */
+
+        /* ConsoleWriter */
+
+        private static ConfigurationManager.ConsoleWriter consoleWriter;
+
+        public static void SetConsoleWriter(ConfigurationManager.ConsoleWriter writer)
+        {
+            consoleWriter = writer;
+        }
 
         /* Windows messages */
 
@@ -44,12 +53,29 @@ namespace Multiboxer
             if (!returnValue)
             {
                 // error
-                MessageBox.Show("Error");
+                consoleWriter.DebugLog(Marshal.GetLastWin32Error().ToString(), ConfigurationManager.LogType.ERROR);
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             }
             else
             {
-                Console.Write($"Send msg {msg} {(Keys)wParam} to client {hWnd}");
+                string msgName;
+
+                switch(msg)
+                {
+                    case WM_KEYDOWN:
+                        msgName = "WM_KEYDOWN";
+                        break;
+
+                    case WM_KEYUP:
+                        msgName = "WM_KEYUP";
+                        break;
+
+                    default:
+                        msgName = "";
+                        break;
+                }
+
+                consoleWriter.DebugLog($"Send msg {msgName} {(Keys)wParam} to client {hWnd}", ConfigurationManager.LogType.DEBUG);
             }
         }
 

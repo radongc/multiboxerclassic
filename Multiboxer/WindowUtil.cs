@@ -49,7 +49,7 @@ namespace Multiboxer
             }
             else
             {
-                Console.WriteLine($"Send msg {msg} to client {hWnd}");
+                Console.Write($"Send msg {msg} {(Keys)wParam} to client {hWnd}");
             }
         }
 

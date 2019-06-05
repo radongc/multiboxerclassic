@@ -95,5 +95,39 @@ namespace Multiboxer
                 }
             }
         }
+
+        public class ConsoleWriter : TextWriter
+        {
+            private RichTextBox _myControl;
+
+            public ConsoleWriter(RichTextBox control)
+            {
+                _myControl = control;
+            }
+
+            public override void Write(char value)
+            {
+                _myControl.AppendText(value.ToString() + "\n");
+            }
+
+            public override void Write(string value)
+            {
+                _myControl.AppendText($"[{DateTime.Now.ToShortTimeString()} {DateTime.Now.ToShortDateString()}] {value}\n");
+            }
+
+            public override Encoding Encoding
+            {
+                get => Encoding.Unicode;
+            }
+
+            public void DebugLog(string text, Color color)
+            {
+                Color oldColor = _myControl.SelectionColor;
+
+                _myControl.SelectionColor = color;
+                Console.Write(text);
+                _myControl.SelectionColor = oldColor;
+            }
+        }
     }
 }

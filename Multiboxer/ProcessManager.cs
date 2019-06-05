@@ -38,15 +38,11 @@ namespace Multiboxer
         {
             Process[] clients = Process.GetProcessesByName(procName);
 
-            Console.WriteLine(clients.Length);
-
             for (int i = 0; i < clients.Length; i++)
             {
                 if (clients[i].Id == procId)
                 {
                     MasterClient = clients[i];
-
-                    Console.WriteLine($"Set Master Client to ProcID {clients[i].Id}");
                 }
             }
         }
@@ -77,9 +73,11 @@ namespace Multiboxer
                         }
                     }
 
+                    Console.Write("Saved IgnoreList:");
+
                     for (int i = 0; i < IgnoredKeys.Length; i++)
                     {
-                        Console.WriteLine(IgnoredKeys[i]);
+                        Console.Write(IgnoredKeys[i]);
                     }
                 }
             }

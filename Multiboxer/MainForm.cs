@@ -19,6 +19,7 @@ namespace Multiboxer
 
         private InputCallback input;
         private ConfigurationManager config;
+        private ConfigurationManager.ConsoleWriter consoleWriter;
 
         /* TODO NEXT *
          * Create a hotkey for starting/stopping multiboxing that is customizable
@@ -44,12 +45,15 @@ namespace Multiboxer
 
             input = new InputCallback();
             config = new ConfigurationManager("config.cfg", toolStripStatusLabel_Status);
+            consoleWriter = new ConfigurationManager.ConsoleWriter(richTextBox_MainDebugConsole);
 
             if (!config.IsFirstRun())
             {
                 config.LoadFromConfig(richTextBox_IgnoreList); // load into ignore list from cfg
                 input.ProcManager.SetIgnoredKeys(richTextBox_IgnoreList); // save ignore list
             }
+
+            Console.SetOut(consoleWriter); // route console output to debug window
 
             // Check for running wow procs and populate the GUI list
 
@@ -58,6 +62,7 @@ namespace Multiboxer
             PopulateClientList();
 
             config.UpdateStatus($"Found {input.ProcManager.GameProcessList.Length} process(es).", Color.ForestGreen);
+            consoleWriter.DebugLog($"Found {input.ProcManager.GameProcessList.Length} process(es).", Color.ForestGreen);
         }
 
         private void button_StartMultiboxing_Click(object sender, EventArgs e)
@@ -78,6 +83,7 @@ namespace Multiboxer
                     button_StartMultiboxing.Text = "Stop Multiboxing";
 
                     config.UpdateStatus($"Multiboxing started.", Color.ForestGreen);
+                    consoleWriter.DebugLog($"Multiboxing started.", Color.ForestGreen);
                 }
             }
             else if (isListening)
@@ -87,6 +93,7 @@ namespace Multiboxer
                 button_StartMultiboxing.Text = "Start Multiboxing";
 
                 config.UpdateStatus($"Multiboxing stopped.", Color.ForestGreen);
+                consoleWriter.DebugLog($"Multiboxing stopped.", Color.ForestGreen);
             }
 
             if (!errorOccurred)
@@ -106,6 +113,7 @@ namespace Multiboxer
             input.ProcManager.SetMasterClient(procData[0], Convert.ToInt32(procData[1]));
 
             config.UpdateStatus($"Set master client to {procData[0]} - {procData[1]}", Color.ForestGreen);
+            consoleWriter.DebugLog($"Set master client to {procData[0]} - {procData[1]}", Color.ForestGreen);
         }
 
 
@@ -121,6 +129,7 @@ namespace Multiboxer
             PopulateClientList();
 
             config.UpdateStatus($"Found {input.ProcManager.GameProcessList.Length} process(es).", Color.ForestGreen);
+            consoleWriter.DebugLog($"Found {input.ProcManager.GameProcessList.Length} process(es).", Color.ForestGreen);
         }
 
         private void button_SaveIgnoreList_Click(object sender, EventArgs e)
@@ -130,6 +139,7 @@ namespace Multiboxer
             config.SaveToConfig(richTextBox_IgnoreList.Lines);
 
             config.UpdateStatus($"Saved IgnoreList to config file successfully.", Color.ForestGreen);
+            consoleWriter.DebugLog($"Saved IgnoreList to config file successfully.", Color.ForestGreen);
         }
 
         private void button_IgnoreListHelp_Click(object sender, EventArgs e)
@@ -147,20 +157,6 @@ namespace Multiboxer
             {
                 listBox_SelectMasterClient.Items.Add($"{p.ProcessName} - {p.Id}");
             }
-        }
-
-        private async void Test()
-        {
-            await Task.Delay(50);
-            //WindowUtil.PostKeyDown(input.ProcManager.GameProcessList[0].MainWindowHandle, Keys.Enter);
-            WindowUtil.PostKeyDown(input.ProcManager.GameProcessList[0].MainWindowHandle, Keys.ShiftKey);
-            WindowUtil.PostKeyDown(input.ProcManager.GameProcessList[0].MainWindowHandle, Keys.E);
-            WindowUtil.PostKeyUp(input.ProcManager.GameProcessList[0].MainWindowHandle, Keys.E);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Test();
         }
     }
 }

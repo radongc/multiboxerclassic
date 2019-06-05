@@ -43,7 +43,7 @@
             this.statusStrip_MainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
-            this.button1 = new System.Windows.Forms.Button();
+            this.richTextBox_MainDebugConsole = new System.Windows.Forms.RichTextBox();
             this.tabControl_MainWindow.SuspendLayout();
             this.tabPage_Multiboxing.SuspendLayout();
             this.tabPage_Settings.SuspendLayout();
@@ -52,7 +52,7 @@
             // 
             // button_StartMultiboxing
             // 
-            this.button_StartMultiboxing.Location = new System.Drawing.Point(505, 302);
+            this.button_StartMultiboxing.Location = new System.Drawing.Point(505, 334);
             this.button_StartMultiboxing.Name = "button_StartMultiboxing";
             this.button_StartMultiboxing.Size = new System.Drawing.Size(152, 35);
             this.button_StartMultiboxing.TabIndex = 0;
@@ -72,7 +72,7 @@
             // 
             // tabPage_Multiboxing
             // 
-            this.tabPage_Multiboxing.Controls.Add(this.button1);
+            this.tabPage_Multiboxing.Controls.Add(this.richTextBox_MainDebugConsole);
             this.tabPage_Multiboxing.Controls.Add(this.button_MasterClientListHelp);
             this.tabPage_Multiboxing.Controls.Add(this.label_SelectMasterClient);
             this.tabPage_Multiboxing.Controls.Add(this.button_RefreshClients);
@@ -88,7 +88,7 @@
             // 
             // button_MasterClientListHelp
             // 
-            this.button_MasterClientListHelp.Location = new System.Drawing.Point(145, 8);
+            this.button_MasterClientListHelp.Location = new System.Drawing.Point(145, 34);
             this.button_MasterClientListHelp.Name = "button_MasterClientListHelp";
             this.button_MasterClientListHelp.Size = new System.Drawing.Size(27, 24);
             this.button_MasterClientListHelp.TabIndex = 4;
@@ -99,7 +99,7 @@
             // label_SelectMasterClient
             // 
             this.label_SelectMasterClient.AutoSize = true;
-            this.label_SelectMasterClient.Location = new System.Drawing.Point(29, 14);
+            this.label_SelectMasterClient.Location = new System.Drawing.Point(29, 40);
             this.label_SelectMasterClient.Name = "label_SelectMasterClient";
             this.label_SelectMasterClient.Size = new System.Drawing.Size(119, 15);
             this.label_SelectMasterClient.TabIndex = 3;
@@ -107,7 +107,7 @@
             // 
             // button_RefreshClients
             // 
-            this.button_RefreshClients.Location = new System.Drawing.Point(57, 187);
+            this.button_RefreshClients.Location = new System.Drawing.Point(57, 216);
             this.button_RefreshClients.Name = "button_RefreshClients";
             this.button_RefreshClients.Size = new System.Drawing.Size(88, 34);
             this.button_RefreshClients.TabIndex = 2;
@@ -118,7 +118,7 @@
             // listBox_SelectMasterClient
             // 
             this.listBox_SelectMasterClient.FormattingEnabled = true;
-            this.listBox_SelectMasterClient.Location = new System.Drawing.Point(32, 34);
+            this.listBox_SelectMasterClient.Location = new System.Drawing.Point(32, 63);
             this.listBox_SelectMasterClient.Name = "listBox_SelectMasterClient";
             this.listBox_SelectMasterClient.Size = new System.Drawing.Size(140, 147);
             this.listBox_SelectMasterClient.TabIndex = 1;
@@ -191,15 +191,13 @@
             this.toolStripStatusLabel_Status.Size = new System.Drawing.Size(18, 19);
             this.toolStripStatusLabel_Status.Text = "...";
             // 
-            // button1
+            // richTextBox_MainDebugConsole
             // 
-            this.button1.Location = new System.Drawing.Point(483, 156);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(51, 42);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Test";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.richTextBox_MainDebugConsole.Location = new System.Drawing.Point(183, 34);
+            this.richTextBox_MainDebugConsole.Name = "richTextBox_MainDebugConsole";
+            this.richTextBox_MainDebugConsole.Size = new System.Drawing.Size(474, 276);
+            this.richTextBox_MainDebugConsole.TabIndex = 5;
+            this.richTextBox_MainDebugConsole.Text = "";
             // 
             // MainForm
             // 
@@ -240,7 +238,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_Status;
         private System.Windows.Forms.Label label_SelectMasterClient;
         private System.Windows.Forms.Button button_MasterClientListHelp;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RichTextBox richTextBox_MainDebugConsole;
     }
 }
 

@@ -63,7 +63,24 @@ namespace Multiboxer
                 {
                     if (!p.Id.Equals(ProcManager.MasterClient.Id))
                     {
-                        WindowUtil.PostKeyDown(p.MainWindowHandle, (Keys)e.KeyValue);
+                        if (e.Control) // Press control
+                        {
+                            WindowUtil.PostKeyDown(p.MainWindowHandle, Keys.ControlKey);
+                        }
+
+                        // Replace bad values
+                        if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                        {
+                            WindowUtil.PostKeyDown(p.MainWindowHandle, Keys.ShiftKey);
+                        }
+                        else if (e.KeyValue == (int)Keys.LControlKey)
+                        {
+                            WindowUtil.PostKeyDown(p.MainWindowHandle, Keys.ControlKey);
+                        }
+                        else
+                        {
+                            WindowUtil.PostKeyDown(p.MainWindowHandle, (Keys)e.KeyValue);
+                        }
                     }
                 }
             }
@@ -92,12 +109,29 @@ namespace Multiboxer
                 return;
             }
             else
-            {
+            {  
                 foreach (Process p in ProcManager.GameProcessList)
                 {
                     if (!p.Id.Equals(ProcManager.MasterClient.Id))
                     {
-                        WindowUtil.PostKeyUp(p.MainWindowHandle, (Keys)e.KeyValue);
+                        if (e.Control) // Press control
+                        {
+                            WindowUtil.PostKeyUp(p.MainWindowHandle, Keys.ControlKey);
+                        }
+
+                        // Replace bad values
+                        if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                        {
+                            WindowUtil.PostKeyUp(p.MainWindowHandle, Keys.ShiftKey);
+                        }
+                        else if(e.KeyValue == (int)Keys.LControlKey)
+                        {
+                            WindowUtil.PostKeyUp(p.MainWindowHandle, Keys.ControlKey);
+                        }
+                        else
+                        {
+                            WindowUtil.PostKeyUp(p.MainWindowHandle, (Keys)e.KeyValue);
+                        }
                     }
                 }
             }

@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gma.System.MouseKeyHook;
 
@@ -18,6 +19,17 @@ namespace Multiboxer
 
         private InputCallback input;
         private ConfigurationManager config;
+
+        /* TODO NEXT *
+         * Create a hotkey for starting/stopping multiboxing that is customizable
+         * Add more/better UI elements such as tab control for settings
+         * Test out hotkey creator that can send commands to window such as:
+         * <Press Enter><Type "/script AcceptGroup"> etc. and possibly look at creating an addon for simpler macros, such as "/mb p a" for accepting group
+         * Figure out how to send complex keystrokes to windows, such as shift-4
+         * Re-make blacklist with better options and pressing keys to add instead of manually typing out names
+         * Blacklist options: 
+         * Blacklist profiles, ability to enable/disable profiles, ability to create whitelist instead of blacklist
+         * Mouse broadcasting? */
 
         public MainForm()
         {
@@ -135,6 +147,20 @@ namespace Multiboxer
             {
                 listBox_SelectMasterClient.Items.Add($"{p.ProcessName} - {p.Id}");
             }
+        }
+
+        private async void Test()
+        {
+            await Task.Delay(50);
+            //WindowUtil.PostKeyDown(input.ProcManager.GameProcessList[0].MainWindowHandle, Keys.Enter);
+            WindowUtil.PostKeyDown(input.ProcManager.GameProcessList[0].MainWindowHandle, Keys.ShiftKey);
+            WindowUtil.PostKeyDown(input.ProcManager.GameProcessList[0].MainWindowHandle, Keys.E);
+            WindowUtil.PostKeyUp(input.ProcManager.GameProcessList[0].MainWindowHandle, Keys.E);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Test();
         }
     }
 }

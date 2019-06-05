@@ -43,6 +43,7 @@
             this.statusStrip_MainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabControl_MainWindow.SuspendLayout();
             this.tabPage_Multiboxing.SuspendLayout();
             this.tabPage_Settings.SuspendLayout();
@@ -71,6 +72,7 @@
             // 
             // tabPage_Multiboxing
             // 
+            this.tabPage_Multiboxing.Controls.Add(this.button1);
             this.tabPage_Multiboxing.Controls.Add(this.button_MasterClientListHelp);
             this.tabPage_Multiboxing.Controls.Add(this.label_SelectMasterClient);
             this.tabPage_Multiboxing.Controls.Add(this.button_RefreshClients);
@@ -189,6 +191,16 @@
             this.toolStripStatusLabel_Status.Size = new System.Drawing.Size(18, 19);
             this.toolStripStatusLabel_Status.Text = "...";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(483, 156);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(51, 42);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Test";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -228,6 +240,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_Status;
         private System.Windows.Forms.Label label_SelectMasterClient;
         private System.Windows.Forms.Button button_MasterClientListHelp;
+        private System.Windows.Forms.Button button1;
     }
 }
 

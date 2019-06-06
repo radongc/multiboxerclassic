@@ -164,6 +164,47 @@ namespace Multiboxer
         {
             MessageBox.Show(GUIStringLibrary.HelpText.IgnoreList, "Ignore List Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
         }
+
+        private void checkBox_EnableIgnoreList_CheckedChanged(object sender, EventArgs e)
+        {
+            input.ProcManager.SetIgnoreListEnabled(checkBox_EnableIgnoreList.Checked);
+        }
+
+        private void checkBox_Blacklist_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_Blacklist.Checked)
+            {
+                if (checkBox_Whitelist.Checked)
+                {
+                    checkBox_Whitelist.CheckState = CheckState.Unchecked;
+                }
+
+                input.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.BLACKLIST);
+            }
+
+            if (!checkBox_Blacklist.Checked && !checkBox_Whitelist.Checked)
+            {
+                checkBox_Blacklist.CheckState = CheckState.Checked;
+            }
+        }
+
+        private void checkBox_Whitelist_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_Whitelist.Checked)
+            {
+                if (checkBox_Blacklist.Checked)
+                {
+                    checkBox_Blacklist.CheckState = CheckState.Unchecked;
+                }
+
+                input.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.WHITELIST);
+            }
+
+            if (!checkBox_Blacklist.Checked && !checkBox_Whitelist.Checked)
+            {
+                checkBox_Whitelist.CheckState = CheckState.Checked;
+            }
+        }
         #endregion Ignore List Event Handlers
 
         #region Log Option Event Handlers

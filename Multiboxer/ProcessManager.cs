@@ -28,10 +28,24 @@ namespace Multiboxer
 
         public Keys[] IgnoredKeys { get; private set; }
 
+        public IgnoreType IgnoreListType { get; private set; }
+
+        public bool IgnoreListEnabled { get; private set; }
+
+        public enum IgnoreType
+        {
+            BLACKLIST,
+            WHITELIST
+        }
+
         // Constructor
         public ProcessManager()
         {
             RefreshGameProcessList();
+
+            // default settings
+            IgnoreListEnabled = true;
+            IgnoreListType = IgnoreType.BLACKLIST;
         }
 
         // Mutators (not simple mutators, more of methods that select the value)
@@ -93,6 +107,10 @@ namespace Multiboxer
                 IgnoredKeys = new Keys[0];
             }
         }
+
+        public void SetIgnoreListType(IgnoreType type) => IgnoreListType = type;
+
+        public void SetIgnoreListEnabled(bool value) => IgnoreListEnabled = value;
 
         // Public methods
 

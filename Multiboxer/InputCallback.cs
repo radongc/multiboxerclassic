@@ -39,25 +39,106 @@ namespace Multiboxer
         {
             ProcManager.RefreshGameProcessList();
 
-            bool keyIsBlacklisted = false;
-
-            int i = 0;
-
-            foreach (Keys key in ProcManager.IgnoredKeys)
+            if (ProcManager.IgnoreListEnabled)
             {
-                if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                if (ProcManager.IgnoreListType == ProcessManager.IgnoreType.BLACKLIST) // BLACKLIST
                 {
-                    keyIsBlacklisted = true;
+                    bool keyIsBlacklisted = false;
+
+                    int i = 0;
+
+                    foreach (Keys key in ProcManager.IgnoredKeys)
+                    {
+                        if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                        {
+                            keyIsBlacklisted = true;
+                        }
+
+                        i++;
+                    }
+
+                    if (keyIsBlacklisted)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        foreach (Process p in ProcManager.GameProcessList)
+                        {
+                            if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                            {
+                                if (e.Control) // Press control
+                                {
+                                    WindowUtil.PostKeyDown(p.MainWindowHandle, Keys.ControlKey);
+                                }
+
+                                // Replace bad values
+                                if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                                {
+                                    WindowUtil.PostKeyDown(p.MainWindowHandle, Keys.ShiftKey);
+                                }
+                                else if (e.KeyValue == (int)Keys.LControlKey)
+                                {
+                                    WindowUtil.PostKeyDown(p.MainWindowHandle, Keys.ControlKey);
+                                }
+                                else
+                                {
+                                    WindowUtil.PostKeyDown(p.MainWindowHandle, (Keys)e.KeyValue);
+                                }
+                            }
+                        }
+                    }
                 }
+                else if (ProcManager.IgnoreListType == ProcessManager.IgnoreType.WHITELIST)
+                {
+                    bool keyIsWhitelisted = false;
 
-                i++;
-            }
+                    int i = 0;
 
-            if (keyIsBlacklisted)
-            {
-                return;
+                    foreach (Keys key in ProcManager.IgnoredKeys)
+                    {
+                        if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                        {
+                            keyIsWhitelisted = true;
+                        }
+
+                        i++;
+                    }
+
+                    if (keyIsWhitelisted) // essentially just do the opposite of what is done in the blacklist
+                    {
+                        foreach (Process p in ProcManager.GameProcessList)
+                        {
+                            if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                            {
+                                if (e.Control) // Press control
+                                {
+                                    WindowUtil.PostKeyDown(p.MainWindowHandle, Keys.ControlKey);
+                                }
+
+                                // Replace bad values
+                                if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                                {
+                                    WindowUtil.PostKeyDown(p.MainWindowHandle, Keys.ShiftKey);
+                                }
+                                else if (e.KeyValue == (int)Keys.LControlKey)
+                                {
+                                    WindowUtil.PostKeyDown(p.MainWindowHandle, Keys.ControlKey);
+                                }
+                                else
+                                {
+                                    WindowUtil.PostKeyDown(p.MainWindowHandle, (Keys)e.KeyValue);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
             }
-            else
+            else // Ignore list disabled
             {
                 foreach (Process p in ProcManager.GameProcessList)
                 {
@@ -90,26 +171,107 @@ namespace Multiboxer
         {
             ProcManager.RefreshGameProcessList();
 
-            bool keyIsBlacklisted = false;
-
-            int i = 0;
-
-            foreach (Keys key in ProcManager.IgnoredKeys)
+            if (ProcManager.IgnoreListEnabled)
             {
-                if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                if (ProcManager.IgnoreListType == ProcessManager.IgnoreType.BLACKLIST) // BLACKLIST
                 {
-                    keyIsBlacklisted = true;
+                    bool keyIsBlacklisted = false;
+
+                    int i = 0;
+
+                    foreach (Keys key in ProcManager.IgnoredKeys)
+                    {
+                        if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                        {
+                            keyIsBlacklisted = true;
+                        }
+
+                        i++;
+                    }
+
+                    if (keyIsBlacklisted)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        foreach (Process p in ProcManager.GameProcessList)
+                        {
+                            if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                            {
+                                if (e.Control) // Press control
+                                {
+                                    WindowUtil.PostKeyUp(p.MainWindowHandle, Keys.ControlKey);
+                                }
+
+                                // Replace bad values
+                                if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                                {
+                                    WindowUtil.PostKeyUp(p.MainWindowHandle, Keys.ShiftKey);
+                                }
+                                else if (e.KeyValue == (int)Keys.LControlKey)
+                                {
+                                    WindowUtil.PostKeyUp(p.MainWindowHandle, Keys.ControlKey);
+                                }
+                                else
+                                {
+                                    WindowUtil.PostKeyUp(p.MainWindowHandle, (Keys)e.KeyValue);
+                                }
+                            }
+                        }
+                    }
                 }
+                else if (ProcManager.IgnoreListType == ProcessManager.IgnoreType.WHITELIST)
+                {
+                    bool keyIsWhitelisted = false;
 
-                i++;
+                    int i = 0;
+
+                    foreach (Keys key in ProcManager.IgnoredKeys)
+                    {
+                        if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                        {
+                            keyIsWhitelisted = true;
+                        }
+
+                        i++;
+                    }
+
+                    if (keyIsWhitelisted)
+                    {
+                        foreach (Process p in ProcManager.GameProcessList)
+                        {
+                            if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                            {
+                                if (e.Control) // Press control
+                                {
+                                    WindowUtil.PostKeyUp(p.MainWindowHandle, Keys.ControlKey);
+                                }
+
+                                // Replace bad values
+                                if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                                {
+                                    WindowUtil.PostKeyUp(p.MainWindowHandle, Keys.ShiftKey);
+                                }
+                                else if (e.KeyValue == (int)Keys.LControlKey)
+                                {
+                                    WindowUtil.PostKeyUp(p.MainWindowHandle, Keys.ControlKey);
+                                }
+                                else
+                                {
+                                    WindowUtil.PostKeyUp(p.MainWindowHandle, (Keys)e.KeyValue);
+                                }
+                            }
+                        }
+                    }
+                    else // do opposite of blacklist; return if key is not whitelisted
+                    {
+                        return;
+                    }
+                }
             }
-
-            if (keyIsBlacklisted)
+            else // ignore list disabled
             {
-                return;
-            }
-            else
-            {  
                 foreach (Process p in ProcManager.GameProcessList)
                 {
                     if (!p.Id.Equals(ProcManager.MasterClient.Id))
@@ -124,7 +286,7 @@ namespace Multiboxer
                         {
                             WindowUtil.PostKeyUp(p.MainWindowHandle, Keys.ShiftKey);
                         }
-                        else if(e.KeyValue == (int)Keys.LControlKey)
+                        else if (e.KeyValue == (int)Keys.LControlKey)
                         {
                             WindowUtil.PostKeyUp(p.MainWindowHandle, Keys.ControlKey);
                         }

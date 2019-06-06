@@ -39,7 +39,7 @@
             this.label_SelectMasterClient = new System.Windows.Forms.Label();
             this.button_RefreshClients = new System.Windows.Forms.Button();
             this.listBox_SelectMasterClient = new System.Windows.Forms.ListBox();
-            this.tabPage_Settings = new System.Windows.Forms.TabPage();
+            this.tabPage_IgnoreList = new System.Windows.Forms.TabPage();
             this.button_SaveIgnoreList = new System.Windows.Forms.Button();
             this.button_IgnoreListHelp = new System.Windows.Forms.Button();
             this.label_IgnoreList = new System.Windows.Forms.Label();
@@ -47,9 +47,12 @@
             this.statusStrip_MainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
+            this.checkBox_EnableIgnoreList = new System.Windows.Forms.CheckBox();
+            this.checkBox_Blacklist = new System.Windows.Forms.CheckBox();
+            this.checkBox_Whitelist = new System.Windows.Forms.CheckBox();
             this.tabControl_MainWindow.SuspendLayout();
             this.tabPage_Multiboxing.SuspendLayout();
-            this.tabPage_Settings.SuspendLayout();
+            this.tabPage_IgnoreList.SuspendLayout();
             this.statusStrip_MainStatus.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,7 +69,7 @@
             // tabControl_MainWindow
             // 
             this.tabControl_MainWindow.Controls.Add(this.tabPage_Multiboxing);
-            this.tabControl_MainWindow.Controls.Add(this.tabPage_Settings);
+            this.tabControl_MainWindow.Controls.Add(this.tabPage_IgnoreList);
             this.tabControl_MainWindow.Location = new System.Drawing.Point(-2, 3);
             this.tabControl_MainWindow.Name = "tabControl_MainWindow";
             this.tabControl_MainWindow.SelectedIndex = 0;
@@ -177,19 +180,22 @@
             this.listBox_SelectMasterClient.TabIndex = 1;
             this.listBox_SelectMasterClient.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectMasterClient_SelectedIndexChanged);
             // 
-            // tabPage_Settings
+            // tabPage_IgnoreList
             // 
-            this.tabPage_Settings.Controls.Add(this.button_SaveIgnoreList);
-            this.tabPage_Settings.Controls.Add(this.button_IgnoreListHelp);
-            this.tabPage_Settings.Controls.Add(this.label_IgnoreList);
-            this.tabPage_Settings.Controls.Add(this.richTextBox_IgnoreList);
-            this.tabPage_Settings.Location = new System.Drawing.Point(4, 22);
-            this.tabPage_Settings.Name = "tabPage_Settings";
-            this.tabPage_Settings.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_Settings.Size = new System.Drawing.Size(669, 375);
-            this.tabPage_Settings.TabIndex = 1;
-            this.tabPage_Settings.Text = "Settings";
-            this.tabPage_Settings.UseVisualStyleBackColor = true;
+            this.tabPage_IgnoreList.Controls.Add(this.checkBox_Whitelist);
+            this.tabPage_IgnoreList.Controls.Add(this.checkBox_Blacklist);
+            this.tabPage_IgnoreList.Controls.Add(this.checkBox_EnableIgnoreList);
+            this.tabPage_IgnoreList.Controls.Add(this.button_SaveIgnoreList);
+            this.tabPage_IgnoreList.Controls.Add(this.button_IgnoreListHelp);
+            this.tabPage_IgnoreList.Controls.Add(this.label_IgnoreList);
+            this.tabPage_IgnoreList.Controls.Add(this.richTextBox_IgnoreList);
+            this.tabPage_IgnoreList.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_IgnoreList.Name = "tabPage_IgnoreList";
+            this.tabPage_IgnoreList.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_IgnoreList.Size = new System.Drawing.Size(669, 375);
+            this.tabPage_IgnoreList.TabIndex = 1;
+            this.tabPage_IgnoreList.Text = "Ignore List";
+            this.tabPage_IgnoreList.UseVisualStyleBackColor = true;
             // 
             // button_SaveIgnoreList
             // 
@@ -244,6 +250,43 @@
             this.toolStripStatusLabel_Status.Size = new System.Drawing.Size(18, 19);
             this.toolStripStatusLabel_Status.Text = "...";
             // 
+            // checkBox_EnableIgnoreList
+            // 
+            this.checkBox_EnableIgnoreList.AutoSize = true;
+            this.checkBox_EnableIgnoreList.Checked = true;
+            this.checkBox_EnableIgnoreList.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_EnableIgnoreList.Location = new System.Drawing.Point(376, 47);
+            this.checkBox_EnableIgnoreList.Name = "checkBox_EnableIgnoreList";
+            this.checkBox_EnableIgnoreList.Size = new System.Drawing.Size(122, 19);
+            this.checkBox_EnableIgnoreList.TabIndex = 4;
+            this.checkBox_EnableIgnoreList.Text = "Enable IgnoreList";
+            this.checkBox_EnableIgnoreList.UseVisualStyleBackColor = true;
+            this.checkBox_EnableIgnoreList.CheckedChanged += new System.EventHandler(this.checkBox_EnableIgnoreList_CheckedChanged);
+            // 
+            // checkBox_Blacklist
+            // 
+            this.checkBox_Blacklist.AutoSize = true;
+            this.checkBox_Blacklist.Checked = true;
+            this.checkBox_Blacklist.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_Blacklist.Location = new System.Drawing.Point(376, 72);
+            this.checkBox_Blacklist.Name = "checkBox_Blacklist";
+            this.checkBox_Blacklist.Size = new System.Drawing.Size(131, 19);
+            this.checkBox_Blacklist.TabIndex = 5;
+            this.checkBox_Blacklist.Text = "Blacklist these keys";
+            this.checkBox_Blacklist.UseVisualStyleBackColor = true;
+            this.checkBox_Blacklist.CheckedChanged += new System.EventHandler(this.checkBox_Blacklist_CheckedChanged);
+            // 
+            // checkBox_Whitelist
+            // 
+            this.checkBox_Whitelist.AutoSize = true;
+            this.checkBox_Whitelist.Location = new System.Drawing.Point(376, 97);
+            this.checkBox_Whitelist.Name = "checkBox_Whitelist";
+            this.checkBox_Whitelist.Size = new System.Drawing.Size(132, 19);
+            this.checkBox_Whitelist.TabIndex = 6;
+            this.checkBox_Whitelist.Text = "Whitelist these keys";
+            this.checkBox_Whitelist.UseVisualStyleBackColor = true;
+            this.checkBox_Whitelist.CheckedChanged += new System.EventHandler(this.checkBox_Whitelist_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -257,8 +300,8 @@
             this.tabControl_MainWindow.ResumeLayout(false);
             this.tabPage_Multiboxing.ResumeLayout(false);
             this.tabPage_Multiboxing.PerformLayout();
-            this.tabPage_Settings.ResumeLayout(false);
-            this.tabPage_Settings.PerformLayout();
+            this.tabPage_IgnoreList.ResumeLayout(false);
+            this.tabPage_IgnoreList.PerformLayout();
             this.statusStrip_MainStatus.ResumeLayout(false);
             this.statusStrip_MainStatus.PerformLayout();
             this.ResumeLayout(false);
@@ -271,7 +314,7 @@
         private System.Windows.Forms.Button button_StartMultiboxing;
         private System.Windows.Forms.TabControl tabControl_MainWindow;
         private System.Windows.Forms.TabPage tabPage_Multiboxing;
-        private System.Windows.Forms.TabPage tabPage_Settings;
+        private System.Windows.Forms.TabPage tabPage_IgnoreList;
         private System.Windows.Forms.ListBox listBox_SelectMasterClient;
         private System.Windows.Forms.Button button_RefreshClients;
         private System.Windows.Forms.Label label_IgnoreList;
@@ -287,6 +330,9 @@
         private System.Windows.Forms.CheckBox checkBox_LogErrors;
         private System.Windows.Forms.CheckBox checkBox_LogDebugs;
         private System.Windows.Forms.CheckBox checkBox_LogMessages;
+        private System.Windows.Forms.CheckBox checkBox_Blacklist;
+        private System.Windows.Forms.CheckBox checkBox_EnableIgnoreList;
+        private System.Windows.Forms.CheckBox checkBox_Whitelist;
     }
 }
 

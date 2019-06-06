@@ -116,37 +116,44 @@ namespace Multiboxer
 
         public void RefreshGameProcessList()
         {
-            Process[] procs = Process.GetProcesses();
-
-            int i = 0;
-
-            foreach (Process p in procs)
+            try
             {
-                if (p.ProcessName.Contains(_gameProcessNamePartial))
+                Process[] procs = Process.GetProcesses();
+
+                int i = 0;
+
+                foreach (Process p in procs)
                 {
-                    i++;
+                    if (p.ProcessName.Contains(_gameProcessNamePartial))
+                    {
+                        i++;
+                    }
                 }
+
+                Process[] tempProcList = new Process[i];
+
+                int j = 0;
+
+                foreach (Process p in procs)
+                {
+                    if (j >= i)
+                    {
+                        break;
+                    }
+
+                    if (p.ProcessName.Contains(_gameProcessNamePartial))
+                    {
+                        tempProcList[j] = p;
+                        j++;
+                    }
+                }
+
+                GameProcessList = tempProcList;
             }
-
-            Process[] tempProcList = new Process[i];
-
-            int j = 0;
-
-            foreach (Process p in procs)
+            catch (Exception b)
             {
-                if (j >= i)
-                {
-                    break;
-                }
-
-                if (p.ProcessName.Contains(_gameProcessNamePartial))
-                {
-                    tempProcList[j] = p;
-                    j++;
-                }
+                consoleWriter.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
             }
-
-            GameProcessList = tempProcList;
         }
     }
 }

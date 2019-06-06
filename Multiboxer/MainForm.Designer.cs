@@ -40,6 +40,9 @@
             this.button_RefreshClients = new System.Windows.Forms.Button();
             this.listBox_SelectMasterClient = new System.Windows.Forms.ListBox();
             this.tabPage_IgnoreList = new System.Windows.Forms.TabPage();
+            this.checkBox_Whitelist = new System.Windows.Forms.CheckBox();
+            this.checkBox_Blacklist = new System.Windows.Forms.CheckBox();
+            this.checkBox_EnableIgnoreList = new System.Windows.Forms.CheckBox();
             this.button_SaveIgnoreList = new System.Windows.Forms.Button();
             this.button_IgnoreListHelp = new System.Windows.Forms.Button();
             this.label_IgnoreList = new System.Windows.Forms.Label();
@@ -47,9 +50,7 @@
             this.statusStrip_MainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
-            this.checkBox_EnableIgnoreList = new System.Windows.Forms.CheckBox();
-            this.checkBox_Blacklist = new System.Windows.Forms.CheckBox();
-            this.checkBox_Whitelist = new System.Windows.Forms.CheckBox();
+            this.button_ClearConsole = new System.Windows.Forms.Button();
             this.tabControl_MainWindow.SuspendLayout();
             this.tabPage_Multiboxing.SuspendLayout();
             this.tabPage_IgnoreList.SuspendLayout();
@@ -58,7 +59,7 @@
             // 
             // button_StartMultiboxing
             // 
-            this.button_StartMultiboxing.Location = new System.Drawing.Point(505, 334);
+            this.button_StartMultiboxing.Location = new System.Drawing.Point(505, 316);
             this.button_StartMultiboxing.Name = "button_StartMultiboxing";
             this.button_StartMultiboxing.Size = new System.Drawing.Size(152, 35);
             this.button_StartMultiboxing.TabIndex = 0;
@@ -78,6 +79,7 @@
             // 
             // tabPage_Multiboxing
             // 
+            this.tabPage_Multiboxing.Controls.Add(this.button_ClearConsole);
             this.tabPage_Multiboxing.Controls.Add(this.checkBox_LogErrors);
             this.tabPage_Multiboxing.Controls.Add(this.checkBox_LogDebugs);
             this.tabPage_Multiboxing.Controls.Add(this.checkBox_LogMessages);
@@ -197,6 +199,43 @@
             this.tabPage_IgnoreList.Text = "Ignore List";
             this.tabPage_IgnoreList.UseVisualStyleBackColor = true;
             // 
+            // checkBox_Whitelist
+            // 
+            this.checkBox_Whitelist.AutoSize = true;
+            this.checkBox_Whitelist.Location = new System.Drawing.Point(376, 97);
+            this.checkBox_Whitelist.Name = "checkBox_Whitelist";
+            this.checkBox_Whitelist.Size = new System.Drawing.Size(132, 19);
+            this.checkBox_Whitelist.TabIndex = 6;
+            this.checkBox_Whitelist.Text = "Whitelist these keys";
+            this.checkBox_Whitelist.UseVisualStyleBackColor = true;
+            this.checkBox_Whitelist.CheckedChanged += new System.EventHandler(this.checkBox_Whitelist_CheckedChanged);
+            // 
+            // checkBox_Blacklist
+            // 
+            this.checkBox_Blacklist.AutoSize = true;
+            this.checkBox_Blacklist.Checked = true;
+            this.checkBox_Blacklist.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_Blacklist.Location = new System.Drawing.Point(376, 72);
+            this.checkBox_Blacklist.Name = "checkBox_Blacklist";
+            this.checkBox_Blacklist.Size = new System.Drawing.Size(131, 19);
+            this.checkBox_Blacklist.TabIndex = 5;
+            this.checkBox_Blacklist.Text = "Blacklist these keys";
+            this.checkBox_Blacklist.UseVisualStyleBackColor = true;
+            this.checkBox_Blacklist.CheckedChanged += new System.EventHandler(this.checkBox_Blacklist_CheckedChanged);
+            // 
+            // checkBox_EnableIgnoreList
+            // 
+            this.checkBox_EnableIgnoreList.AutoSize = true;
+            this.checkBox_EnableIgnoreList.Checked = true;
+            this.checkBox_EnableIgnoreList.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_EnableIgnoreList.Location = new System.Drawing.Point(376, 47);
+            this.checkBox_EnableIgnoreList.Name = "checkBox_EnableIgnoreList";
+            this.checkBox_EnableIgnoreList.Size = new System.Drawing.Size(122, 19);
+            this.checkBox_EnableIgnoreList.TabIndex = 4;
+            this.checkBox_EnableIgnoreList.Text = "Enable IgnoreList";
+            this.checkBox_EnableIgnoreList.UseVisualStyleBackColor = true;
+            this.checkBox_EnableIgnoreList.CheckedChanged += new System.EventHandler(this.checkBox_EnableIgnoreList_CheckedChanged);
+            // 
             // button_SaveIgnoreList
             // 
             this.button_SaveIgnoreList.Location = new System.Drawing.Point(295, 17);
@@ -250,42 +289,15 @@
             this.toolStripStatusLabel_Status.Size = new System.Drawing.Size(18, 19);
             this.toolStripStatusLabel_Status.Text = "...";
             // 
-            // checkBox_EnableIgnoreList
+            // button_ClearConsole
             // 
-            this.checkBox_EnableIgnoreList.AutoSize = true;
-            this.checkBox_EnableIgnoreList.Checked = true;
-            this.checkBox_EnableIgnoreList.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_EnableIgnoreList.Location = new System.Drawing.Point(376, 47);
-            this.checkBox_EnableIgnoreList.Name = "checkBox_EnableIgnoreList";
-            this.checkBox_EnableIgnoreList.Size = new System.Drawing.Size(122, 19);
-            this.checkBox_EnableIgnoreList.TabIndex = 4;
-            this.checkBox_EnableIgnoreList.Text = "Enable IgnoreList";
-            this.checkBox_EnableIgnoreList.UseVisualStyleBackColor = true;
-            this.checkBox_EnableIgnoreList.CheckedChanged += new System.EventHandler(this.checkBox_EnableIgnoreList_CheckedChanged);
-            // 
-            // checkBox_Blacklist
-            // 
-            this.checkBox_Blacklist.AutoSize = true;
-            this.checkBox_Blacklist.Checked = true;
-            this.checkBox_Blacklist.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_Blacklist.Location = new System.Drawing.Point(376, 72);
-            this.checkBox_Blacklist.Name = "checkBox_Blacklist";
-            this.checkBox_Blacklist.Size = new System.Drawing.Size(131, 19);
-            this.checkBox_Blacklist.TabIndex = 5;
-            this.checkBox_Blacklist.Text = "Blacklist these keys";
-            this.checkBox_Blacklist.UseVisualStyleBackColor = true;
-            this.checkBox_Blacklist.CheckedChanged += new System.EventHandler(this.checkBox_Blacklist_CheckedChanged);
-            // 
-            // checkBox_Whitelist
-            // 
-            this.checkBox_Whitelist.AutoSize = true;
-            this.checkBox_Whitelist.Location = new System.Drawing.Point(376, 97);
-            this.checkBox_Whitelist.Name = "checkBox_Whitelist";
-            this.checkBox_Whitelist.Size = new System.Drawing.Size(132, 19);
-            this.checkBox_Whitelist.TabIndex = 6;
-            this.checkBox_Whitelist.Text = "Whitelist these keys";
-            this.checkBox_Whitelist.UseVisualStyleBackColor = true;
-            this.checkBox_Whitelist.CheckedChanged += new System.EventHandler(this.checkBox_Whitelist_CheckedChanged);
+            this.button_ClearConsole.Location = new System.Drawing.Point(183, 316);
+            this.button_ClearConsole.Name = "button_ClearConsole";
+            this.button_ClearConsole.Size = new System.Drawing.Size(49, 35);
+            this.button_ClearConsole.TabIndex = 9;
+            this.button_ClearConsole.Text = "Clear";
+            this.button_ClearConsole.UseVisualStyleBackColor = true;
+            this.button_ClearConsole.Click += new System.EventHandler(this.button_ClearConsole_Click);
             // 
             // MainForm
             // 
@@ -333,6 +345,7 @@
         private System.Windows.Forms.CheckBox checkBox_Blacklist;
         private System.Windows.Forms.CheckBox checkBox_EnableIgnoreList;
         private System.Windows.Forms.CheckBox checkBox_Whitelist;
+        private System.Windows.Forms.Button button_ClearConsole;
     }
 }
 

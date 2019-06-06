@@ -215,7 +215,7 @@ namespace Multiboxer
                                 }
                                 else
                                 {
-                                    WindowUtil.PostKeyUp(p.MainWindowHandle, (Keys)e.KeyValue);
+                                    WindowUtil.PostKeyUp(p.MainWindowHandle, (Keys)e.KeyValue); // Converting the KeyValue from int to Keys enum (the int in KeyValue is the identifier for the Key in the Keys enum..)
                                 }
                             }
                         }

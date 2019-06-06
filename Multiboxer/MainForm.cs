@@ -22,17 +22,17 @@ namespace Multiboxer
         private ConfigurationManager.ConsoleWriter consoleWriterMain;
 
         /* TODO NEXT *
-         * Find out a way to make DebugLog and UpdateStatus linked 
-         * Find out a way to make DebugLog instance accessible from all classes
-         * Create a hotkey for starting/stopping multiboxing that is customizable
-         * Add more/better UI elements such as tab control for settings
-         * Test out hotkey creator that can send commands to window such as:
+         * Find out a way to make DebugLog and UpdateStatus linked  (DONE)
+         * Find out a way to make DebugLog instance accessible from all classes (SEMI-DONE) (P3)
+         * Create a hotkey for starting/stopping multiboxing that is customizable (P1)
+         * Add more/better UI elements such as tab control for settings (P2)
+         * Test out hotkey creator that can send commands to window such as: (P3)
          * <Press Enter><Type "/script AcceptGroup"> etc. and possibly look at creating an addon for simpler macros, such as "/mb p a" for accepting group
          * Figure out how to send complex keystrokes to windows, such as shift-4 (DONE)
-         * Re-make blacklist with better options and pressing keys to add instead of manually typing out names
-         * Blacklist options: 
+         * Re-make blacklist with better options and pressing keys to add instead of manually typing out names (P2)
+         * Blacklist options: (P1)
          * Blacklist profiles, ability to enable/disable profiles, ability to create whitelist instead of blacklist
-         * Mouse broadcasting? */
+         * Mouse broadcasting? (P4) */
 
         #region Initialization
         public MainForm()
@@ -69,7 +69,7 @@ namespace Multiboxer
             // Init input callbacks and config manager
             input = new InputCallback();
             config = new ConfigurationManager("config.cfg", toolStripStatusLabel_Status);
-            consoleWriterMain = new ConfigurationManager.ConsoleWriter(richTextBox_MainDebugConsole);
+            consoleWriterMain = new ConfigurationManager.ConsoleWriter(richTextBox_MainDebugConsole, checkBox_LogMessages.Checked, checkBox_LogDebugs.Checked, checkBox_LogErrors.Checked);
 
             input.ProcManager.SetConsoleWriter(consoleWriterMain); // allow procManager to write to console
             config.SetConsoleWriter(consoleWriterMain);
@@ -168,6 +168,17 @@ namespace Multiboxer
         private void checkBox_EnableIgnoreList_CheckedChanged(object sender, EventArgs e)
         {
             input.ProcManager.SetIgnoreListEnabled(checkBox_EnableIgnoreList.Checked);
+
+            switch(checkBox_EnableIgnoreList.Checked)
+            {
+                case true:
+                    config.UpdateStatus("IgnoreList enabled.", ConfigurationManager.LogType.MESSAGE);
+                    break;
+
+                case false:
+                    config.UpdateStatus("IgnoreList disabled.", ConfigurationManager.LogType.MESSAGE);
+                    break;
+            }
         }
 
         private void checkBox_Blacklist_CheckedChanged(object sender, EventArgs e)
@@ -177,6 +188,7 @@ namespace Multiboxer
                 if (checkBox_Whitelist.Checked)
                 {
                     checkBox_Whitelist.CheckState = CheckState.Unchecked;
+                    config.UpdateStatus("IgnoreList setting changed to blacklist.", ConfigurationManager.LogType.MESSAGE); // needs to be put here to avoid being sent every time it is clicked, even if setting is not actually changing
                 }
 
                 input.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.BLACKLIST);
@@ -195,6 +207,7 @@ namespace Multiboxer
                 if (checkBox_Blacklist.Checked)
                 {
                     checkBox_Blacklist.CheckState = CheckState.Unchecked;
+                    config.UpdateStatus("IgnoreList setting changed to whitelist.", ConfigurationManager.LogType.MESSAGE); // needs to be put here to avoid being sent every time it is clicked, even if setting is not actually changing
                 }
 
                 input.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.WHITELIST);
@@ -207,13 +220,15 @@ namespace Multiboxer
         }
         #endregion Ignore List Event Handlers
 
-        #region Log Option Event Handlers
+        #region Main Console Event Handlers
         private void checkBox_LogMessages_CheckedChanged(object sender, EventArgs e) => consoleWriterMain.LogMessages = checkBox_LogMessages.Checked;
 
         private void checkBox_LogDebug_CheckedChanged(object sender, EventArgs e) => consoleWriterMain.LogDebugs = checkBox_LogDebugs.Checked;
 
         private void checkBox_LogError_CheckedChanged(object sender, EventArgs e) => consoleWriterMain.LogErrors = checkBox_LogErrors.Checked;
-        #endregion Log Option Event Handlers
+
+        private void button_ClearConsole_Click(object sender, EventArgs e) => richTextBox_MainDebugConsole.Clear();
+        #endregion Main Console Event Handlers
 
         // Private methods
 

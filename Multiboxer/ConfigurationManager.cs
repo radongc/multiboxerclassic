@@ -141,13 +141,13 @@ namespace Multiboxer
             public bool LogDebugs { get; set; }
             public bool LogErrors { get; set; }
 
-            public ConsoleWriter(RichTextBox control)
+            public ConsoleWriter(RichTextBox control, bool logMessages, bool logDebugs, bool logErrors)
             {
                 _myControl = control;
 
-                LogMessages = true;
-                LogDebugs = true;
-                LogErrors = true;
+                LogMessages = logMessages;
+                LogDebugs = logDebugs;
+                LogErrors = logErrors;
             }
 
             public override void Write(char value)
@@ -157,7 +157,7 @@ namespace Multiboxer
 
             public override void Write(string value)
             {
-                _myControl.AppendText($"[{DateTime.Now.ToShortTimeString()} {DateTime.Now.ToShortDateString()}] {value}\n");
+                _myControl.AppendText($"[{DateTime.Now.ToLocalTime()}] {value}\n");
             }
 
             public override Encoding Encoding
@@ -167,8 +167,8 @@ namespace Multiboxer
 
             public void DebugLog(string text, LogType logType)
             {
-                Color oldColor = _myControl.SelectionColor;
                 Color newColor;
+                string prefix;
 
                 switch (logType)
                 {
@@ -176,6 +176,7 @@ namespace Multiboxer
                         if (LogDebugs)
                         {
                             newColor = Color.YellowGreen;
+                            prefix = "[DEBUG]";
                         }
                         else
                         {
@@ -187,6 +188,7 @@ namespace Multiboxer
                         if (LogMessages)
                         {
                             newColor = Color.Blue;
+                            prefix = "[MESSAGE]";
                         }
                         else
                         {
@@ -198,6 +200,7 @@ namespace Multiboxer
                         if (LogErrors)
                         {
                             newColor = Color.Red;
+                            prefix = "[ERROR]";
                         }
                         else
                         {
@@ -206,13 +209,13 @@ namespace Multiboxer
                         break;
 
                     default:
-                        newColor = oldColor;
+                        newColor = Color.Black;
+                        prefix = "";
                         break;
                 }
 
                 _myControl.SelectionColor = newColor;
-                Console.Write(text);
-                _myControl.SelectionColor = oldColor;
+                Console.Write($"{prefix} {text}");
             }
         }
     }

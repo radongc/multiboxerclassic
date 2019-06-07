@@ -85,7 +85,7 @@ namespace Multiboxer
 
             if (!isListening)
             {
-                if (input.ProcManager.MasterClientProc == null) // error checking
+                if (input.ProcManager.MasterClient == null) // error checking
                 {
                     errorOccurred = true;
                     MessageBox.Show(GUIContent.ErrorText.MasterClient, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);

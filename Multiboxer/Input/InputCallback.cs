@@ -65,7 +65,7 @@ namespace Multiboxer
                     {
                         foreach (Process p in ProcManager.GameProcList)
                         {
-                            if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
+                            if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                             {
                                 if (e.Control) // Press control
                                 {
@@ -109,7 +109,7 @@ namespace Multiboxer
                     {
                         foreach (Process p in ProcManager.GameProcList)
                         {
-                            if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
+                            if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                             {
                                 if (e.Control) // Press control
                                 {
@@ -142,7 +142,7 @@ namespace Multiboxer
             {
                 foreach (Process p in ProcManager.GameProcList)
                 {
-                    if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
+                    if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                     {
                         if (e.Control) // Press control
                         {
@@ -197,7 +197,7 @@ namespace Multiboxer
                     {
                         foreach (Process p in ProcManager.GameProcList)
                         {
-                            if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
+                            if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                             {
                                 if (e.Control) // Press control
                                 {
@@ -241,7 +241,7 @@ namespace Multiboxer
                     {
                         foreach (Process p in ProcManager.GameProcList)
                         {
-                            if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
+                            if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                             {
                                 if (e.Control) // Press control
                                 {
@@ -274,7 +274,7 @@ namespace Multiboxer
             {
                 foreach (Process p in ProcManager.GameProcList)
                 {
-                    if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
+                    if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                     {
                         if (e.Control) // Press control
                         {
@@ -305,7 +305,7 @@ namespace Multiboxer
 
             foreach (Process p in ProcManager.GameProcList)
             {
-                if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
+                if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                 {
                     if (e.Button == MouseButtons.Left)
                     {
@@ -325,7 +325,7 @@ namespace Multiboxer
 
             foreach (Process p in ProcManager.GameProcList)
             {
-                if (!p.Id.Equals(ProcManager.MasterClientProc.Id)) // .Equals() compares the contents, == compares the reference
+                if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id)) // .Equals() compares the contents, == compares the reference
                 {
                     if (e.Button == MouseButtons.Left)
                     {

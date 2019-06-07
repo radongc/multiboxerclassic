@@ -101,7 +101,16 @@ namespace Multiboxer
             {
                 _parentClient = client;
 
-                Name = _parentClient.ReadStringBase(Offsets.Player.Name, 12);
+                InitProperties();
+            }
+
+            private void InitProperties()
+            {
+                string nameUnformatted = _parentClient.ReadStringBase(Offsets.Player.Name, 12);
+
+                string nameFormatted = nameUnformatted.Replace("\0", "");
+
+                Name = nameFormatted;
                 Class = string.Empty; // for now
             }
         }

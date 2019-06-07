@@ -22,8 +22,6 @@ namespace Multiboxer
 
         // Properties
 
-        public Process MasterClientProc { get; private set; }
-
         public Process[] GameProcList { get; private set; }
 
         public WoWClient MasterClient { get; private set; }
@@ -62,8 +60,6 @@ namespace Multiboxer
         public void SetMasterClient(int procId)
         {
             Process master = Process.GetProcessById(procId);
-
-            MasterClientProc = master;
 
             MasterClient = new WoWClient(master.Id);
         }
@@ -130,7 +126,6 @@ namespace Multiboxer
                     }
                 }
 
-                Process[] tempProcList = new Process[i];
                 WoWClient[] tempClientList = new WoWClient[i];
 
                 int j = 0;
@@ -144,10 +139,24 @@ namespace Multiboxer
 
                     if (p.ProcessName.Contains(_gameProcessNamePartial))
                     {
-                        tempProcList[j] = p;
                         tempClientList[j] = new WoWClient(p.Id);
                         j++;
                     }
+                }
+
+                Process[] tempProcList = new Process[tempClientList.Length];
+
+                int y = 0;
+
+                foreach (WoWClient c in tempClientList)
+                {
+                    if (y >= j)
+                    {
+                        break;
+                    }
+
+                    tempProcList[y] = tempClientList[y].GameProcess;
+                    y++;
                 }
 
                 GameProcList = tempProcList;

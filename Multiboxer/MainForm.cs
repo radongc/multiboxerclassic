@@ -24,6 +24,7 @@ namespace Multiboxer
         /* TODO NEXT *
          * Find out a way to make DebugLog and UpdateStatus linked  (DONE)
          * Find out a way to make DebugLog instance accessible from all classes (SEMI-DONE) (P3)
+         * Make Master Client selector show the character name (read memory) (DONE)
          * Create a hotkey for starting/stopping multiboxing that is customizable (P1)
          * Add more/better UI elements such as tab control for settings (P2)
          * Test out hotkey creator that can send commands to window such as: (P3)
@@ -57,11 +58,11 @@ namespace Multiboxer
 
             // Check for running wow procs and populate the GUI list
 
-            input.ProcManager.RefreshGameProcessList();
+            input.ProcManager.RefreshClientProcList();
 
             PopulateClientList();
 
-            config.UpdateStatus($"Found {input.ProcManager.GameProcessList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
+            config.UpdateStatus($"Found {input.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
         }
 
         private void InitializeClasses()
@@ -84,10 +85,10 @@ namespace Multiboxer
 
             if (!isListening)
             {
-                if (input.ProcManager.MasterClient == null) // error checking
+                if (input.ProcManager.MasterClientProc == null) // error checking
                 {
                     errorOccurred = true;
-                    MessageBox.Show(GUIStringLibrary.ErrorText.MasterClient, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(GUIContent.ErrorText.MasterClient, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
@@ -125,7 +126,7 @@ namespace Multiboxer
 
                 string[] procData = procDataFormatted.Split('-');
 
-                input.ProcManager.SetMasterClient(procData[0], Convert.ToInt32(procData[1]));
+                input.ProcManager.SetMasterClient(Convert.ToInt32(procData[1]));
 
                 config.UpdateStatus($"Set master client to {procData[0]} - {procData[1]}", ConfigurationManager.LogType.MESSAGE);
             }
@@ -137,16 +138,16 @@ namespace Multiboxer
 
         private void button_MasterClientListHelp_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(GUIStringLibrary.HelpText.MasterClient, "Master Client Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
+            MessageBox.Show(GUIContent.HelpText.MasterClient, "Master Client Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
         }
 
         private void button_RefreshClients_Click(object sender, EventArgs e)
         {
-            input.ProcManager.RefreshGameProcessList();
+            input.ProcManager.RefreshClientProcList();
 
             PopulateClientList();
 
-            config.UpdateStatus($"Found {input.ProcManager.GameProcessList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
+            config.UpdateStatus($"Found {input.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
         }
         #endregion Master Client Event Handlers
 
@@ -162,7 +163,7 @@ namespace Multiboxer
 
         private void button_IgnoreListHelp_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(GUIStringLibrary.HelpText.IgnoreList, "Ignore List Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
+            MessageBox.Show(GUIContent.HelpText.IgnoreList, "Ignore List Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
         }
 
         private void checkBox_EnableIgnoreList_CheckedChanged(object sender, EventArgs e)
@@ -236,9 +237,9 @@ namespace Multiboxer
         {
             listBox_SelectMasterClient.Items.Clear();
 
-            foreach (Process p in input.ProcManager.GameProcessList)
+            foreach (WoWClient c in input.ProcManager.GameClientList)
             {
-                listBox_SelectMasterClient.Items.Add($"{p.ProcessName} - {p.Id}");
+                listBox_SelectMasterClient.Items.Add($"{c.Player.Name} - {c.GameProcess.Id}");
             }
         }
     }

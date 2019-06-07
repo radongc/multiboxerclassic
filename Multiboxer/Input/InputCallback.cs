@@ -37,7 +37,7 @@ namespace Multiboxer
 
         private void InputCallback_OnKeyDown(object sender, KeyEventArgs e)
         {
-            ProcManager.RefreshGameProcessList();
+            ProcManager.RefreshClientProcList();
 
             if (ProcManager.IgnoreListEnabled)
             {
@@ -63,9 +63,9 @@ namespace Multiboxer
                     }
                     else
                     {
-                        foreach (Process p in ProcManager.GameProcessList)
+                        foreach (Process p in ProcManager.GameProcList)
                         {
-                            if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                            if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
                             {
                                 if (e.Control) // Press control
                                 {
@@ -107,9 +107,9 @@ namespace Multiboxer
 
                     if (keyIsWhitelisted) // essentially just do the opposite of what is done in the blacklist
                     {
-                        foreach (Process p in ProcManager.GameProcessList)
+                        foreach (Process p in ProcManager.GameProcList)
                         {
-                            if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                            if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
                             {
                                 if (e.Control) // Press control
                                 {
@@ -140,9 +140,9 @@ namespace Multiboxer
             }
             else // Ignore list disabled
             {
-                foreach (Process p in ProcManager.GameProcessList)
+                foreach (Process p in ProcManager.GameProcList)
                 {
-                    if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                    if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
                     {
                         if (e.Control) // Press control
                         {
@@ -169,7 +169,7 @@ namespace Multiboxer
 
         private void InputCallback_OnKeyUp(object sender, KeyEventArgs e)
         {
-            ProcManager.RefreshGameProcessList();
+            ProcManager.RefreshClientProcList();
 
             if (ProcManager.IgnoreListEnabled)
             {
@@ -195,9 +195,9 @@ namespace Multiboxer
                     }
                     else
                     {
-                        foreach (Process p in ProcManager.GameProcessList)
+                        foreach (Process p in ProcManager.GameProcList)
                         {
-                            if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                            if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
                             {
                                 if (e.Control) // Press control
                                 {
@@ -239,9 +239,9 @@ namespace Multiboxer
 
                     if (keyIsWhitelisted)
                     {
-                        foreach (Process p in ProcManager.GameProcessList)
+                        foreach (Process p in ProcManager.GameProcList)
                         {
-                            if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                            if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
                             {
                                 if (e.Control) // Press control
                                 {
@@ -272,9 +272,9 @@ namespace Multiboxer
             }
             else // ignore list disabled
             {
-                foreach (Process p in ProcManager.GameProcessList)
+                foreach (Process p in ProcManager.GameProcList)
                 {
-                    if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                    if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
                     {
                         if (e.Control) // Press control
                         {
@@ -301,11 +301,11 @@ namespace Multiboxer
 
         private void InputCallback_OnMouseDown(object sender, MouseEventArgs e)
         {
-            ProcManager.RefreshGameProcessList();
+            ProcManager.RefreshClientProcList();
 
-            foreach (Process p in ProcManager.GameProcessList)
+            foreach (Process p in ProcManager.GameProcList)
             {
-                if (!p.Id.Equals(ProcManager.MasterClient.Id))
+                if (!p.Id.Equals(ProcManager.MasterClientProc.Id))
                 {
                     if (e.Button == MouseButtons.Left)
                     {
@@ -321,11 +321,11 @@ namespace Multiboxer
 
         private void InputCallback_OnMouseUp(object sender, MouseEventArgs e)
         {
-            ProcManager.RefreshGameProcessList();
+            ProcManager.RefreshClientProcList();
 
-            foreach (Process p in ProcManager.GameProcessList)
+            foreach (Process p in ProcManager.GameProcList)
             {
-                if (!p.Id.Equals(ProcManager.MasterClient.Id)) // .Equals() compares the contents, == compares the reference
+                if (!p.Id.Equals(ProcManager.MasterClientProc.Id)) // .Equals() compares the contents, == compares the reference
                 {
                     if (e.Button == MouseButtons.Left)
                     {

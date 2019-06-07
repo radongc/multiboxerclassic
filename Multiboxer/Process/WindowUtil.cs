@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Multiboxer
 {
-    class WindowUtil
+    internal static class WindowUtil
     {
         /* WindowUtil (static)
          * Handles PostMessage functions and function wrappers. */
@@ -18,7 +18,7 @@ namespace Multiboxer
 
         private static ConfigurationManager.ConsoleWriter consoleWriter;
 
-        public static void SetConsoleWriter(ConfigurationManager.ConsoleWriter writer)
+        internal static void SetConsoleWriter(ConfigurationManager.ConsoleWriter writer)
         {
             consoleWriter = writer;
         }
@@ -84,19 +84,19 @@ namespace Multiboxer
 
         // Keyboard
 
-        public static async void PostKey(IntPtr hWnd, Keys key)
+        internal static async void PostKey(IntPtr hWnd, Keys key)
         {
             PostMessageSafe(hWnd, WM_KEYDOWN, (int)key, 0);
             await Task.Delay(100);
             PostMessageSafe(hWnd, WM_KEYUP, (int)key, 0);
         }
 
-        public static void PostKeyDown(IntPtr hWnd, Keys key)
+        internal static void PostKeyDown(IntPtr hWnd, Keys key)
         {
             PostMessageSafe(hWnd, WM_KEYDOWN, (int)key, 0);
         }
 
-        public static void PostKeyUp(IntPtr hWnd, Keys key)
+        internal static void PostKeyUp(IntPtr hWnd, Keys key)
         {
             PostMessageSafe(hWnd, WM_KEYUP, (int)key, 0);
         }
@@ -104,22 +104,22 @@ namespace Multiboxer
 
         // Mouse
 
-        public static void PostMouseLeftDown(IntPtr hWnd)
+        internal static void PostMouseLeftDown(IntPtr hWnd)
         {
             PostMessageSafe(hWnd, WM_LBUTTONDOWN, 0, 0);
         }
 
-        public static void PostMouseLeftUp(IntPtr hWnd)
+        internal static void PostMouseLeftUp(IntPtr hWnd)
         {
             PostMessageSafe(hWnd, WM_LBUTTONUP, 0, 0);
         }
 
-        public static void PostMouseRightDown(IntPtr hWnd)
+        internal static void PostMouseRightDown(IntPtr hWnd)
         {
             PostMessageSafe(hWnd, WM_RBUTTONDOWN, 0, 0);
         }
 
-        public static void PostMouseRightUp(IntPtr hWnd)
+        internal static void PostMouseRightUp(IntPtr hWnd)
         {
             PostMessageSafe(hWnd, WM_RBUTTONUP, 0, 0);
         }

@@ -22,9 +22,13 @@ namespace Multiboxer
 
         // Properties
 
-        public Process MasterClient { get; private set; }
+        public Process MasterClientProc { get; private set; }
 
-        public Process[] GameProcessList { get; private set; }
+        public Process[] GameProcList { get; private set; }
+
+        public WoWClient MasterClient { get; private set; }
+
+        public WoWClient[] GameClientList { get; private set; }
 
         public Keys[] IgnoredKeys { get; private set; }
 
@@ -41,7 +45,7 @@ namespace Multiboxer
         // Constructor
         public ProcessManager()
         {
-            RefreshGameProcessList();
+            RefreshClientProcList();
 
             // default settings
             IgnoreListEnabled = true;
@@ -55,17 +59,13 @@ namespace Multiboxer
             consoleWriter = writer;
         }
 
-        public void SetMasterClient(string procName, int procId)
+        public void SetMasterClient(int procId)
         {
-            Process[] clients = Process.GetProcessesByName(procName);
+            Process master = Process.GetProcessById(procId);
 
-            for (int i = 0; i < clients.Length; i++)
-            {
-                if (clients[i].Id == procId)
-                {
-                    MasterClient = clients[i];
-                }
-            }
+            MasterClientProc = master;
+
+            MasterClient = new WoWClient(master.Id);
         }
 
         public void SetIgnoredKeys(RichTextBox rtb)
@@ -114,7 +114,7 @@ namespace Multiboxer
 
         // Public methods
 
-        public void RefreshGameProcessList()
+        public void RefreshClientProcList()
         {
             try
             {
@@ -131,6 +131,7 @@ namespace Multiboxer
                 }
 
                 Process[] tempProcList = new Process[i];
+                WoWClient[] tempClientList = new WoWClient[i];
 
                 int j = 0;
 
@@ -144,11 +145,13 @@ namespace Multiboxer
                     if (p.ProcessName.Contains(_gameProcessNamePartial))
                     {
                         tempProcList[j] = p;
+                        tempClientList[j] = new WoWClient(p.Id);
                         j++;
                     }
                 }
 
-                GameProcessList = tempProcList;
+                GameProcList = tempProcList;
+                GameClientList = tempClientList;
             }
             catch (Exception b)
             {

@@ -31,6 +31,7 @@
             this.button_StartMultiboxing = new System.Windows.Forms.Button();
             this.tabControl_MainWindow = new System.Windows.Forms.TabControl();
             this.tabPage_Multiboxing = new System.Windows.Forms.TabPage();
+            this.button_ClearConsole = new System.Windows.Forms.Button();
             this.checkBox_LogErrors = new System.Windows.Forms.CheckBox();
             this.checkBox_LogDebugs = new System.Windows.Forms.CheckBox();
             this.checkBox_LogMessages = new System.Windows.Forms.CheckBox();
@@ -50,7 +51,6 @@
             this.statusStrip_MainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
-            this.button_ClearConsole = new System.Windows.Forms.Button();
             this.tabControl_MainWindow.SuspendLayout();
             this.tabPage_Multiboxing.SuspendLayout();
             this.tabPage_IgnoreList.SuspendLayout();
@@ -96,6 +96,16 @@
             this.tabPage_Multiboxing.TabIndex = 0;
             this.tabPage_Multiboxing.Text = "Multiboxing";
             this.tabPage_Multiboxing.UseVisualStyleBackColor = true;
+            // 
+            // button_ClearConsole
+            // 
+            this.button_ClearConsole.Location = new System.Drawing.Point(183, 316);
+            this.button_ClearConsole.Name = "button_ClearConsole";
+            this.button_ClearConsole.Size = new System.Drawing.Size(49, 35);
+            this.button_ClearConsole.TabIndex = 9;
+            this.button_ClearConsole.Text = "Clear";
+            this.button_ClearConsole.UseVisualStyleBackColor = true;
+            this.button_ClearConsole.Click += new System.EventHandler(this.button_ClearConsole_Click);
             // 
             // checkBox_LogErrors
             // 
@@ -288,16 +298,6 @@
             this.toolStripStatusLabel_Status.Name = "toolStripStatusLabel_Status";
             this.toolStripStatusLabel_Status.Size = new System.Drawing.Size(18, 19);
             this.toolStripStatusLabel_Status.Text = "...";
-            // 
-            // button_ClearConsole
-            // 
-            this.button_ClearConsole.Location = new System.Drawing.Point(183, 316);
-            this.button_ClearConsole.Name = "button_ClearConsole";
-            this.button_ClearConsole.Size = new System.Drawing.Size(49, 35);
-            this.button_ClearConsole.TabIndex = 9;
-            this.button_ClearConsole.Text = "Clear";
-            this.button_ClearConsole.UseVisualStyleBackColor = true;
-            this.button_ClearConsole.Click += new System.EventHandler(this.button_ClearConsole_Click);
             // 
             // MainForm
             // 

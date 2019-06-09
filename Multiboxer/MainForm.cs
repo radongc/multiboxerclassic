@@ -81,37 +81,7 @@ namespace Multiboxer
         #region Multiboxing Status (start/stop) Event Handlers
         private void button_StartMultiboxing_Click(object sender, EventArgs e)
         {
-            bool errorOccurred = false;
-
-            if (!isListening)
-            {
-                if (input.ProcManager.MasterClient == null) // error checking
-                {
-                    errorOccurred = true;
-                    MessageBox.Show(GUIContent.ErrorText.MasterClient, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    input.Subscribe();
-
-                    button_StartMultiboxing.Text = "Stop Multiboxing";
-
-                    config.UpdateStatus($"Multiboxing started.", ConfigurationManager.LogType.MESSAGE);
-                }
-            }
-            else if (isListening)
-            {
-                input.Unsubscribe();
-
-                button_StartMultiboxing.Text = "Start Multiboxing";
-
-                config.UpdateStatus($"Multiboxing stopped.", ConfigurationManager.LogType.MESSAGE);
-            }
-
-            if (!errorOccurred)
-            {
-                isListening = !isListening;
-            }
+            StartStopMultiboxing();
         }
         #endregion Multiboxing Status (start/stop) Event Handlers
 
@@ -240,6 +210,41 @@ namespace Multiboxer
             foreach (WoWClient c in input.ProcManager.GameClientList)
             {
                 listBox_SelectMasterClient.Items.Add($"{c.Player.Name} - {c.GameProcess.Id}");
+            }
+        }
+
+        private void StartStopMultiboxing()
+        {
+            bool errorOccurred = false;
+
+            if (!isListening)
+            {
+                if (input.ProcManager.MasterClient == null) // error checking
+                {
+                    errorOccurred = true;
+                    MessageBox.Show(GUIContent.ErrorText.MasterClient, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    input.Subscribe();
+
+                    button_StartMultiboxing.Text = "Stop Multiboxing";
+
+                    config.UpdateStatus($"Multiboxing started.", ConfigurationManager.LogType.MESSAGE);
+                }
+            }
+            else if (isListening)
+            {
+                input.Unsubscribe();
+
+                button_StartMultiboxing.Text = "Start Multiboxing";
+
+                config.UpdateStatus($"Multiboxing stopped.", ConfigurationManager.LogType.MESSAGE);
+            }
+
+            if (!errorOccurred)
+            {
+                isListening = !isListening;
             }
         }
     }

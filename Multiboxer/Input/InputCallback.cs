@@ -34,7 +34,6 @@ namespace Multiboxer
             //m_GlobalHook.MouseUp += Hook_OnMouseUp;
         }
 
-
         private void InputCallback_OnKeyDown(object sender, KeyEventArgs e)
         {
             ProcManager.RefreshClientProcList();

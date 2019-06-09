@@ -22,16 +22,11 @@ namespace Multiboxer
 
         // Properties
 
-        public Process[] GameProcList { get; private set; }
-
         public WoWClient MasterClient { get; private set; }
-
         public WoWClient[] GameClientList { get; private set; }
-
+        public Process[] GameProcList { get; private set; }
         public Keys[] IgnoredKeys { get; private set; }
-
         public IgnoreType IgnoreListType { get; private set; }
-
         public bool IgnoreListEnabled { get; private set; }
 
         public enum IgnoreType
@@ -62,6 +57,9 @@ namespace Multiboxer
             Process master = Process.GetProcessById(procId);
 
             MasterClient = new WoWClient(master.Id);
+
+            consoleWriter.DebugLog($"Game version - {MasterClient.Player.GameVersion}", ConfigurationManager.LogType.MESSAGE);
+            consoleWriter.DebugLog($"Realm name - {MasterClient.Player.RealmName}", ConfigurationManager.LogType.MESSAGE);
         }
 
         public void SetIgnoredKeys(RichTextBox rtb)

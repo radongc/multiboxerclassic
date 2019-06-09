@@ -51,6 +51,18 @@ namespace Multiboxer
         }
 
         /// <summary>
+        /// Reads memory, returning a value of the specified type (cannot be used for strings)
+        /// </summary>
+        /// <typeparam name="T">The type to read as.</typeparam>
+        /// <returns></returns>
+        public T ReadAsType<T>(IntPtr address) where T : struct
+        {
+            MemoryModule mem = new MemoryModule();
+
+            return mem.ReadMemory<T>(GameProcess.Id, address);
+        }
+
+        /// <summary>
         /// Reads a string from the process memory
         /// </summary>
         /// <param name="address">The address of the string to read</param>
@@ -62,7 +74,7 @@ namespace Multiboxer
 
             var memoryStringBytes = mem.ReadMemory(GameProcess.Id, address, size);
 
-            var memoryString = Encoding.Default.GetString(memoryStringBytes);
+            var memoryString = Encoding.UTF8.GetString(memoryStringBytes);
 
             return memoryString;
         }
@@ -79,7 +91,7 @@ namespace Multiboxer
 
             var memoryStringBytes = mem.ReadMemory(GameProcess.Id, BaseAddress + (int)address, size); // This differs from the above here, in that you must add the offset to the base address in order to read it.
 
-            var memoryString = Encoding.Default.GetString(memoryStringBytes);
+            var memoryString = Encoding.UTF8.GetString(memoryStringBytes);
 
             return memoryString;
         }
@@ -87,32 +99,49 @@ namespace Multiboxer
         /// <summary>
         /// Contains information about the Player for a WoWClient
         /// </summary>
-        public class PlayerInfo
+        public class PlayerInfo // rewrite this entire structure, the "Init" way only allows the values to be updated when a new PlayerInfo is instantiated, which is not useful. Possibly rewrite as a struct
         {
             // fields
             private WoWClient _parentClient;
 
-            // Properties
+            /* Properties */
+            
+            // World/Server/Misc
+            public string GameVersion { get; private set; }
+            public string RealmName { get; private set; }
+
+            // In-game
             public string Name { get; private set; }
-            public string Class { get; private set; }
+            public int Class { get; private set; } // Class ID, not name
+
+            public string RealZoneText { get; private set; }
+            public string ContinentText { get; private set; }
+            public string MinimapZoneText { get; private set; }
 
             // Constructor
             public PlayerInfo(WoWClient client)
             {
                 _parentClient = client;
 
-                InitProperties();
+                InitConstants();
             }
 
-            private void InitProperties()
+            private void InitConstants() // TODO : Reorganize and finish
             {
-                string nameUnformatted = _parentClient.ReadStringBase(Offsets.Player.Name, 12);
+                string gameVersionUnformatted = _parentClient.ReadString(Offsets.Misc.GameVersion, 6);
+                string realmNameUnformatted = _parentClient.ReadString(Offsets.Misc.RealmName, 10);
+                string charNameUnformatted = _parentClient.ReadStringBase(Offsets.Player.Name, 12);
 
-                string nameFormatted = nameUnformatted.Replace("\0", "");
+                string gameVersion = gameVersionUnformatted.Replace("\0", "");
+                string realmName = realmNameUnformatted.Replace("\0", "");
+                string charName = charNameUnformatted.Replace("\0", "");
 
-                Name = nameFormatted;
-                Class = string.Empty; // for now
+                GameVersion = gameVersion;
+                RealmName = realmName;
+                Name = charName;
             }
+
+            public bool IsLooting() => _parentClient.ReadAsType<bool>(Offsets.Player.IsLooting);
         }
     }
 }

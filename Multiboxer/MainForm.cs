@@ -212,7 +212,7 @@ namespace Multiboxer
             }
         }
 
-        private void PopulateClientInfoTab()
+        private void PopulateClientInfoTab() // extremely unfinished
         {
             labelGameVersion.Text = input.ProcManager.MasterClient.Player.GameVersion;
             labelRealmName.Text = input.ProcManager.MasterClient.Player.RealmName;

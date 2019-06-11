@@ -51,10 +51,24 @@
             this.statusStrip_MainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
+            this.tabPage_GameClients = new System.Windows.Forms.TabPage();
+            this.panelClientInfo = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.labelGameVersion = new System.Windows.Forms.Label();
+            this.labelRealmName = new System.Windows.Forms.Label();
+            this.labelCharName = new System.Windows.Forms.Label();
+            this.labelCharClassName = new System.Windows.Forms.Label();
+            this.labelCharLocation = new System.Windows.Forms.Label();
             this.tabControl_MainWindow.SuspendLayout();
             this.tabPage_Multiboxing.SuspendLayout();
             this.tabPage_IgnoreList.SuspendLayout();
             this.statusStrip_MainStatus.SuspendLayout();
+            this.tabPage_GameClients.SuspendLayout();
+            this.panelClientInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_StartMultiboxing
@@ -71,6 +85,7 @@
             // 
             this.tabControl_MainWindow.Controls.Add(this.tabPage_Multiboxing);
             this.tabControl_MainWindow.Controls.Add(this.tabPage_IgnoreList);
+            this.tabControl_MainWindow.Controls.Add(this.tabPage_GameClients);
             this.tabControl_MainWindow.Location = new System.Drawing.Point(-2, 3);
             this.tabControl_MainWindow.Name = "tabControl_MainWindow";
             this.tabControl_MainWindow.SelectedIndex = 0;
@@ -150,6 +165,7 @@
             // 
             this.richTextBox_MainDebugConsole.Location = new System.Drawing.Point(183, 34);
             this.richTextBox_MainDebugConsole.Name = "richTextBox_MainDebugConsole";
+            this.richTextBox_MainDebugConsole.ReadOnly = true;
             this.richTextBox_MainDebugConsole.Size = new System.Drawing.Size(474, 276);
             this.richTextBox_MainDebugConsole.TabIndex = 5;
             this.richTextBox_MainDebugConsole.Text = "";
@@ -299,6 +315,135 @@
             this.toolStripStatusLabel_Status.Size = new System.Drawing.Size(18, 19);
             this.toolStripStatusLabel_Status.Text = "...";
             // 
+            // tabPage_GameClients
+            // 
+            this.tabPage_GameClients.Controls.Add(this.panelClientInfo);
+            this.tabPage_GameClients.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_GameClients.Name = "tabPage_GameClients";
+            this.tabPage_GameClients.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_GameClients.Size = new System.Drawing.Size(669, 375);
+            this.tabPage_GameClients.TabIndex = 2;
+            this.tabPage_GameClients.Text = "Game Clients";
+            this.tabPage_GameClients.UseVisualStyleBackColor = true;
+            // 
+            // panelClientInfo
+            // 
+            this.panelClientInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelClientInfo.Controls.Add(this.labelCharLocation);
+            this.panelClientInfo.Controls.Add(this.labelCharClassName);
+            this.panelClientInfo.Controls.Add(this.labelCharName);
+            this.panelClientInfo.Controls.Add(this.labelRealmName);
+            this.panelClientInfo.Controls.Add(this.labelGameVersion);
+            this.panelClientInfo.Controls.Add(this.label5);
+            this.panelClientInfo.Controls.Add(this.label4);
+            this.panelClientInfo.Controls.Add(this.label3);
+            this.panelClientInfo.Controls.Add(this.label2);
+            this.panelClientInfo.Controls.Add(this.label1);
+            this.panelClientInfo.Location = new System.Drawing.Point(307, 6);
+            this.panelClientInfo.Name = "panelClientInfo";
+            this.panelClientInfo.Size = new System.Drawing.Size(350, 363);
+            this.panelClientInfo.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.150944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(3, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(97, 16);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Game Version:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.150944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(3, 43);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(91, 16);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Realm Name:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.150944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(3, 71);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(109, 16);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Character Name:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.150944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(3, 99);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(106, 16);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Character Class:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.150944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(3, 126);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(123, 16);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Character Location:";
+            // 
+            // labelGameVersion
+            // 
+            this.labelGameVersion.AutoSize = true;
+            this.labelGameVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.150944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelGameVersion.Location = new System.Drawing.Point(180, 14);
+            this.labelGameVersion.Name = "labelGameVersion";
+            this.labelGameVersion.Size = new System.Drawing.Size(84, 16);
+            this.labelGameVersion.TabIndex = 6;
+            this.labelGameVersion.Text = "%gversion%";
+            // 
+            // labelRealmName
+            // 
+            this.labelRealmName.AutoSize = true;
+            this.labelRealmName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.150944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRealmName.Location = new System.Drawing.Point(180, 43);
+            this.labelRealmName.Name = "labelRealmName";
+            this.labelRealmName.Size = new System.Drawing.Size(84, 16);
+            this.labelRealmName.TabIndex = 7;
+            this.labelRealmName.Text = "%gversion%";
+            // 
+            // labelCharName
+            // 
+            this.labelCharName.AutoSize = true;
+            this.labelCharName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.150944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCharName.Location = new System.Drawing.Point(180, 71);
+            this.labelCharName.Name = "labelCharName";
+            this.labelCharName.Size = new System.Drawing.Size(84, 16);
+            this.labelCharName.TabIndex = 8;
+            this.labelCharName.Text = "%gversion%";
+            // 
+            // labelCharClassName
+            // 
+            this.labelCharClassName.AutoSize = true;
+            this.labelCharClassName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.150944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCharClassName.Location = new System.Drawing.Point(180, 99);
+            this.labelCharClassName.Name = "labelCharClassName";
+            this.labelCharClassName.Size = new System.Drawing.Size(84, 16);
+            this.labelCharClassName.TabIndex = 9;
+            this.labelCharClassName.Text = "%gversion%";
+            // 
+            // labelCharLocation
+            // 
+            this.labelCharLocation.AutoSize = true;
+            this.labelCharLocation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.150944F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCharLocation.Location = new System.Drawing.Point(180, 126);
+            this.labelCharLocation.Name = "labelCharLocation";
+            this.labelCharLocation.Size = new System.Drawing.Size(84, 16);
+            this.labelCharLocation.TabIndex = 10;
+            this.labelCharLocation.Text = "%gversion%";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -306,6 +451,7 @@
             this.ClientSize = new System.Drawing.Size(671, 425);
             this.Controls.Add(this.statusStrip_MainStatus);
             this.Controls.Add(this.tabControl_MainWindow);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MainForm";
             this.Text = "Multiboxer";
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -316,6 +462,9 @@
             this.tabPage_IgnoreList.PerformLayout();
             this.statusStrip_MainStatus.ResumeLayout(false);
             this.statusStrip_MainStatus.PerformLayout();
+            this.tabPage_GameClients.ResumeLayout(false);
+            this.panelClientInfo.ResumeLayout(false);
+            this.panelClientInfo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -346,6 +495,18 @@
         private System.Windows.Forms.CheckBox checkBox_EnableIgnoreList;
         private System.Windows.Forms.CheckBox checkBox_Whitelist;
         private System.Windows.Forms.Button button_ClearConsole;
+        private System.Windows.Forms.TabPage tabPage_GameClients;
+        private System.Windows.Forms.Panel panelClientInfo;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelCharLocation;
+        private System.Windows.Forms.Label labelCharClassName;
+        private System.Windows.Forms.Label labelCharName;
+        private System.Windows.Forms.Label labelRealmName;
+        private System.Windows.Forms.Label labelGameVersion;
     }
 }
 

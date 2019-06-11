@@ -8,47 +8,67 @@ using Jupiter;
 
 namespace Multiboxer
 {
-    public class WoWClient
+    public class WoWClient // Currently, the architecture of this class does not reflect the architecture of the game. Not of huge importance for something like a multiboxer that only reads data, however if writing a bot you would need to structure this very differently (WoWObject -> WoWUnit -> LocalPlayer, etc.)
     {
+        // Fields
+        private MemoryModule _mem;
+
         // Properties
         public PlayerInfo Player { get; private set; }
         public Process GameProcess { get; private set; }
+        public Encoding StringEncoding { get; private set; }
         public IntPtr BaseAddress { get; private set; }
 
         // Private methods
 
-        private void InitializePlayer()
+        private void InitializeClient()
         {
             if (GameProcess != null && BaseAddress != null)
             {
                 Player = new PlayerInfo(this);
             }
+
+            if (StringEncoding == null)
+            {
+                SetEncoding(Encoding.UTF8); // wow's encoding format
+            }
         }
 
         // Constructors
-
-        public WoWClient()
-        {
-            GameProcess = null;
-            BaseAddress = IntPtr.Zero;
-        }
 
         public WoWClient(int procId)
         {
             SetClient(procId);
         }
 
+        public WoWClient(int procId, Encoding encoding)
+        {
+            SetClient(procId);
+            SetEncoding(encoding);
+        }
+
         // Mutators
 
         public void SetClient(int procId)
         {
-            Process client = Process.GetProcessById(procId);
+            try
+            {
+                Process client = Process.GetProcessById(procId);
 
-            GameProcess = client;
-            BaseAddress = client.MainModule.BaseAddress;
+                _mem = new MemoryModule();
 
-            InitializePlayer();
+                GameProcess = client;
+                BaseAddress = client.MainModule.BaseAddress;
+
+                InitializeClient();
+            }
+            catch (Exception b)
+            {
+                //
+            }
         }
+
+        public void SetEncoding(Encoding encoding) => StringEncoding = encoding;
 
         /// <summary>
         /// Reads memory, returning a value of the specified type (cannot be used for strings)
@@ -57,43 +77,58 @@ namespace Multiboxer
         /// <returns></returns>
         public T ReadAsType<T>(IntPtr address) where T : struct
         {
-            MemoryModule mem = new MemoryModule();
+            return _mem.ReadMemory<T>(GameProcess.Id, address);
+        }
 
-            return mem.ReadMemory<T>(GameProcess.Id, address);
+        /// <summary>
+        /// Reads memory from the base address, returning a value of specified type (cannot be used for strings)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public T ReadAsTypeBase<T>(IntPtr address) where T : struct
+        {
+            return _mem.ReadMemory<T>(GameProcess.Id, BaseAddress + (int)address);
         }
 
         /// <summary>
         /// Reads a string from the process memory
         /// </summary>
         /// <param name="address">The address of the string to read</param>
-        /// <param name="size">The size of the string</param>
+        /// <param name="maxSize">The maximum size of the string</param>
         /// <returns></returns>
-        public string ReadString(IntPtr address, int size)
+        public string ReadString(IntPtr address, int maxSize = 512)
         {
-            MemoryModule mem = new MemoryModule();
+            var memoryStringBytes = _mem.ReadMemory(GameProcess.Id, address, maxSize);
 
-            var memoryStringBytes = mem.ReadMemory(GameProcess.Id, address, size);
+            var ret = StringEncoding.GetString(memoryStringBytes);
 
-            var memoryString = Encoding.UTF8.GetString(memoryStringBytes);
+            if (ret.IndexOf('\0') != -1)
+            {
+                ret = ret.Remove(ret.IndexOf('\0'));
+            }
 
-            return memoryString;
+            return ret;
         }
 
         /// <summary>
         /// Reads a string from the base address of the process memory (some values, such as player name, require this)
         /// </summary>
         /// <param name="address">The address of the string to read</param>
-        /// <param name="size">The size of the string</param>
+        /// <param name="maxSize">The maximum size of the string</param>
         /// <returns></returns>
-        public string ReadStringBase(IntPtr address, int size)
+        public string ReadStringBase(IntPtr address, int maxSize = 512)
         {
-            MemoryModule mem = new MemoryModule();
+            var memoryStringBytes = _mem.ReadMemory(GameProcess.Id, BaseAddress + (int)address, maxSize); // This differs from the above here, in that you must add the offset to the base address in order to read it.
 
-            var memoryStringBytes = mem.ReadMemory(GameProcess.Id, BaseAddress + (int)address, size); // This differs from the above here, in that you must add the offset to the base address in order to read it.
+            var ret = StringEncoding.GetString(memoryStringBytes);
 
-            var memoryString = Encoding.UTF8.GetString(memoryStringBytes);
+            if (ret.IndexOf('\0') != -1)
+            {
+                ret = ret.Remove(ret.IndexOf('\0'));
+            }
 
-            return memoryString;
+            return ret;
         }
 
         /// <summary>
@@ -102,46 +137,68 @@ namespace Multiboxer
         public class PlayerInfo // rewrite this entire structure, the "Init" way only allows the values to be updated when a new PlayerInfo is instantiated, which is not useful. Possibly rewrite as a struct
         {
             // fields
-            private WoWClient _parentClient;
-
-            /* Properties */
-            
-            // World/Server/Misc
-            public string GameVersion { get; private set; }
-            public string RealmName { get; private set; }
-
-            // In-game
-            public string Name { get; private set; }
-            public int Class { get; private set; } // Class ID, not name
-
-            public string RealZoneText { get; private set; }
-            public string ContinentText { get; private set; }
-            public string MinimapZoneText { get; private set; }
+            private WoWClient _gameClient;
 
             // Constructor
             public PlayerInfo(WoWClient client)
             {
-                _parentClient = client;
-
-                InitConstants();
+                _gameClient = client;
             }
 
-            private void InitConstants() // TODO : Reorganize and finish
+            // Private methods
+
+            private string ParseClass(byte classId)
             {
-                string gameVersionUnformatted = _parentClient.ReadString(Offsets.Misc.GameVersion, 6);
-                string realmNameUnformatted = _parentClient.ReadString(Offsets.Misc.RealmName, 10);
-                string charNameUnformatted = _parentClient.ReadStringBase(Offsets.Player.Name, 12);
-
-                string gameVersion = gameVersionUnformatted.Replace("\0", "");
-                string realmName = realmNameUnformatted.Replace("\0", "");
-                string charName = charNameUnformatted.Replace("\0", "");
-
-                GameVersion = gameVersion;
-                RealmName = realmName;
-                Name = charName;
+                switch(classId)
+                {
+                    case 0: default:
+                        return Enums.PlayerClass.None.ToString();
+                    case 1:
+                        return Enums.PlayerClass.Warrior.ToString();
+                    case 2:
+                        return Enums.PlayerClass.Paladin.ToString();
+                    case 3:
+                        return Enums.PlayerClass.Hunter.ToString();
+                    case 4:
+                        return Enums.PlayerClass.Rogue.ToString();
+                    case 5:
+                        return Enums.PlayerClass.Priest.ToString();
+                    case 6:
+                        return Enums.PlayerClass.Deathknight.ToString();
+                    case 7:
+                        return Enums.PlayerClass.Shaman.ToString();
+                    case 8:
+                        return Enums.PlayerClass.Mage.ToString();
+                    case 9:
+                        return Enums.PlayerClass.Warlock.ToString();
+                    case 11:
+                        return Enums.PlayerClass.Druid.ToString();
+                }
             }
 
-            public bool IsLooting() => _parentClient.ReadAsType<bool>(Offsets.Player.IsLooting);
+            /* Properties */
+
+            // World/Server/Misc
+            public string GameVersion => _gameClient.ReadString(Offsets.Misc.GameVersion);
+            public string RealmName => _gameClient.ReadString(Offsets.Misc.RealmName);
+
+            // In-game
+            public string Name => _gameClient.ReadStringBase(Offsets.Player.Name);
+
+            public bool IsLooting => _gameClient.ReadAsType<bool>(Offsets.Player.IsLooting);
+            public bool IsInGame => _gameClient.ReadAsType<bool>(Offsets.Player.IsInGame);
+
+            public byte ClassID => _gameClient.ReadAsType<byte>(Offsets.Player.Class);
+            public string Class => ParseClass(ClassID);
+
+            public float PlayerX => _gameClient.ReadAsType<float>(Offsets.Player.XCoord);
+            public float PlayerY => _gameClient.ReadAsType<float>(Offsets.Player.YCoord);
+            public float PlayerZ => _gameClient.ReadAsType<float>(Offsets.Player.ZCoord);
+
+            public Location PlayerLocation
+            {
+                get => new Location(PlayerX, PlayerY, PlayerZ);
+            }
         }
     }
 }

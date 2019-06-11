@@ -56,7 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ConfigurationManager.cs" />
+    <Compile Include="Constants\Enums.cs" />
     <Compile Include="Constants\GUIContent.cs" />
+    <Compile Include="Helpful\Location.cs" />
     <Compile Include="Input\InputCallback.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

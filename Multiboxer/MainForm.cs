@@ -40,7 +40,6 @@ namespace Multiboxer
         {
             InitializeComponent();
         }
-
         // Event Handlers
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -98,7 +97,7 @@ namespace Multiboxer
 
                 input.ProcManager.SetMasterClient(Convert.ToInt32(procData[1]));
 
-                config.UpdateStatus($"Set master client to {procData[0]} - {procData[1]}", ConfigurationManager.LogType.MESSAGE);
+                PopulateClientInfoTab();
             }
             catch (Exception b)
             {
@@ -211,6 +210,15 @@ namespace Multiboxer
             {
                 listBox_SelectMasterClient.Items.Add($"{c.Player.Name} - {c.GameProcess.Id}");
             }
+        }
+
+        private void PopulateClientInfoTab()
+        {
+            labelGameVersion.Text = input.ProcManager.MasterClient.Player.GameVersion;
+            labelRealmName.Text = input.ProcManager.MasterClient.Player.RealmName;
+            labelCharName.Text = input.ProcManager.MasterClient.Player.Name;
+            labelCharClassName.Text = input.ProcManager.MasterClient.Player.Class;
+            labelCharLocation.Text = input.ProcManager.MasterClient.Player.PlayerLocation.ToString();
         }
 
         private void StartStopMultiboxing()

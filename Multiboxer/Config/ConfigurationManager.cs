@@ -23,6 +23,7 @@ namespace Multiboxer
         {
             MESSAGE,
             DEBUG,
+            CONFIG,
             ERROR
         }
 
@@ -52,12 +53,16 @@ namespace Multiboxer
 
             switch (logType)
             {
+                case LogType.MESSAGE:
+                    newColor = Color.Blue;
+                    break;
+
                 case LogType.DEBUG:
                     newColor = Color.YellowGreen;
                     break;
 
-                case LogType.MESSAGE:
-                    newColor = Color.Blue;
+                case LogType.CONFIG:
+                    newColor = Color.DarkGreen;
                     break;
 
                 case LogType.ERROR:
@@ -135,7 +140,7 @@ namespace Multiboxer
 
         public class ConsoleWriter : TextWriter
         {
-            private RichTextBox _myControl;
+            private RichTextBox _myRtb;
 
             public bool LogMessages { get; set; }
             public bool LogDebugs { get; set; }
@@ -143,7 +148,7 @@ namespace Multiboxer
 
             public ConsoleWriter(RichTextBox control, bool logMessages, bool logDebugs, bool logErrors)
             {
-                _myControl = control;
+                _myRtb = control;
 
                 LogMessages = logMessages;
                 LogDebugs = logDebugs;
@@ -152,12 +157,12 @@ namespace Multiboxer
 
             public override void Write(char value)
             {
-                _myControl.AppendText(value.ToString() + "\n");
+                _myRtb.AppendText(value.ToString() + "\n");
             }
 
             public override void Write(string value)
             {
-                _myControl.AppendText($"[{DateTime.Now.ToLocalTime()}] {value}\n");
+                _myRtb.AppendText($"[{DateTime.Now.ToLocalTime()}] {value}\n");
             }
 
             public override Encoding Encoding
@@ -172,6 +177,18 @@ namespace Multiboxer
 
                 switch (logType)
                 {
+                    case LogType.MESSAGE:
+                        if (LogMessages)
+                        {
+                            newColor = Color.Blue;
+                            prefix = "[MESSAGE]";
+                        }
+                        else
+                        {
+                            return;
+                        }
+                        break;
+
                     case LogType.DEBUG:
                         if (LogDebugs)
                         {
@@ -184,11 +201,11 @@ namespace Multiboxer
                         }
                         break;
 
-                    case LogType.MESSAGE:
-                        if (LogMessages)
+                    case LogType.CONFIG:
+                        if (LogDebugs)
                         {
-                            newColor = Color.Blue;
-                            prefix = "[MESSAGE]";
+                            newColor = Color.DarkGreen;
+                            prefix = "[CONFIG]";
                         }
                         else
                         {
@@ -214,8 +231,13 @@ namespace Multiboxer
                         break;
                 }
 
-                _myControl.SelectionColor = newColor;
+                _myRtb.SelectionColor = newColor;
                 Console.Write($"{prefix} {text}");
+            }
+
+            public void Clear()
+            {
+                _myRtb.Clear();
             }
         }
     }

@@ -52,14 +52,18 @@ namespace Multiboxer
             consoleWriter = writer;
         }
 
-        public void SetMasterClient(int procId)
+        public void SetMasterClient(int procId) // using this to test what memory i'm reading, ie. how to read memory
         {
             Process master = Process.GetProcessById(procId);
 
             MasterClient = new WoWClient(master.Id);
 
+            consoleWriter.Clear();
+
+            consoleWriter.DebugLog($"Set master client to {MasterClient.Player.Name} - {procId}", ConfigurationManager.LogType.MESSAGE);
             consoleWriter.DebugLog($"Game version - {MasterClient.Player.GameVersion}", ConfigurationManager.LogType.MESSAGE);
             consoleWriter.DebugLog($"Realm name - {MasterClient.Player.RealmName}", ConfigurationManager.LogType.MESSAGE);
+            consoleWriter.DebugLog($"Class - {MasterClient.Player.Class}", ConfigurationManager.LogType.MESSAGE);
         }
 
         public void SetIgnoredKeys(RichTextBox rtb)
@@ -88,11 +92,11 @@ namespace Multiboxer
                         }
                     }
 
-                    consoleWriter.DebugLog("Saved IgnoreList:", ConfigurationManager.LogType.DEBUG);
+                    consoleWriter.DebugLog("Saved IgnoreList:", ConfigurationManager.LogType.CONFIG);
 
                     for (int i = 0; i < IgnoredKeys.Length; i++)
                     {
-                        consoleWriter.DebugLog(IgnoredKeys[i].ToString(), ConfigurationManager.LogType.DEBUG);
+                        consoleWriter.DebugLog(IgnoredKeys[i].ToString(), ConfigurationManager.LogType.CONFIG);
                     }
                 }
             }

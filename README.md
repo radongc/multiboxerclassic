@@ -3,7 +3,7 @@ A hobby-level project I decided to take up because I couldn't find a multiboxing
 Basic multiboxer with simple blacklisting/memory reading capabilities.
 
 # How it works
-- Sends WINAPI messages to all wow clients
+- Uses WINAPI messages to send keystrokes all open wow clients
 - Requires you to select a client that you will be playing on (the Master Client)
 - Will not send keystrokes to the Master
 

@@ -49,8 +49,8 @@ namespace Multiboxer
 
             if (!config.IsFirstRun())
             {
-                config.LoadFromConfig(richTextBox_IgnoreList); // load into ignore list from cfg
-                input.ProcManager.SetIgnoredKeys(richTextBox_IgnoreList); // save ignore list
+                config.LoadFromConfig(richTextBoxIgnoreList); // load into ignore list from cfg
+                input.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList); // save ignore list
             }
 
             Console.SetOut(consoleWriterMain); // route console output to debug window
@@ -68,8 +68,8 @@ namespace Multiboxer
         {
             // Init input callbacks and config manager
             input = new InputCallback();
-            config = new ConfigurationManager("config.cfg", toolStripStatusLabel_Status);
-            consoleWriterMain = new ConfigurationManager.ConsoleWriter(richTextBox_MainDebugConsole, checkBox_LogMessages.Checked, checkBox_LogDebugs.Checked, checkBox_LogErrors.Checked);
+            config = new ConfigurationManager("config.cfg", toolStripStatusLabelStatus);
+            consoleWriterMain = new ConfigurationManager.ConsoleWriter(richTextBoxMainDebugConsole, checkBoxLogMessages.Checked, checkBoxLogDebugs.Checked, checkBoxLogErrors.Checked);
 
             input.ProcManager.SetConsoleWriter(consoleWriterMain); // allow procManager to write to console
             config.SetConsoleWriter(consoleWriterMain);
@@ -78,26 +78,24 @@ namespace Multiboxer
         #endregion Initialization
 
         #region Multiboxing Status (start/stop) Event Handlers
-        private void button_StartMultiboxing_Click(object sender, EventArgs e)
+        private void buttonStartMultiboxing_Click(object sender, EventArgs e)
         {
             StartStopMultiboxing();
         }
         #endregion Multiboxing Status (start/stop) Event Handlers
 
         #region Master Client Event Handlers
-        private void listBox_SelectMasterClient_SelectedIndexChanged(object sender, EventArgs e)
+        private void listBoxSelectMasterClient_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
-                string procDataUnformatted = listBox_SelectMasterClient.SelectedItem.ToString();
+                string procDataUnformatted = listBoxSelectMasterClient.SelectedItem.ToString();
 
                 string procDataFormatted = procDataUnformatted.Replace(" ", "");
 
                 string[] procData = procDataFormatted.Split('-');
 
                 input.ProcManager.SetMasterClient(Convert.ToInt32(procData[1]));
-
-                PopulateClientInfoTab();
             }
             catch (Exception b)
             {
@@ -105,12 +103,12 @@ namespace Multiboxer
             }
         }
 
-        private void button_MasterClientListHelp_Click(object sender, EventArgs e)
+        private void buttonMasterClientListHelp_Click(object sender, EventArgs e)
         {
             MessageBox.Show(GUIContent.HelpText.MasterClient, "Master Client Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
         }
 
-        private void button_RefreshClients_Click(object sender, EventArgs e)
+        private void buttonRefreshClients_Click(object sender, EventArgs e)
         {
             input.ProcManager.RefreshClientProcList();
 
@@ -121,25 +119,25 @@ namespace Multiboxer
         #endregion Master Client Event Handlers
 
         #region Ignore List Event Handlers
-        private void button_SaveIgnoreList_Click(object sender, EventArgs e)
+        private void buttonSaveIgnoreList_Click(object sender, EventArgs e)
         {
-            input.ProcManager.SetIgnoredKeys(richTextBox_IgnoreList);
+            input.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList);
 
-            config.SaveToConfig(richTextBox_IgnoreList.Lines);
+            config.SaveToConfig(richTextBoxIgnoreList.Lines);
 
             config.UpdateStatus($"Saved IgnoreList to config file successfully.", ConfigurationManager.LogType.MESSAGE);
         }
 
-        private void button_IgnoreListHelp_Click(object sender, EventArgs e)
+        private void buttonIgnoreListHelp_Click(object sender, EventArgs e)
         {
             MessageBox.Show(GUIContent.HelpText.IgnoreList, "Ignore List Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
         }
 
-        private void checkBox_EnableIgnoreList_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxEnableIgnoreList_CheckedChanged(object sender, EventArgs e)
         {
-            input.ProcManager.SetIgnoreListEnabled(checkBox_EnableIgnoreList.Checked);
+            input.ProcManager.SetIgnoreListEnabled(checkBoxEnableIgnoreList.Checked);
 
-            switch(checkBox_EnableIgnoreList.Checked)
+            switch(checkBoxEnableIgnoreList.Checked)
             {
                 case true:
                     config.UpdateStatus("IgnoreList enabled.", ConfigurationManager.LogType.MESSAGE);
@@ -151,74 +149,65 @@ namespace Multiboxer
             }
         }
 
-        private void checkBox_Blacklist_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxBlacklist_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox_Blacklist.Checked)
+            if (checkBoxBlacklist.Checked)
             {
-                if (checkBox_Whitelist.Checked)
+                if (checkBoxWhitelist.Checked)
                 {
-                    checkBox_Whitelist.CheckState = CheckState.Unchecked;
+                    checkBoxWhitelist.CheckState = CheckState.Unchecked;
                     config.UpdateStatus("IgnoreList setting changed to blacklist.", ConfigurationManager.LogType.MESSAGE); // needs to be put here to avoid being sent every time it is clicked, even if setting is not actually changing
                 }
 
                 input.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.BLACKLIST);
             }
 
-            if (!checkBox_Blacklist.Checked && !checkBox_Whitelist.Checked)
+            if (!checkBoxBlacklist.Checked && !checkBoxWhitelist.Checked)
             {
-                checkBox_Blacklist.CheckState = CheckState.Checked;
+                checkBoxBlacklist.CheckState = CheckState.Checked;
             }
         }
 
-        private void checkBox_Whitelist_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxWhitelist_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox_Whitelist.Checked)
+            if (checkBoxWhitelist.Checked)
             {
-                if (checkBox_Blacklist.Checked)
+                if (checkBoxBlacklist.Checked)
                 {
-                    checkBox_Blacklist.CheckState = CheckState.Unchecked;
+                    checkBoxBlacklist.CheckState = CheckState.Unchecked;
                     config.UpdateStatus("IgnoreList setting changed to whitelist.", ConfigurationManager.LogType.MESSAGE); // needs to be put here to avoid being sent every time it is clicked, even if setting is not actually changing
                 }
 
                 input.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.WHITELIST);
             }
 
-            if (!checkBox_Blacklist.Checked && !checkBox_Whitelist.Checked)
+            if (!checkBoxBlacklist.Checked && !checkBoxWhitelist.Checked)
             {
-                checkBox_Whitelist.CheckState = CheckState.Checked;
+                checkBoxWhitelist.CheckState = CheckState.Checked;
             }
         }
         #endregion Ignore List Event Handlers
 
         #region Main Console Event Handlers
-        private void checkBox_LogMessages_CheckedChanged(object sender, EventArgs e) => consoleWriterMain.LogMessages = checkBox_LogMessages.Checked;
+        private void checkBoxLogMessages_CheckedChanged(object sender, EventArgs e) => consoleWriterMain.LogMessages = checkBoxLogMessages.Checked;
 
-        private void checkBox_LogDebug_CheckedChanged(object sender, EventArgs e) => consoleWriterMain.LogDebugs = checkBox_LogDebugs.Checked;
+        private void checkBoxLogDebug_CheckedChanged(object sender, EventArgs e) => consoleWriterMain.LogDebugs = checkBoxLogDebugs.Checked;
 
-        private void checkBox_LogError_CheckedChanged(object sender, EventArgs e) => consoleWriterMain.LogErrors = checkBox_LogErrors.Checked;
+        private void checkBoxLogError_CheckedChanged(object sender, EventArgs e) => consoleWriterMain.LogErrors = checkBoxLogErrors.Checked;
 
-        private void button_ClearConsole_Click(object sender, EventArgs e) => richTextBox_MainDebugConsole.Clear();
+        private void buttonClearConsole_Click(object sender, EventArgs e) => richTextBoxMainDebugConsole.Clear();
         #endregion Main Console Event Handlers
 
         // Private methods
 
         private void PopulateClientList()
         {
-            listBox_SelectMasterClient.Items.Clear();
+            listBoxSelectMasterClient.Items.Clear();
 
             foreach (WoWClient c in input.ProcManager.GameClientList)
             {
-                listBox_SelectMasterClient.Items.Add($"{c.Player.Name} - {c.GameProcess.Id}");
+                listBoxSelectMasterClient.Items.Add($"{c.Player.Name} - {c.GameProcess.Id}");
             }
-        }
-
-        private void PopulateClientInfoTab() // extremely unfinished
-        {
-            labelGameVersion.Text = input.ProcManager.MasterClient.Player.GameVersion;
-            labelRealmName.Text = input.ProcManager.MasterClient.Player.RealmName;
-            labelCharName.Text = input.ProcManager.MasterClient.Player.Name;
-            labelCharClassName.Text = input.ProcManager.MasterClient.Player.Class;
-            labelCharLocation.Text = input.ProcManager.MasterClient.Player.PlayerLocation.ToString();
         }
 
         private void StartStopMultiboxing()
@@ -236,7 +225,7 @@ namespace Multiboxer
                 {
                     input.Subscribe();
 
-                    button_StartMultiboxing.Text = "Stop Multiboxing";
+                    buttonStartMultiboxing.Text = "Stop Multiboxing";
 
                     config.UpdateStatus($"Multiboxing started.", ConfigurationManager.LogType.MESSAGE);
                 }
@@ -245,7 +234,7 @@ namespace Multiboxer
             {
                 input.Unsubscribe();
 
-                button_StartMultiboxing.Text = "Start Multiboxing";
+                buttonStartMultiboxing.Text = "Start Multiboxing";
 
                 config.UpdateStatus($"Multiboxing stopped.", ConfigurationManager.LogType.MESSAGE);
             }

@@ -48,13 +48,23 @@
             this.buttonIgnoreListHelp = new System.Windows.Forms.Button();
             this.labelIgnoreList = new System.Windows.Forms.Label();
             this.richTextBoxIgnoreList = new System.Windows.Forms.RichTextBox();
+            this.tabPageMacroGenerator = new System.Windows.Forms.TabPage();
+            this.textBoxMacroName = new System.Windows.Forms.TextBox();
+            this.richTextBoxMacroContent = new System.Windows.Forms.RichTextBox();
+            this.listBoxGeneratedMacros = new System.Windows.Forms.ListBox();
+            this.listBoxMacroGenCharacterSelect = new System.Windows.Forms.ListBox();
             this.statusStripMainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
-            this.tabPageMacroGenerator = new System.Windows.Forms.TabPage();
+            this.buttonCopyMacroName = new System.Windows.Forms.Button();
+            this.buttonCopyMacroContent = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.tabControlMainWindow.SuspendLayout();
             this.tabPageMultiboxing.SuspendLayout();
             this.tabPageIgnoreList.SuspendLayout();
+            this.tabPageMacroGenerator.SuspendLayout();
             this.statusStripMainStatus.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -286,6 +296,58 @@
             this.richTextBoxIgnoreList.TabIndex = 0;
             this.richTextBoxIgnoreList.Text = "";
             // 
+            // tabPageMacroGenerator
+            // 
+            this.tabPageMacroGenerator.Controls.Add(this.label3);
+            this.tabPageMacroGenerator.Controls.Add(this.label2);
+            this.tabPageMacroGenerator.Controls.Add(this.label1);
+            this.tabPageMacroGenerator.Controls.Add(this.buttonCopyMacroContent);
+            this.tabPageMacroGenerator.Controls.Add(this.buttonCopyMacroName);
+            this.tabPageMacroGenerator.Controls.Add(this.textBoxMacroName);
+            this.tabPageMacroGenerator.Controls.Add(this.richTextBoxMacroContent);
+            this.tabPageMacroGenerator.Controls.Add(this.listBoxGeneratedMacros);
+            this.tabPageMacroGenerator.Controls.Add(this.listBoxMacroGenCharacterSelect);
+            this.tabPageMacroGenerator.Location = new System.Drawing.Point(4, 22);
+            this.tabPageMacroGenerator.Name = "tabPageMacroGenerator";
+            this.tabPageMacroGenerator.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageMacroGenerator.Size = new System.Drawing.Size(669, 375);
+            this.tabPageMacroGenerator.TabIndex = 2;
+            this.tabPageMacroGenerator.Text = "Macro Generator";
+            this.tabPageMacroGenerator.UseVisualStyleBackColor = true;
+            // 
+            // textBoxMacroName
+            // 
+            this.textBoxMacroName.Location = new System.Drawing.Point(407, 30);
+            this.textBoxMacroName.Name = "textBoxMacroName";
+            this.textBoxMacroName.Size = new System.Drawing.Size(250, 20);
+            this.textBoxMacroName.TabIndex = 4;
+            // 
+            // richTextBoxMacroContent
+            // 
+            this.richTextBoxMacroContent.Location = new System.Drawing.Point(407, 56);
+            this.richTextBoxMacroContent.Name = "richTextBoxMacroContent";
+            this.richTextBoxMacroContent.Size = new System.Drawing.Size(250, 250);
+            this.richTextBoxMacroContent.TabIndex = 3;
+            this.richTextBoxMacroContent.Text = "";
+            // 
+            // listBoxGeneratedMacros
+            // 
+            this.listBoxGeneratedMacros.FormattingEnabled = true;
+            this.listBoxGeneratedMacros.Location = new System.Drawing.Point(260, 30);
+            this.listBoxGeneratedMacros.Name = "listBoxGeneratedMacros";
+            this.listBoxGeneratedMacros.Size = new System.Drawing.Size(136, 329);
+            this.listBoxGeneratedMacros.TabIndex = 2;
+            this.listBoxGeneratedMacros.SelectedIndexChanged += new System.EventHandler(this.listBoxGeneratedMacros_SelectedIndexChanged);
+            // 
+            // listBoxMacroGenCharacterSelect
+            // 
+            this.listBoxMacroGenCharacterSelect.FormattingEnabled = true;
+            this.listBoxMacroGenCharacterSelect.Location = new System.Drawing.Point(23, 30);
+            this.listBoxMacroGenCharacterSelect.Name = "listBoxMacroGenCharacterSelect";
+            this.listBoxMacroGenCharacterSelect.Size = new System.Drawing.Size(213, 329);
+            this.listBoxMacroGenCharacterSelect.TabIndex = 0;
+            this.listBoxMacroGenCharacterSelect.SelectedIndexChanged += new System.EventHandler(this.listBoxMacroGenCharacterSelect_SelectedIndexChanged);
+            // 
             // statusStripMainStatus
             // 
             this.statusStripMainStatus.ImageScalingSize = new System.Drawing.Size(18, 18);
@@ -302,15 +364,52 @@
             this.toolStripStatusLabelStatus.Size = new System.Drawing.Size(18, 19);
             this.toolStripStatusLabelStatus.Text = "...";
             // 
-            // tabPageMacroGenerator
+            // buttonCopyMacroName
             // 
-            this.tabPageMacroGenerator.Location = new System.Drawing.Point(4, 22);
-            this.tabPageMacroGenerator.Name = "tabPageMacroGenerator";
-            this.tabPageMacroGenerator.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMacroGenerator.Size = new System.Drawing.Size(669, 375);
-            this.tabPageMacroGenerator.TabIndex = 2;
-            this.tabPageMacroGenerator.Text = "Macro Generator";
-            this.tabPageMacroGenerator.UseVisualStyleBackColor = true;
+            this.buttonCopyMacroName.Location = new System.Drawing.Point(407, 312);
+            this.buttonCopyMacroName.Name = "buttonCopyMacroName";
+            this.buttonCopyMacroName.Size = new System.Drawing.Size(105, 45);
+            this.buttonCopyMacroName.TabIndex = 5;
+            this.buttonCopyMacroName.Text = "Copy Name";
+            this.buttonCopyMacroName.UseVisualStyleBackColor = true;
+            this.buttonCopyMacroName.Click += new System.EventHandler(this.buttonCopyMacroName_Click);
+            // 
+            // buttonCopyMacroContent
+            // 
+            this.buttonCopyMacroContent.Location = new System.Drawing.Point(552, 313);
+            this.buttonCopyMacroContent.Name = "buttonCopyMacroContent";
+            this.buttonCopyMacroContent.Size = new System.Drawing.Size(105, 45);
+            this.buttonCopyMacroContent.TabIndex = 6;
+            this.buttonCopyMacroContent.Text = "Copy Content";
+            this.buttonCopyMacroContent.UseVisualStyleBackColor = true;
+            this.buttonCopyMacroContent.Click += new System.EventHandler(this.buttonCopyMacroContent_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(93, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(66, 15);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Characters";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(304, 12);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(48, 15);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Macros";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(489, 12);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(93, 15);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Selected Macro";
             // 
             // MainForm
             // 
@@ -328,6 +427,8 @@
             this.tabPageMultiboxing.PerformLayout();
             this.tabPageIgnoreList.ResumeLayout(false);
             this.tabPageIgnoreList.PerformLayout();
+            this.tabPageMacroGenerator.ResumeLayout(false);
+            this.tabPageMacroGenerator.PerformLayout();
             this.statusStripMainStatus.ResumeLayout(false);
             this.statusStripMainStatus.PerformLayout();
             this.ResumeLayout(false);
@@ -361,6 +462,15 @@
         private System.Windows.Forms.CheckBox checkBoxWhitelist;
         private System.Windows.Forms.Button buttonClearConsole;
         private System.Windows.Forms.TabPage tabPageMacroGenerator;
+        private System.Windows.Forms.ListBox listBoxMacroGenCharacterSelect;
+        private System.Windows.Forms.TextBox textBoxMacroName;
+        private System.Windows.Forms.RichTextBox richTextBoxMacroContent;
+        private System.Windows.Forms.ListBox listBoxGeneratedMacros;
+        private System.Windows.Forms.Button buttonCopyMacroContent;
+        private System.Windows.Forms.Button buttonCopyMacroName;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
     }
 }
 

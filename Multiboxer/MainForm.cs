@@ -15,8 +15,13 @@ namespace Multiboxer
 {
     public partial class MainForm : Form
     {
+        // fields
         bool isListening = false; // is the program listening for input?
 
+        private Dictionary<string, string> _masterMacroList;
+        private Dictionary<string, string> _childMacroList;
+
+        // class instances
         private InputCallback input;
         private ConfigurationManager config;
         private ConfigurationManager.ConsoleWriter consoleWriterMain;
@@ -50,143 +55,38 @@ namespace Multiboxer
             if (!config.IsFirstRun())
             {
                 config.LoadFromConfig(richTextBoxIgnoreList); // load into ignore list from cfg
-                input.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList); // save ignore list
+                InputCallback.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList); // save ignore list
             }
 
             Console.SetOut(consoleWriterMain); // route console output to debug window
 
             // Check for running wow procs and populate the GUI list
 
-            input.ProcManager.RefreshClientProcList();
+            InputCallback.ProcManager.RefreshClientProcList();
 
             PopulateClientList();
+            PopulateCharacterList();
 
-            config.UpdateStatus($"Found {input.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
+            config.UpdateStatus($"Found {InputCallback.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
         }
 
         private void InitializeClasses()
         {
+            _masterMacroList = new Dictionary<string, string>();
+            _childMacroList = new Dictionary<string, string>();
+
             // Init input callbacks and config manager
             input = new InputCallback();
             config = new ConfigurationManager("config.cfg", toolStripStatusLabelStatus);
             consoleWriterMain = new ConfigurationManager.ConsoleWriter(richTextBoxMainDebugConsole, checkBoxLogMessages.Checked, checkBoxLogDebugs.Checked, checkBoxLogErrors.Checked);
 
-            input.ProcManager.SetConsoleWriter(consoleWriterMain); // allow procManager to write to console
+            InputCallback.ProcManager.SetConsoleWriter(consoleWriterMain); // allow procManager to write to console
             config.SetConsoleWriter(consoleWriterMain);
             WindowUtil.SetConsoleWriter(consoleWriterMain);
         }
         #endregion Initialization
 
-        #region Multiboxing Status (start/stop) Event Handlers
-        private void buttonStartMultiboxing_Click(object sender, EventArgs e)
-        {
-            StartStopMultiboxing();
-        }
-        #endregion Multiboxing Status (start/stop) Event Handlers
-
-        #region Master Client Event Handlers
-        private void listBoxSelectMasterClient_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                string procDataUnformatted = listBoxSelectMasterClient.SelectedItem.ToString();
-
-                string procDataFormatted = procDataUnformatted.Replace(" ", "");
-
-                string[] procData = procDataFormatted.Split('-');
-
-                input.ProcManager.SetMasterClient(Convert.ToInt32(procData[1]));
-            }
-            catch (Exception b)
-            {
-                consoleWriterMain.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
-            }
-        }
-
-        private void buttonMasterClientListHelp_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(GUIContent.HelpText.MasterClient, "Master Client Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
-        }
-
-        private void buttonRefreshClients_Click(object sender, EventArgs e)
-        {
-            input.ProcManager.RefreshClientProcList();
-
-            PopulateClientList();
-
-            config.UpdateStatus($"Found {input.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
-        }
-        #endregion Master Client Event Handlers
-
-        #region Ignore List Event Handlers
-        private void buttonSaveIgnoreList_Click(object sender, EventArgs e)
-        {
-            input.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList);
-
-            config.SaveToConfig(richTextBoxIgnoreList.Lines);
-
-            config.UpdateStatus($"Saved IgnoreList to config file successfully.", ConfigurationManager.LogType.MESSAGE);
-        }
-
-        private void buttonIgnoreListHelp_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(GUIContent.HelpText.IgnoreList, "Ignore List Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
-        }
-
-        private void checkBoxEnableIgnoreList_CheckedChanged(object sender, EventArgs e)
-        {
-            input.ProcManager.SetIgnoreListEnabled(checkBoxEnableIgnoreList.Checked);
-
-            switch(checkBoxEnableIgnoreList.Checked)
-            {
-                case true:
-                    config.UpdateStatus("IgnoreList enabled.", ConfigurationManager.LogType.MESSAGE);
-                    break;
-
-                case false:
-                    config.UpdateStatus("IgnoreList disabled.", ConfigurationManager.LogType.MESSAGE);
-                    break;
-            }
-        }
-
-        private void checkBoxBlacklist_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxBlacklist.Checked)
-            {
-                if (checkBoxWhitelist.Checked)
-                {
-                    checkBoxWhitelist.CheckState = CheckState.Unchecked;
-                    config.UpdateStatus("IgnoreList setting changed to blacklist.", ConfigurationManager.LogType.MESSAGE); // needs to be put here to avoid being sent every time it is clicked, even if setting is not actually changing
-                }
-
-                input.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.BLACKLIST);
-            }
-
-            if (!checkBoxBlacklist.Checked && !checkBoxWhitelist.Checked)
-            {
-                checkBoxBlacklist.CheckState = CheckState.Checked;
-            }
-        }
-
-        private void checkBoxWhitelist_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxWhitelist.Checked)
-            {
-                if (checkBoxBlacklist.Checked)
-                {
-                    checkBoxBlacklist.CheckState = CheckState.Unchecked;
-                    config.UpdateStatus("IgnoreList setting changed to whitelist.", ConfigurationManager.LogType.MESSAGE); // needs to be put here to avoid being sent every time it is clicked, even if setting is not actually changing
-                }
-
-                input.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.WHITELIST);
-            }
-
-            if (!checkBoxBlacklist.Checked && !checkBoxWhitelist.Checked)
-            {
-                checkBoxWhitelist.CheckState = CheckState.Checked;
-            }
-        }
-        #endregion Ignore List Event Handlers
+        #region MULTIBOXING TAB
 
         #region Main Console Event Handlers
         private void checkBoxLogMessages_CheckedChanged(object sender, EventArgs e) => consoleWriterMain.LogMessages = checkBoxLogMessages.Checked;
@@ -198,13 +98,51 @@ namespace Multiboxer
         private void buttonClearConsole_Click(object sender, EventArgs e) => richTextBoxMainDebugConsole.Clear();
         #endregion Main Console Event Handlers
 
-        // Private methods
+        private void buttonStartMultiboxing_Click(object sender, EventArgs e)
+        {
+            StartStopMultiboxing();
+        }
+
+        private void listBoxSelectMasterClient_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string procDataUnformatted = listBoxSelectMasterClient.SelectedItem.ToString();
+
+                string procDataFormatted = procDataUnformatted.Replace(" ", "");
+
+                string[] procData = procDataFormatted.Split('-');
+
+                InputCallback.ProcManager.SetMasterClient(Convert.ToInt32(procData[1]));
+            }
+            catch (Exception b)
+            {
+                consoleWriterMain.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
+            }
+        }
+
+        private void buttonMasterClientListHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(StaticTextLibrary.HelpText.MasterClient, "Master Client Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
+        }
+
+        private void buttonRefreshClients_Click(object sender, EventArgs e)
+        {
+            InputCallback.ProcManager.RefreshClientProcList();
+
+            PopulateClientList();
+            PopulateCharacterList();
+
+            config.UpdateStatus($"Found {InputCallback.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
+        }
+
+        #region Private Methods - Multiboxing Tab
 
         private void PopulateClientList()
         {
             listBoxSelectMasterClient.Items.Clear();
 
-            foreach (WoWClient c in input.ProcManager.GameClientList)
+            foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
             {
                 listBoxSelectMasterClient.Items.Add($"{c.Player.Name} - {c.GameProcess.Id}");
             }
@@ -216,10 +154,10 @@ namespace Multiboxer
 
             if (!isListening)
             {
-                if (input.ProcManager.MasterClient == null) // error checking
+                if (InputCallback.ProcManager.MasterClient == null) // error checking
                 {
                     errorOccurred = true;
-                    MessageBox.Show(GUIContent.ErrorText.MasterClient, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(StaticTextLibrary.ErrorText.MasterClientMain, "Multiboxer", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
@@ -244,5 +182,197 @@ namespace Multiboxer
                 isListening = !isListening;
             }
         }
+        #endregion Private Methods - Multiboxing Tab
+
+        #endregion MULTIBOXING TAB
+
+        #region IGNORE LIST TAB
+        private void buttonSaveIgnoreList_Click(object sender, EventArgs e)
+        {
+            InputCallback.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList);
+
+            config.SaveToConfig(richTextBoxIgnoreList.Lines);
+
+            config.UpdateStatus($"Saved IgnoreList to config file successfully.", ConfigurationManager.LogType.MESSAGE);
+        }
+
+        private void buttonIgnoreListHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(StaticTextLibrary.HelpText.IgnoreList, "Ignore List Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
+        }
+
+        private void checkBoxEnableIgnoreList_CheckedChanged(object sender, EventArgs e)
+        {
+            InputCallback.ProcManager.SetIgnoreListEnabled(checkBoxEnableIgnoreList.Checked);
+
+            switch(checkBoxEnableIgnoreList.Checked)
+            {
+                case true:
+                    config.UpdateStatus("IgnoreList enabled.", ConfigurationManager.LogType.MESSAGE);
+                    break;
+
+                case false:
+                    config.UpdateStatus("IgnoreList disabled.", ConfigurationManager.LogType.MESSAGE);
+                    break;
+            }
+        }
+
+        private void checkBoxBlacklist_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxBlacklist.Checked)
+            {
+                if (checkBoxWhitelist.Checked)
+                {
+                    checkBoxWhitelist.CheckState = CheckState.Unchecked;
+                    config.UpdateStatus("IgnoreList setting changed to blacklist.", ConfigurationManager.LogType.MESSAGE); // needs to be put here to avoid being sent every time it is clicked, even if setting is not actually changing
+                }
+
+                InputCallback.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.BLACKLIST);
+            }
+
+            if (!checkBoxBlacklist.Checked && !checkBoxWhitelist.Checked)
+            {
+                checkBoxBlacklist.CheckState = CheckState.Checked;
+            }
+        }
+
+        private void checkBoxWhitelist_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxWhitelist.Checked)
+            {
+                if (checkBoxBlacklist.Checked)
+                {
+                    checkBoxBlacklist.CheckState = CheckState.Unchecked;
+                    config.UpdateStatus("IgnoreList setting changed to whitelist.", ConfigurationManager.LogType.MESSAGE); // needs to be put here to avoid being sent every time it is clicked, even if setting is not actually changing
+                }
+
+                InputCallback.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.WHITELIST);
+            }
+
+            if (!checkBoxBlacklist.Checked && !checkBoxWhitelist.Checked)
+            {
+                checkBoxWhitelist.CheckState = CheckState.Checked;
+            }
+        }
+        #endregion IGNORE LIST TAB
+
+        #region MACRO GENERATOR TAB
+
+        private void listBoxMacroGenCharacterSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (InputCallback.ProcManager.MasterClient != null)
+            {
+                // did we select the master?
+                if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name))
+                {
+                    PopulateMacroList(true); // new method; pop macro list for master ('true')
+                }
+                else
+                {
+                    PopulateMacroList(false); // new method; pop macro list for children ('false')
+                }
+            }
+            else
+            {
+                MessageBox.Show(StaticTextLibrary.ErrorText.MasterClientMacro, "Macro Generator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void listBoxGeneratedMacros_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name)) // did we select the master?
+            {
+                PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _masterMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
+            }
+            else
+            {
+                PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _childMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
+            }
+        }
+
+        private void buttonCopyMacroName_Click(object sender, EventArgs e)
+        {
+            if (textBoxMacroName.Text != string.Empty)
+            {
+                Clipboard.SetText(textBoxMacroName.Text);
+
+                MessageBox.Show("Copied to clipboard!", "Macro Generator", MessageBoxButtons.OK);
+            }
+        }
+
+        private void buttonCopyMacroContent_Click(object sender, EventArgs e)
+        {
+            if (richTextBoxMacroContent.Text != string.Empty)
+            {
+                Clipboard.SetText(richTextBoxMacroContent.Text);
+
+                MessageBox.Show("Copied to clipboard!", "Macro Generator", MessageBoxButtons.OK);
+            }
+        }
+
+        #region Private Methods - Macro Generator Tab
+
+        private void PopulateCharacterList()
+        {
+            listBoxMacroGenCharacterSelect.Items.Clear();
+
+            foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+            {
+                listBoxMacroGenCharacterSelect.Items.Add(c.Player.Name);
+            }
+        }
+
+        private void PopulateMacroList(bool isMaster)
+        {
+            listBoxGeneratedMacros.Items.Clear();
+
+            if (isMaster)
+            {
+                _masterMacroList.Clear();
+
+                string[] childNames = new string[InputCallback.ProcManager.GameClientList.Length - 1]; // it is the size of all clients minus master
+
+                int i = 0;
+
+                foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+                {
+                    if (c.GameProcess.Id != InputCallback.ProcManager.MasterClient.GameProcess.Id)
+                    {
+                        childNames[i] = c.Player.Name;
+                        i++;
+                    }
+                }
+
+                _masterMacroList = MacroGenerator.GenerateMasterMacros(childNames);
+
+                foreach (string s in _masterMacroList.Keys)
+                {
+                    listBoxGeneratedMacros.Items.Add(s);
+                }
+            }
+            else
+            {
+                _childMacroList.Clear();
+
+                string masterName = InputCallback.ProcManager.MasterClient.Player.Name;
+
+                _childMacroList = MacroGenerator.GenerateChildMacros(masterName);
+
+                foreach (string s in _childMacroList.Keys)
+                {
+                    listBoxGeneratedMacros.Items.Add(s);
+                }
+            }
+        }
+
+        private void PopulateMacroData(string macroName, string macroContent)
+        {
+            textBoxMacroName.Text = macroName;
+            richTextBoxMacroContent.Text = macroContent;
+        }
+
+        #endregion Private Methods - Macro Generator Tab
+
+        #endregion MACRO GENERATOR TAB
     }
 }

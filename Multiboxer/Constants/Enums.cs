@@ -6,21 +6,33 @@ using System.Threading.Tasks;
 
 namespace Multiboxer
 {
-    internal static class Enums
+    public static class Enums
     {
-        internal enum PlayerClass : byte
+        public static class Multiboxer
         {
-            None = 0,
-            Warrior = 1,
-            Paladin = 2,
-            Hunter = 3,
-            Rogue = 4,
-            Priest = 5,
-            Deathknight = 6,
-            Shaman = 7,
-            Mage = 8,
-            Warlock = 9,
-            Druid = 11
+            public enum PlayerClientType
+            {
+                Master,
+                Child
+            }
+        }
+
+        public static class Game
+        {
+            public enum PlayerClass : byte
+            {
+                None = 0,
+                Warrior = 1,
+                Paladin = 2,
+                Hunter = 3,
+                Rogue = 4,
+                Priest = 5,
+                Deathknight = 6,
+                Shaman = 7,
+                Mage = 8,
+                Warlock = 9,
+                Druid = 11
+            }
         }
     }
 }

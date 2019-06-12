@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Multiboxer
 {
-    internal static class GUIContent
+    internal static class StaticTextLibrary
     {
         /* GUIStringLibrary:
          * This class simply contains (generally long) strings that are used in the GUI. 
@@ -23,7 +23,9 @@ namespace Multiboxer
 
         internal static class ErrorText
         {
-            internal static string MasterClient = "Please select the Master Client (the client in which you are going to be playing on) before starting the Multiboxer.";
+            internal static string MasterClientMain = "Please select the Master Client (the client in which you are going to be playing on) before starting the Multiboxer.";
+
+            internal static string MasterClientMacro = "Please select the Master Client (the client in which you are going to be playing on) in the main Multiboxing tab before trying to generate macros.";
         }
     }
 }

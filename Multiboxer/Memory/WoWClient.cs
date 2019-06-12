@@ -145,38 +145,24 @@ namespace Multiboxer
                 _gameClient = client;
             }
 
-            // Private methods
+            /* Properties */
 
-            private string ParseClass(byte classId)
+            // Program
+
+            public Enums.Multiboxer.PlayerClientType ClientType
             {
-                switch(classId)
+                get
                 {
-                    case 0: default:
-                        return Enums.PlayerClass.None.ToString();
-                    case 1:
-                        return Enums.PlayerClass.Warrior.ToString();
-                    case 2:
-                        return Enums.PlayerClass.Paladin.ToString();
-                    case 3:
-                        return Enums.PlayerClass.Hunter.ToString();
-                    case 4:
-                        return Enums.PlayerClass.Rogue.ToString();
-                    case 5:
-                        return Enums.PlayerClass.Priest.ToString();
-                    case 6:
-                        return Enums.PlayerClass.Deathknight.ToString();
-                    case 7:
-                        return Enums.PlayerClass.Shaman.ToString();
-                    case 8:
-                        return Enums.PlayerClass.Mage.ToString();
-                    case 9:
-                        return Enums.PlayerClass.Warlock.ToString();
-                    case 11:
-                        return Enums.PlayerClass.Druid.ToString();
+                    if (InputCallback.ProcManager.MasterClient.GameProcess.Id == _gameClient.GameProcess.Id)
+                    {
+                        return Enums.Multiboxer.PlayerClientType.Master;
+                    }
+                    else
+                    {
+                        return Enums.Multiboxer.PlayerClientType.Child;
+                    }
                 }
             }
-
-            /* Properties */
 
             // World/Server/Misc
             public string GameVersion => _gameClient.ReadString(Offsets.Misc.GameVersion);
@@ -189,7 +175,7 @@ namespace Multiboxer
             public bool IsInGame => _gameClient.ReadAsType<bool>(Offsets.Player.IsInGame);
 
             public byte ClassID => _gameClient.ReadAsType<byte>(Offsets.Player.Class);
-            public string Class => ParseClass(ClassID);
+            public string Class => ((Enums.Game.PlayerClass)ClassID).ToString();
 
             public float PlayerX => _gameClient.ReadAsType<float>(Offsets.Player.XCoord);
             public float PlayerY => _gameClient.ReadAsType<float>(Offsets.Player.YCoord);

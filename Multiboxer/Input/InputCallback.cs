@@ -15,7 +15,7 @@ namespace Multiboxer
          * Handles subscribe/unsubscribe from global keyboard/mouse hooks and callback methods.
          * Also holds the main ProcessManager instance, which is accessible only through InputCallback */
 
-        public ProcessManager ProcManager;
+        public static ProcessManager ProcManager;
 
         private IKeyboardMouseEvents m_GlobalHook;
 

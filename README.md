@@ -17,3 +17,4 @@ Basic multiboxer with simple blacklisting/memory reading capabilities.
 # Features
 - Basic blacklisting/whitelisting capabilities
 - Basic memory reading capabilities
+- Macro generator

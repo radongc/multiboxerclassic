@@ -325,6 +325,11 @@ namespace Multiboxer
             }
         }
 
+        private void buttonMacroGenHelp_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(StaticTextLibrary.HelpText.MacroGenerator, "Macro Generator Help", MessageBoxButtons.OK, MessageBoxIcon.Question);
+        }
+
         private void buttonCopyMacroContent_Click(object sender, EventArgs e)
         {
             if (richTextBoxMacroContent.Text != string.Empty)

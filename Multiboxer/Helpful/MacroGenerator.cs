@@ -91,6 +91,14 @@ namespace Multiboxer
                     break;
 
                 case Enums.Game.PlayerClass.Paladin: /* PALADIN MACROS */
+
+                    // HOLY LIGHT MACRO
+
+                    string paladinHolyLightContent = $"/target {masterName}\n" +
+                                                     $"/cast Holy Light\n";
+
+                    macros.Add("[PALADIN]HolyLightMaster", paladinHolyLightContent);
+
                     break;
 
                 case Enums.Game.PlayerClass.Hunter: /* HUNTER MACROS */
@@ -108,6 +116,27 @@ namespace Multiboxer
                                                          $"/cast Concussive Shot";
 
                     macros.Add("[HUNTER]ConcShot", hunterConcussiveShotContent);
+
+                    break;
+
+                case Enums.Game.PlayerClass.Rogue: /* ROGUE MACROS */
+                    break;
+
+                case Enums.Game.PlayerClass.Priest: /* PRIEST MACROS */
+
+                    // LESSER HEAL MACRO
+
+                    string priestLesserHealContent = $"/target {masterName}\n" +
+                                                     $"/cast Lesser Heal";
+
+                    macros.Add("[PRIEST]LesserHeal", priestLesserHealContent);
+
+                    // SMITE MACRO
+
+                    string priestSmiteContent = $"/assist {masterName}\n" +
+                                                $"/cast Smite";
+
+                    macros.Add("[PRIEST]Smite", priestSmiteContent);
 
                     break;
             }

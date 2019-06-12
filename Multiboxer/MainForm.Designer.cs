@@ -49,6 +49,11 @@
             this.labelIgnoreList = new System.Windows.Forms.Label();
             this.richTextBoxIgnoreList = new System.Windows.Forms.RichTextBox();
             this.tabPageMacroGenerator = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.buttonCopyMacroContent = new System.Windows.Forms.Button();
+            this.buttonCopyMacroName = new System.Windows.Forms.Button();
             this.textBoxMacroName = new System.Windows.Forms.TextBox();
             this.richTextBoxMacroContent = new System.Windows.Forms.RichTextBox();
             this.listBoxGeneratedMacros = new System.Windows.Forms.ListBox();
@@ -56,11 +61,7 @@
             this.statusStripMainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
-            this.buttonCopyMacroName = new System.Windows.Forms.Button();
-            this.buttonCopyMacroContent = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.buttonMacroGenHelp = new System.Windows.Forms.Button();
             this.tabControlMainWindow.SuspendLayout();
             this.tabPageMultiboxing.SuspendLayout();
             this.tabPageIgnoreList.SuspendLayout();
@@ -298,6 +299,7 @@
             // 
             // tabPageMacroGenerator
             // 
+            this.tabPageMacroGenerator.Controls.Add(this.buttonMacroGenHelp);
             this.tabPageMacroGenerator.Controls.Add(this.label3);
             this.tabPageMacroGenerator.Controls.Add(this.label2);
             this.tabPageMacroGenerator.Controls.Add(this.label1);
@@ -314,6 +316,53 @@
             this.tabPageMacroGenerator.TabIndex = 2;
             this.tabPageMacroGenerator.Text = "Macro Generator";
             this.tabPageMacroGenerator.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(489, 12);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(93, 15);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Selected Macro";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(306, 12);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(48, 15);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Macros";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(97, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(66, 15);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Characters";
+            // 
+            // buttonCopyMacroContent
+            // 
+            this.buttonCopyMacroContent.Location = new System.Drawing.Point(552, 313);
+            this.buttonCopyMacroContent.Name = "buttonCopyMacroContent";
+            this.buttonCopyMacroContent.Size = new System.Drawing.Size(105, 45);
+            this.buttonCopyMacroContent.TabIndex = 6;
+            this.buttonCopyMacroContent.Text = "Copy Content";
+            this.buttonCopyMacroContent.UseVisualStyleBackColor = true;
+            this.buttonCopyMacroContent.Click += new System.EventHandler(this.buttonCopyMacroContent_Click);
+            // 
+            // buttonCopyMacroName
+            // 
+            this.buttonCopyMacroName.Location = new System.Drawing.Point(407, 312);
+            this.buttonCopyMacroName.Name = "buttonCopyMacroName";
+            this.buttonCopyMacroName.Size = new System.Drawing.Size(105, 45);
+            this.buttonCopyMacroName.TabIndex = 5;
+            this.buttonCopyMacroName.Text = "Copy Name";
+            this.buttonCopyMacroName.UseVisualStyleBackColor = true;
+            this.buttonCopyMacroName.Click += new System.EventHandler(this.buttonCopyMacroName_Click);
             // 
             // textBoxMacroName
             // 
@@ -364,52 +413,15 @@
             this.toolStripStatusLabelStatus.Size = new System.Drawing.Size(18, 19);
             this.toolStripStatusLabelStatus.Text = "...";
             // 
-            // buttonCopyMacroName
+            // buttonMacroGenHelp
             // 
-            this.buttonCopyMacroName.Location = new System.Drawing.Point(407, 312);
-            this.buttonCopyMacroName.Name = "buttonCopyMacroName";
-            this.buttonCopyMacroName.Size = new System.Drawing.Size(105, 45);
-            this.buttonCopyMacroName.TabIndex = 5;
-            this.buttonCopyMacroName.Text = "Copy Name";
-            this.buttonCopyMacroName.UseVisualStyleBackColor = true;
-            this.buttonCopyMacroName.Click += new System.EventHandler(this.buttonCopyMacroName_Click);
-            // 
-            // buttonCopyMacroContent
-            // 
-            this.buttonCopyMacroContent.Location = new System.Drawing.Point(552, 313);
-            this.buttonCopyMacroContent.Name = "buttonCopyMacroContent";
-            this.buttonCopyMacroContent.Size = new System.Drawing.Size(105, 45);
-            this.buttonCopyMacroContent.TabIndex = 6;
-            this.buttonCopyMacroContent.Text = "Copy Content";
-            this.buttonCopyMacroContent.UseVisualStyleBackColor = true;
-            this.buttonCopyMacroContent.Click += new System.EventHandler(this.buttonCopyMacroContent_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(93, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 15);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Characters";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(304, 12);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 15);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Macros";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(489, 12);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(93, 15);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Selected Macro";
+            this.buttonMacroGenHelp.Location = new System.Drawing.Point(519, 323);
+            this.buttonMacroGenHelp.Name = "buttonMacroGenHelp";
+            this.buttonMacroGenHelp.Size = new System.Drawing.Size(27, 24);
+            this.buttonMacroGenHelp.TabIndex = 10;
+            this.buttonMacroGenHelp.Text = "?";
+            this.buttonMacroGenHelp.UseVisualStyleBackColor = true;
+            this.buttonMacroGenHelp.Click += new System.EventHandler(this.buttonMacroGenHelp_Click);
             // 
             // MainForm
             // 
@@ -471,6 +483,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button buttonMacroGenHelp;
     }
 }
 

@@ -8,7 +8,6 @@ namespace Multiboxer
 {
     class MacroGenerator
     {
-
         public static Dictionary<string, string> GenerateMasterMacros(string[] childNames)
         {
             // master dictionary
@@ -22,7 +21,8 @@ namespace Multiboxer
 
             foreach (string s in childNames)
             {
-                inviteMacroContent += $"/invite {childNames[i]}\n";
+                inviteMacroContent += $"// Bind this and AcceptGroupMacro to same key\n" +
+                                      $"/invite {childNames[i]}\n";
                 i++;
             }
 
@@ -37,13 +37,14 @@ namespace Multiboxer
             return masterClientMacros;
         }
 
-        public static Dictionary<string, string> GenerateChildMacros(string masterName)
+        public static Dictionary<string, string> GenerateChildMacros(string masterName, Enums.Game.PlayerClass playerClass)
         {
             Dictionary<string, string> childClientMacros = new Dictionary<string, string>();
 
             // ACCEPTGROUP MACRO
 
-            string acceptGroupMacroContent = "/script AcceptGroup()";
+            string acceptGroupMacroContent = "// Bind this and InviteMacro to same key\n" +
+                                             "/script AcceptGroup()";
 
             childClientMacros.Add("AcceptGroupMacro", acceptGroupMacroContent);
 
@@ -61,7 +62,55 @@ namespace Multiboxer
 
             childClientMacros.Add("FollowMacro", followMacroContent);
 
+            // Generate class macros
+            ClassMacros(childClientMacros, masterName, playerClass);
+
             return childClientMacros;
+        }
+
+        public static void ClassMacros(Dictionary<string, string> macros, string masterName, Enums.Game.PlayerClass playerClass)
+        {
+            switch (playerClass) /* TODO: FINISH CLASS MACROS */
+            {
+                case Enums.Game.PlayerClass.Warrior: /* WARRIOR MACROS */
+
+                    // HEROIC STRIKE MACRO
+
+                    string warriorHeroicStrikeContent = $"/assist {masterName}\n" +
+                                                        $"/cast Heroic Strike";
+
+                    macros.Add("[WARRIOR]HeroicStrike", warriorHeroicStrikeContent);
+
+                    // CHARGE MACRO
+
+                    string warriorChargeContent = $"/assist {masterName}\n" +
+                                                  $"/cast Charge";
+
+                    macros.Add("[WARRIOR]Charge", warriorChargeContent);
+
+                    break;
+
+                case Enums.Game.PlayerClass.Paladin: /* PALADIN MACROS */
+                    break;
+
+                case Enums.Game.PlayerClass.Hunter: /* HUNTER MACROS */
+
+                    // ARCANE SHOT MACRO
+
+                    string hunterArcaneShotContent = $"/assist {masterName}\n" +
+                                                     $"/cast Arcane Shot";
+
+                    macros.Add("[HUNTER]ArcaneShot", hunterArcaneShotContent);
+
+                    // CONCUSSIVE SHOT MACRO
+
+                    string hunterConcussiveShotContent = $"/assist {masterName}\n" +
+                                                         $"/cast Concussive Shot";
+
+                    macros.Add("[HUNTER]ConcShot", hunterConcussiveShotContent);
+
+                    break;
+            }
         }
     }
 }

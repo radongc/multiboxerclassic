@@ -63,7 +63,7 @@ namespace Multiboxer
             consoleWriter.DebugLog($"Set master client to {MasterClient.Player.Name} - {procId}", ConfigurationManager.LogType.MESSAGE);
             consoleWriter.DebugLog($"Game version - {MasterClient.Player.GameVersion}", ConfigurationManager.LogType.MESSAGE);
             consoleWriter.DebugLog($"Realm name - {MasterClient.Player.RealmName}", ConfigurationManager.LogType.MESSAGE);
-            consoleWriter.DebugLog($"Class - {MasterClient.Player.Class}", ConfigurationManager.LogType.MESSAGE);
+            consoleWriter.DebugLog($"Class - {MasterClient.Player.ClassName}", ConfigurationManager.LogType.MESSAGE);
         }
 
         public void SetIgnoredKeys(RichTextBox rtb)

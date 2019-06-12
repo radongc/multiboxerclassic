@@ -260,33 +260,58 @@ namespace Multiboxer
 
         private void listBoxMacroGenCharacterSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (InputCallback.ProcManager.MasterClient != null)
+            try
             {
-                // did we select the master?
-                if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name))
+                if (InputCallback.ProcManager.MasterClient != null)
                 {
-                    PopulateMacroList(true); // new method; pop macro list for master ('true')
+                    WoWClient selectedClient = new WoWClient();
+
+                    foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+                    {
+                        if (listBoxMacroGenCharacterSelect.SelectedItem.ToString() == c.Player.Name)
+                        {
+                            selectedClient = c;
+                            break;
+                        }
+                    }
+
+                    // did we select the master?
+                    if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name))
+                    {
+                        PopulateMacroList(true, selectedClient.Player.Class); // new method; pop macro list for master ('true')
+                    }
+                    else
+                    {
+                        PopulateMacroList(false, selectedClient.Player.Class); // new method; pop macro list for children ('false')
+                    }
                 }
                 else
                 {
-                    PopulateMacroList(false); // new method; pop macro list for children ('false')
+                    MessageBox.Show(StaticTextLibrary.ErrorText.MasterClientMacro, "Macro Generator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            else
+            catch (Exception b)
             {
-                MessageBox.Show(StaticTextLibrary.ErrorText.MasterClientMacro, "Macro Generator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                consoleWriterMain.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
             }
         }
 
         private void listBoxGeneratedMacros_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name)) // did we select the master?
+            try
             {
-                PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _masterMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
+                if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name)) // did we select the master?
+                {
+                    PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _masterMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
+                }
+                else
+                {
+                    PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _childMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
+                }
             }
-            else
+            catch (Exception b)
             {
-                PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _childMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
+                consoleWriterMain.DebugLog(e.ToString(), ConfigurationManager.LogType.ERROR);
             }
         }
 
@@ -322,7 +347,7 @@ namespace Multiboxer
             }
         }
 
-        private void PopulateMacroList(bool isMaster)
+        private void PopulateMacroList(bool isMaster, Enums.Game.PlayerClass playerClass)
         {
             listBoxGeneratedMacros.Items.Clear();
 
@@ -356,7 +381,7 @@ namespace Multiboxer
 
                 string masterName = InputCallback.ProcManager.MasterClient.Player.Name;
 
-                _childMacroList = MacroGenerator.GenerateChildMacros(masterName);
+                _childMacroList = MacroGenerator.GenerateChildMacros(masterName, playerClass);
 
                 foreach (string s in _childMacroList.Keys)
                 {

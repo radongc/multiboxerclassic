@@ -36,6 +36,12 @@ namespace Multiboxer
 
         // Constructors
 
+        public WoWClient()
+        {
+            GameProcess = null;
+            BaseAddress = IntPtr.Zero;
+        }
+
         public WoWClient(int procId)
         {
             SetClient(procId);
@@ -175,7 +181,8 @@ namespace Multiboxer
             public bool IsInGame => _gameClient.ReadAsType<bool>(Offsets.Player.IsInGame);
 
             public byte ClassID => _gameClient.ReadAsType<byte>(Offsets.Player.Class);
-            public string Class => ((Enums.Game.PlayerClass)ClassID).ToString();
+            public string ClassName => ((Enums.Game.PlayerClass)ClassID).ToString();
+            public Enums.Game.PlayerClass Class => (Enums.Game.PlayerClass)ClassID;
 
             public float PlayerX => _gameClient.ReadAsType<float>(Offsets.Player.XCoord);
             public float PlayerY => _gameClient.ReadAsType<float>(Offsets.Player.YCoord);

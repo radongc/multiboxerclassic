@@ -18,3 +18,10 @@ Basic multiboxer with simple blacklisting/memory reading capabilities.
 - Basic blacklisting/whitelisting capabilities
 - Basic memory reading capabilities
 - Macro generator
+
+# Pictures
+![Main Multiboxing tab](https://i.imgur.com/tvyLyqk.png)
+
+![IgnoreList (blacklist/whitelist) tab](https://i.imgur.com/PF7E9cC.png)
+
+![Macro Generator tab](https://i.imgur.com/FoFKRxV.png)

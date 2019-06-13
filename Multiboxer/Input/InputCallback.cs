@@ -34,7 +34,7 @@ namespace Multiboxer
             //m_GlobalHook.MouseUp += Hook_OnMouseUp;
         }
 
-        private void InputCallback_OnKeyDown(object sender, KeyEventArgs e)
+        private void InputCallback_OnKeyDown(object sender, KeyEventArgs e) // TODO: add error handling to input callbacks
         {
             ProcManager.RefreshClientProcList();
 
@@ -46,14 +46,17 @@ namespace Multiboxer
 
                     int i = 0;
 
-                    foreach (Keys key in ProcManager.IgnoredKeys)
+                    if (ProcManager.IgnoredKeys != null)
                     {
-                        if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                        foreach (Keys key in ProcManager.IgnoredKeys)
                         {
-                            keyIsBlacklisted = true;
-                        }
+                            if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                            {
+                                keyIsBlacklisted = true;
+                            }
 
-                        i++;
+                            i++;
+                        }
                     }
 
                     if (keyIsBlacklisted)
@@ -93,15 +96,18 @@ namespace Multiboxer
                     bool keyIsWhitelisted = false;
 
                     int i = 0;
-
-                    foreach (Keys key in ProcManager.IgnoredKeys)
+                    
+                    if (ProcManager.IgnoredKeys != null)
                     {
-                        if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                        foreach (Keys key in ProcManager.IgnoredKeys)
                         {
-                            keyIsWhitelisted = true;
-                        }
+                            if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                            {
+                                keyIsWhitelisted = true;
+                            }
 
-                        i++;
+                            i++;
+                        }
                     }
 
                     if (keyIsWhitelisted) // essentially just do the opposite of what is done in the blacklist
@@ -178,14 +184,17 @@ namespace Multiboxer
 
                     int i = 0;
 
-                    foreach (Keys key in ProcManager.IgnoredKeys)
+                    if (ProcManager.IgnoredKeys != null)
                     {
-                        if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                        foreach (Keys key in ProcManager.IgnoredKeys)
                         {
-                            keyIsBlacklisted = true;
-                        }
+                            if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                            {
+                                keyIsBlacklisted = true;
+                            }
 
-                        i++;
+                            i++;
+                        }
                     }
 
                     if (keyIsBlacklisted)
@@ -226,14 +235,17 @@ namespace Multiboxer
 
                     int i = 0;
 
-                    foreach (Keys key in ProcManager.IgnoredKeys)
+                    if (ProcManager.IgnoredKeys != null)
                     {
-                        if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                        foreach (Keys key in ProcManager.IgnoredKeys)
                         {
-                            keyIsWhitelisted = true;
-                        }
+                            if (e.KeyCode.Equals(ProcManager.IgnoredKeys[i]))
+                            {
+                                keyIsWhitelisted = true;
+                            }
 
-                        i++;
+                            i++;
+                        }
                     }
 
                     if (keyIsWhitelisted)

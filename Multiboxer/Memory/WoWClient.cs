@@ -175,7 +175,20 @@ namespace Multiboxer
             public string RealmName => _gameClient.ReadString(Offsets.Misc.RealmName);
 
             // In-game
-            public string Name => _gameClient.ReadStringBase(Offsets.Player.Name);
+            public string Name
+            {
+                get
+                {
+                    if (IsInGame)
+                    {
+                        return _gameClient.ReadStringBase(Offsets.Player.Name);
+                    }
+                    else
+                    {
+                        return "Not connected";
+                    }
+                }
+            }
 
             public bool IsLooting => _gameClient.ReadAsType<bool>(Offsets.Player.IsLooting);
             public bool IsInGame => _gameClient.ReadAsType<bool>(Offsets.Player.IsInGame);

@@ -29,8 +29,8 @@ namespace Multiboxer
 
         public ConfigurationManager(string cfgFilePath, ToolStripStatusLabel mainStatusLabel)
         {
-            MainStatusLabel = mainStatusLabel;
             ConfigFilePath = cfgFilePath;
+            MainStatusLabel = mainStatusLabel;
         }
 
         public bool IsFirstRun()
@@ -141,18 +141,39 @@ namespace Multiboxer
         public class ConsoleWriter : TextWriter
         {
             private RichTextBox _myRtb;
+            private string _logFilePath;
+
+            public string LogDirectoryPath { get; }
 
             public bool LogMessages { get; set; }
             public bool LogDebugs { get; set; }
             public bool LogErrors { get; set; }
 
-            public ConsoleWriter(RichTextBox control, bool logMessages, bool logDebugs, bool logErrors)
+            public ConsoleWriter(RichTextBox control, string logDirPath, bool logMessages, bool logDebugs, bool logErrors)
             {
                 _myRtb = control;
+
+                LogDirectoryPath = logDirPath;
+                _logFilePath = $"{LogDirectoryPath}/{DateTime.Now.ToLocalTime().ToString("MM-dd-yyyy")}.log";
 
                 LogMessages = logMessages;
                 LogDebugs = logDebugs;
                 LogErrors = logErrors;
+
+                InitDirectories();
+            }
+
+            public void InitDirectories()
+            {
+                if (!Directory.Exists(LogDirectoryPath))
+                {
+                    Directory.CreateDirectory(LogDirectoryPath);
+                }
+
+                using (StreamWriter sw = File.AppendText(_logFilePath)) // create & open logfile
+                {
+                    sw.WriteLineAsync("----------START OF NEW SESSION----------");
+                }
             }
 
             public override void Write(char value)
@@ -162,7 +183,14 @@ namespace Multiboxer
 
             public override void Write(string value)
             {
-                _myRtb.AppendText($"[{DateTime.Now.ToLocalTime()}] {value}\n");
+                string logText = $"[{DateTime.Now.ToLocalTime()}] {value}\n";
+
+                _myRtb.AppendText(logText);
+
+                using (StreamWriter sw = File.AppendText(_logFilePath)) // opens log file
+                {
+                    sw.WriteLineAsync(logText);
+                }
             }
 
             public override Encoding Encoding

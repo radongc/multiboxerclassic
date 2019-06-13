@@ -78,7 +78,7 @@ namespace Multiboxer
             // Init input callbacks and config manager
             input = new InputCallback();
             config = new ConfigurationManager("config.cfg", toolStripStatusLabelStatus);
-            consoleWriterMain = new ConfigurationManager.ConsoleWriter(richTextBoxMainDebugConsole, checkBoxLogMessages.Checked, checkBoxLogDebugs.Checked, checkBoxLogErrors.Checked);
+            consoleWriterMain = new ConfigurationManager.ConsoleWriter(richTextBoxMainDebugConsole, "logs", checkBoxLogMessages.Checked, checkBoxLogDebugs.Checked, checkBoxLogErrors.Checked);
 
             InputCallback.ProcManager.SetConsoleWriter(consoleWriterMain); // allow procManager to write to console
             config.SetConsoleWriter(consoleWriterMain);

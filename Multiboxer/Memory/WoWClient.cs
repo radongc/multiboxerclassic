@@ -140,7 +140,7 @@ namespace Multiboxer
         /// <summary>
         /// Contains information about the Player for a WoWClient
         /// </summary>
-        public class PlayerInfo // rewrite this entire structure, the "Init" way only allows the values to be updated when a new PlayerInfo is instantiated, which is not useful. Possibly rewrite as a struct
+        public class PlayerInfo
         {
             // fields
             private WoWClient _gameClient;

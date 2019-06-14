@@ -15,14 +15,13 @@ namespace Multiboxer
 
             // INVITE MACRO
 
-            string inviteMacroContent = string.Empty;
+            string inviteMacroContent = "// Bind this and AcceptGroupMacro to same key\n";
 
             int i = 0;
 
             foreach (string s in childNames)
             {
-                inviteMacroContent += $"// Bind this and AcceptGroupMacro to same key\n" +
-                                      $"/invite {childNames[i]}\n";
+                inviteMacroContent += $"/invite {childNames[i]}\n";
                 i++;
             }
 

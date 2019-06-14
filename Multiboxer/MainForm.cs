@@ -107,13 +107,16 @@ namespace Multiboxer
         {
             try
             {
-                string procDataUnformatted = listBoxSelectMasterClient.SelectedItem.ToString();
+                if (listBoxSelectMasterClient.SelectedItem != null) // avoid unecessary exceptions
+                {
+                    string procDataUnformatted = listBoxSelectMasterClient.SelectedItem.ToString();
 
-                string procDataFormatted = procDataUnformatted.Replace(" ", "");
+                    string procDataFormatted = procDataUnformatted.Replace(" ", "");
 
-                string[] procData = procDataFormatted.Split('-');
+                    string[] procData = procDataFormatted.Split('-');
 
-                InputCallback.ProcManager.SetMasterClient(Convert.ToInt32(procData[1]));
+                    InputCallback.ProcManager.SetMasterClient(Convert.ToInt32(procData[1]));
+                }
             }
             catch (Exception b)
             {
@@ -262,32 +265,35 @@ namespace Multiboxer
         {
             try
             {
-                if (InputCallback.ProcManager.MasterClient != null)
+                if (listBoxMacroGenCharacterSelect.SelectedItem != null) // avoid unecessary exceptions
                 {
-                    WoWClient selectedClient = new WoWClient();
-
-                    foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+                    if (InputCallback.ProcManager.MasterClient != null)
                     {
-                        if (listBoxMacroGenCharacterSelect.SelectedItem.ToString() == c.Player.Name)
+                        WoWClient selectedClient = new WoWClient();
+
+                        foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
                         {
-                            selectedClient = c;
-                            break;
+                            if (listBoxMacroGenCharacterSelect.SelectedItem.ToString() == c.Player.Name)
+                            {
+                                selectedClient = c;
+                                break;
+                            }
                         }
-                    }
 
-                    // did we select the master?
-                    if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name))
-                    {
-                        PopulateMacroList(true, selectedClient.Player.Class); // new method; pop macro list for master ('true')
+                        // did we select the master?
+                        if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name))
+                        {
+                            PopulateMacroList(true, selectedClient.Player.Class); // new method; pop macro list for master ('true')
+                        }
+                        else
+                        {
+                            PopulateMacroList(false, selectedClient.Player.Class); // new method; pop macro list for children ('false')
+                        }
                     }
                     else
                     {
-                        PopulateMacroList(false, selectedClient.Player.Class); // new method; pop macro list for children ('false')
+                        MessageBox.Show(StaticTextLibrary.ErrorText.MasterClientMacro, "Macro Generator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
-                }
-                else
-                {
-                    MessageBox.Show(StaticTextLibrary.ErrorText.MasterClientMacro, "Macro Generator", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception b)
@@ -300,13 +306,16 @@ namespace Multiboxer
         {
             try
             {
-                if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name)) // did we select the master?
+                if (listBoxGeneratedMacros.SelectedItem != null) // Avoid unecessary exceptions
                 {
-                    PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _masterMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
-                }
-                else
-                {
-                    PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _childMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
+                    if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name)) // did we select the master?
+                    {
+                        PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _masterMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
+                    }
+                    else
+                    {
+                        PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _childMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
+                    }
                 }
             }
             catch (Exception b)

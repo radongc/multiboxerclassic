@@ -311,7 +311,7 @@ namespace Multiboxer
             }
             catch (Exception b)
             {
-                consoleWriterMain.DebugLog(e.ToString(), ConfigurationManager.LogType.ERROR);
+                consoleWriterMain.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
             }
         }
 

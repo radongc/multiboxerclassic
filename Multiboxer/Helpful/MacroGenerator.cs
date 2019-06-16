@@ -96,7 +96,14 @@ namespace Multiboxer
                     string paladinHolyLightContent = $"/target {masterName}\n" +
                                                      $"/cast Holy Light\n";
 
-                    macros.Add("[PALADIN]HolyLightMaster", paladinHolyLightContent);
+                    macros.Add("[PALADIN]HolyLight", paladinHolyLightContent);
+
+                    // BLESSING OF MIGHT MACRO
+
+                    string paladinBoMContent = $"/target {masterName}\n" +
+                                               $"/cast Blessing of Might";
+
+                    macros.Add("[PALADIN]BOfMight", paladinBoMContent);
 
                     break;
 
@@ -119,6 +126,21 @@ namespace Multiboxer
                     break;
 
                 case Enums.Game.PlayerClass.Rogue: /* ROGUE MACROS */
+                    
+                    // SINISTER STRIKE MACRO
+
+                    string rogueSinisterStrikeContent = $"/assist {masterName}\n" +
+                                                        $"/cast Sinister Strike";
+
+                    macros.Add("[ROGUE]SinisterStrike", rogueSinisterStrikeContent);
+
+                    // EVISCERATE MACRO
+
+                    string rogueEviscerateContent = $"/assist {masterName}\n" +
+                                                    $"/cast Eviscerate";
+
+                    macros.Add("[ROGUE]Eviscerate", rogueEviscerateContent);
+
                     break;
 
                 case Enums.Game.PlayerClass.Priest: /* PRIEST MACROS */
@@ -137,6 +159,65 @@ namespace Multiboxer
 
                     macros.Add("[PRIEST]Smite", priestSmiteContent);
 
+                    // POWER WORD: FORTITUDE MACRO
+
+                    string priestPwFortitudeContent = $"/target {masterName}\n" +
+                                                      $"/cast Power Word: Fortitude";
+
+                    macros.Add("[PRIEST]PWordFortitude", priestPwFortitudeContent);
+
+                    break;
+                case Enums.Game.PlayerClass.Shaman:
+                    break;
+                case Enums.Game.PlayerClass.Mage:
+
+                    // FROSTBOLT MACRO
+
+                    string mageFrostboltContent = $"/assist {masterName}\n" +
+                                                  $"/cast Frostbolt";
+
+                    macros.Add("[MAGE]Frostbolt", mageFrostboltContent);
+
+                    // FIREBALL MACRO
+
+                    string mageFireballContent = $"/assist {masterName}\n" +
+                                                 $"/cast Fireball";
+
+                    macros.Add("[MAGE]Fireball", mageFireballContent);
+
+                    // ARCANE INTELLECT MACRO
+
+                    string mageArcaneIntellectContent = $"/target {masterName}\n" +
+                                                        $"/cast Arcane Intellect";
+
+                    macros.Add("[MAGE]ArcaneIntellect", mageArcaneIntellectContent);
+
+                    break;
+                case Enums.Game.PlayerClass.Warlock:
+
+                    // SHADOW BOLT MACRO
+
+                    string warlockShadowBoltContent = $"/assist {masterName}\n" +
+                                                      $"/cast Shadow Bolt";
+
+                    macros.Add("[WARLOCK]ShadowBolt", warlockShadowBoltContent);
+
+                    // IMMOLATE MACRO
+
+                    string warlockImmolateContent = $"/assist {masterName}\n" +
+                                                    $"/cast Immolate";
+
+                    macros.Add("[WARLOCK]Immolate", warlockImmolateContent);
+
+                    // CORRUPTION MACRO
+
+                    string warlockCorruptionContent = $"/assist {masterName}\n" +
+                                                      $"/cast Corruption";
+
+                    macros.Add("[WARLOCK]Corruption", warlockCorruptionContent);
+
+                    break;
+                case Enums.Game.PlayerClass.Druid:
                     break;
             }
         }

@@ -16,7 +16,7 @@ namespace Multiboxer
 
         // Fields
 
-        private readonly string _gameProcessNamePartial = "WoW";
+        private readonly string _gameProcessNamePartial = "WowClassic";
 
         private ConfigurationManager.ConsoleWriter consoleWriter;
 
@@ -60,10 +60,7 @@ namespace Multiboxer
 
             consoleWriter.Clear();
 
-            consoleWriter.DebugLog($"Set master client to {MasterClient.Player.Name} - {procId}", ConfigurationManager.LogType.MESSAGE);
-            consoleWriter.DebugLog($"Game version - {MasterClient.Player.GameVersion}", ConfigurationManager.LogType.MESSAGE);
-            consoleWriter.DebugLog($"Realm name - {MasterClient.Player.RealmName}", ConfigurationManager.LogType.MESSAGE);
-            consoleWriter.DebugLog($"Class - {MasterClient.Player.ClassName}", ConfigurationManager.LogType.MESSAGE);
+            consoleWriter.DebugLog($"Set master client to {MasterClient.GameProcess.ProcessName} - {procId}", ConfigurationManager.LogType.MESSAGE);
         }
 
         public void SetIgnoredKeys(RichTextBox rtb)

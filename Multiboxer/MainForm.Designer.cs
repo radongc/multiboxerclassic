@@ -49,6 +49,7 @@
             this.labelIgnoreList = new System.Windows.Forms.Label();
             this.richTextBoxIgnoreList = new System.Windows.Forms.RichTextBox();
             this.tabPageMacroGenerator = new System.Windows.Forms.TabPage();
+            this.buttonMacroGenHelp = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -61,7 +62,6 @@
             this.statusStripMainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
-            this.buttonMacroGenHelp = new System.Windows.Forms.Button();
             this.tabControlMainWindow.SuspendLayout();
             this.tabPageMultiboxing.SuspendLayout();
             this.tabPageIgnoreList.SuspendLayout();
@@ -127,7 +127,7 @@
             this.checkBoxLogErrors.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxLogErrors.Location = new System.Drawing.Point(574, 9);
             this.checkBoxLogErrors.Name = "checkBoxLogErrors";
-            this.checkBoxLogErrors.Size = new System.Drawing.Size(83, 19);
+            this.checkBoxLogErrors.Size = new System.Drawing.Size(74, 17);
             this.checkBoxLogErrors.TabIndex = 8;
             this.checkBoxLogErrors.Text = "Error Logs";
             this.checkBoxLogErrors.UseVisualStyleBackColor = true;
@@ -140,7 +140,7 @@
             this.checkBoxLogDebugs.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxLogDebugs.Location = new System.Drawing.Point(475, 9);
             this.checkBoxLogDebugs.Name = "checkBoxLogDebugs";
-            this.checkBoxLogDebugs.Size = new System.Drawing.Size(93, 19);
+            this.checkBoxLogDebugs.Size = new System.Drawing.Size(84, 17);
             this.checkBoxLogDebugs.TabIndex = 7;
             this.checkBoxLogDebugs.Text = "Debug Logs";
             this.checkBoxLogDebugs.UseVisualStyleBackColor = true;
@@ -153,7 +153,7 @@
             this.checkBoxLogMessages.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxLogMessages.Location = new System.Drawing.Point(362, 9);
             this.checkBoxLogMessages.Name = "checkBoxLogMessages";
-            this.checkBoxLogMessages.Size = new System.Drawing.Size(107, 19);
+            this.checkBoxLogMessages.Size = new System.Drawing.Size(95, 17);
             this.checkBoxLogMessages.TabIndex = 6;
             this.checkBoxLogMessages.Text = "Message Logs";
             this.checkBoxLogMessages.UseVisualStyleBackColor = true;
@@ -183,7 +183,7 @@
             this.labelSelectMasterClient.AutoSize = true;
             this.labelSelectMasterClient.Location = new System.Drawing.Point(29, 40);
             this.labelSelectMasterClient.Name = "labelSelectMasterClient";
-            this.labelSelectMasterClient.Size = new System.Drawing.Size(119, 15);
+            this.labelSelectMasterClient.Size = new System.Drawing.Size(104, 13);
             this.labelSelectMasterClient.TabIndex = 3;
             this.labelSelectMasterClient.Text = "Select Master Client:";
             // 
@@ -228,7 +228,7 @@
             this.checkBoxWhitelist.AutoSize = true;
             this.checkBoxWhitelist.Location = new System.Drawing.Point(376, 97);
             this.checkBoxWhitelist.Name = "checkBoxWhitelist";
-            this.checkBoxWhitelist.Size = new System.Drawing.Size(132, 19);
+            this.checkBoxWhitelist.Size = new System.Drawing.Size(120, 17);
             this.checkBoxWhitelist.TabIndex = 6;
             this.checkBoxWhitelist.Text = "Whitelist these keys";
             this.checkBoxWhitelist.UseVisualStyleBackColor = true;
@@ -241,7 +241,7 @@
             this.checkBoxBlacklist.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxBlacklist.Location = new System.Drawing.Point(376, 72);
             this.checkBoxBlacklist.Name = "checkBoxBlacklist";
-            this.checkBoxBlacklist.Size = new System.Drawing.Size(131, 19);
+            this.checkBoxBlacklist.Size = new System.Drawing.Size(119, 17);
             this.checkBoxBlacklist.TabIndex = 5;
             this.checkBoxBlacklist.Text = "Blacklist these keys";
             this.checkBoxBlacklist.UseVisualStyleBackColor = true;
@@ -254,7 +254,7 @@
             this.checkBoxEnableIgnoreList.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxEnableIgnoreList.Location = new System.Drawing.Point(376, 47);
             this.checkBoxEnableIgnoreList.Name = "checkBoxEnableIgnoreList";
-            this.checkBoxEnableIgnoreList.Size = new System.Drawing.Size(122, 19);
+            this.checkBoxEnableIgnoreList.Size = new System.Drawing.Size(108, 17);
             this.checkBoxEnableIgnoreList.TabIndex = 4;
             this.checkBoxEnableIgnoreList.Text = "Enable IgnoreList";
             this.checkBoxEnableIgnoreList.UseVisualStyleBackColor = true;
@@ -285,7 +285,7 @@
             this.labelIgnoreList.AutoSize = true;
             this.labelIgnoreList.Location = new System.Drawing.Point(144, 20);
             this.labelIgnoreList.Name = "labelIgnoreList";
-            this.labelIgnoreList.Size = new System.Drawing.Size(64, 15);
+            this.labelIgnoreList.Size = new System.Drawing.Size(56, 13);
             this.labelIgnoreList.TabIndex = 1;
             this.labelIgnoreList.Text = "Ignore List";
             // 
@@ -317,12 +317,22 @@
             this.tabPageMacroGenerator.Text = "Macro Generator";
             this.tabPageMacroGenerator.UseVisualStyleBackColor = true;
             // 
+            // buttonMacroGenHelp
+            // 
+            this.buttonMacroGenHelp.Location = new System.Drawing.Point(519, 323);
+            this.buttonMacroGenHelp.Name = "buttonMacroGenHelp";
+            this.buttonMacroGenHelp.Size = new System.Drawing.Size(27, 24);
+            this.buttonMacroGenHelp.TabIndex = 10;
+            this.buttonMacroGenHelp.Text = "?";
+            this.buttonMacroGenHelp.UseVisualStyleBackColor = true;
+            //this.buttonMacroGenHelp.Click += new System.EventHandler(this.buttonMacroGenHelp_Click);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(489, 12);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(93, 15);
+            this.label3.Size = new System.Drawing.Size(82, 13);
             this.label3.TabIndex = 9;
             this.label3.Text = "Selected Macro";
             // 
@@ -331,7 +341,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(306, 12);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 15);
+            this.label2.Size = new System.Drawing.Size(42, 13);
             this.label2.TabIndex = 8;
             this.label2.Text = "Macros";
             // 
@@ -340,7 +350,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(97, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 15);
+            this.label1.Size = new System.Drawing.Size(58, 13);
             this.label1.TabIndex = 7;
             this.label1.Text = "Characters";
             // 
@@ -352,7 +362,7 @@
             this.buttonCopyMacroContent.TabIndex = 6;
             this.buttonCopyMacroContent.Text = "Copy Content";
             this.buttonCopyMacroContent.UseVisualStyleBackColor = true;
-            this.buttonCopyMacroContent.Click += new System.EventHandler(this.buttonCopyMacroContent_Click);
+            //this.buttonCopyMacroContent.Click += new System.EventHandler(this.buttonCopyMacroContent_Click);
             // 
             // buttonCopyMacroName
             // 
@@ -362,7 +372,7 @@
             this.buttonCopyMacroName.TabIndex = 5;
             this.buttonCopyMacroName.Text = "Copy Name";
             this.buttonCopyMacroName.UseVisualStyleBackColor = true;
-            this.buttonCopyMacroName.Click += new System.EventHandler(this.buttonCopyMacroName_Click);
+            //this.buttonCopyMacroName.Click += new System.EventHandler(this.buttonCopyMacroName_Click);
             // 
             // textBoxMacroName
             // 
@@ -386,7 +396,7 @@
             this.listBoxGeneratedMacros.Name = "listBoxGeneratedMacros";
             this.listBoxGeneratedMacros.Size = new System.Drawing.Size(136, 329);
             this.listBoxGeneratedMacros.TabIndex = 2;
-            this.listBoxGeneratedMacros.SelectedIndexChanged += new System.EventHandler(this.listBoxGeneratedMacros_SelectedIndexChanged);
+            //this.listBoxGeneratedMacros.SelectedIndexChanged += new System.EventHandler(this.listBoxGeneratedMacros_SelectedIndexChanged);
             // 
             // listBoxMacroGenCharacterSelect
             // 
@@ -395,33 +405,23 @@
             this.listBoxMacroGenCharacterSelect.Name = "listBoxMacroGenCharacterSelect";
             this.listBoxMacroGenCharacterSelect.Size = new System.Drawing.Size(213, 329);
             this.listBoxMacroGenCharacterSelect.TabIndex = 0;
-            this.listBoxMacroGenCharacterSelect.SelectedIndexChanged += new System.EventHandler(this.listBoxMacroGenCharacterSelect_SelectedIndexChanged);
+            //this.listBoxMacroGenCharacterSelect.SelectedIndexChanged += new System.EventHandler(this.listBoxMacroGenCharacterSelect_SelectedIndexChanged);
             // 
             // statusStripMainStatus
             // 
             this.statusStripMainStatus.ImageScalingSize = new System.Drawing.Size(18, 18);
             this.statusStripMainStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelStatus});
-            this.statusStripMainStatus.Location = new System.Drawing.Point(0, 401);
+            this.statusStripMainStatus.Location = new System.Drawing.Point(0, 403);
             this.statusStripMainStatus.Name = "statusStripMainStatus";
-            this.statusStripMainStatus.Size = new System.Drawing.Size(671, 24);
+            this.statusStripMainStatus.Size = new System.Drawing.Size(671, 22);
             this.statusStripMainStatus.TabIndex = 3;
             // 
             // toolStripStatusLabelStatus
             // 
             this.toolStripStatusLabelStatus.Name = "toolStripStatusLabelStatus";
-            this.toolStripStatusLabelStatus.Size = new System.Drawing.Size(18, 19);
+            this.toolStripStatusLabelStatus.Size = new System.Drawing.Size(16, 17);
             this.toolStripStatusLabelStatus.Text = "...";
-            // 
-            // buttonMacroGenHelp
-            // 
-            this.buttonMacroGenHelp.Location = new System.Drawing.Point(519, 323);
-            this.buttonMacroGenHelp.Name = "buttonMacroGenHelp";
-            this.buttonMacroGenHelp.Size = new System.Drawing.Size(27, 24);
-            this.buttonMacroGenHelp.TabIndex = 10;
-            this.buttonMacroGenHelp.Text = "?";
-            this.buttonMacroGenHelp.UseVisualStyleBackColor = true;
-            this.buttonMacroGenHelp.Click += new System.EventHandler(this.buttonMacroGenHelp_Click);
             // 
             // MainForm
             // 

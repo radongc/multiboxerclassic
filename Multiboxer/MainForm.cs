@@ -65,7 +65,7 @@ namespace Multiboxer
             InputCallback.ProcManager.RefreshClientProcList();
 
             PopulateClientList();
-            PopulateCharacterList();
+            //PopulateCharacterList();
 
             config.UpdateStatus($"Found {InputCallback.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
         }
@@ -134,7 +134,7 @@ namespace Multiboxer
             InputCallback.ProcManager.RefreshClientProcList();
 
             PopulateClientList();
-            PopulateCharacterList();
+            //PopulateCharacterList();
 
             config.UpdateStatus($"Found {InputCallback.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
         }
@@ -147,7 +147,7 @@ namespace Multiboxer
 
             foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
             {
-                listBoxSelectMasterClient.Items.Add($"{c.Player.Name} - {c.GameProcess.Id}");
+                listBoxSelectMasterClient.Items.Add($"{c.GameProcess.ProcessName} - {c.GameProcess.Id}");
             }
         }
 
@@ -259,6 +259,7 @@ namespace Multiboxer
         }
         #endregion IGNORE LIST TAB
 
+        /*
         #region MACRO GENERATOR TAB
 
         private void listBoxMacroGenCharacterSelect_SelectedIndexChanged(object sender, EventArgs e)
@@ -413,5 +414,6 @@ namespace Multiboxer
         #endregion Private Methods - Macro Generator Tab
 
         #endregion MACRO GENERATOR TAB
+        */
     }
 }

@@ -65,7 +65,7 @@ namespace Multiboxer
             InputCallback.ProcManager.RefreshClientProcList();
 
             PopulateClientList();
-            //PopulateCharacterList();
+            PopulateCharacterList();
 
             config.UpdateStatus($"Found {InputCallback.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
         }
@@ -259,7 +259,7 @@ namespace Multiboxer
         }
         #endregion IGNORE LIST TAB
 
-        /*
+        
         #region MACRO GENERATOR TAB
 
         private void listBoxMacroGenCharacterSelect_SelectedIndexChanged(object sender, EventArgs e)
@@ -274,7 +274,7 @@ namespace Multiboxer
 
                         foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
                         {
-                            if (listBoxMacroGenCharacterSelect.SelectedItem.ToString() == c.Player.Name)
+                            if (listBoxMacroGenCharacterSelect.SelectedItem.ToString() == c.GameProcess.Id.ToString())
                             {
                                 selectedClient = c;
                                 break;
@@ -282,13 +282,13 @@ namespace Multiboxer
                         }
 
                         // did we select the master?
-                        if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name))
+                        if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.GameProcess.Id.ToString()))
                         {
-                            PopulateMacroList(true, selectedClient.Player.Class); // new method; pop macro list for master ('true')
+                            PopulateMacroList(true, Enums.Game.PlayerClass.Mage); // new method; pop macro list for master ('true')
                         }
                         else
                         {
-                            PopulateMacroList(false, selectedClient.Player.Class); // new method; pop macro list for children ('false')
+                            PopulateMacroList(false, Enums.Game.PlayerClass.Hunter); // new method; pop macro list for children ('false')
                         }
                     }
                     else
@@ -309,7 +309,7 @@ namespace Multiboxer
             {
                 if (listBoxGeneratedMacros.SelectedItem != null) // Avoid unecessary exceptions
                 {
-                    if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.Player.Name)) // did we select the master?
+                    if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.GameProcess.Id.ToString())) // did we select the master?
                     {
                         PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _masterMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
                     }
@@ -358,7 +358,7 @@ namespace Multiboxer
 
             foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
             {
-                listBoxMacroGenCharacterSelect.Items.Add(c.Player.Name);
+                listBoxMacroGenCharacterSelect.Items.Add(c.GameProcess.Id);
             }
         }
 
@@ -378,7 +378,7 @@ namespace Multiboxer
                 {
                     if (c.GameProcess.Id != InputCallback.ProcManager.MasterClient.GameProcess.Id)
                     {
-                        childNames[i] = c.Player.Name;
+                        childNames[i] = "{PartyMember}";
                         i++;
                     }
                 }
@@ -394,7 +394,7 @@ namespace Multiboxer
             {
                 _childMacroList.Clear();
 
-                string masterName = InputCallback.ProcManager.MasterClient.Player.Name;
+                string masterName = "{MasterName}";
 
                 _childMacroList = MacroGenerator.GenerateChildMacros(masterName, playerClass);
 
@@ -414,6 +414,5 @@ namespace Multiboxer
         #endregion Private Methods - Macro Generator Tab
 
         #endregion MACRO GENERATOR TAB
-        */
     }
 }

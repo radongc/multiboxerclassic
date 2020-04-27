@@ -325,7 +325,7 @@
             this.buttonMacroGenHelp.TabIndex = 10;
             this.buttonMacroGenHelp.Text = "?";
             this.buttonMacroGenHelp.UseVisualStyleBackColor = true;
-            //this.buttonMacroGenHelp.Click += new System.EventHandler(this.buttonMacroGenHelp_Click);
+            this.buttonMacroGenHelp.Click += new System.EventHandler(this.buttonMacroGenHelp_Click);
             // 
             // label3
             // 
@@ -362,7 +362,7 @@
             this.buttonCopyMacroContent.TabIndex = 6;
             this.buttonCopyMacroContent.Text = "Copy Content";
             this.buttonCopyMacroContent.UseVisualStyleBackColor = true;
-            //this.buttonCopyMacroContent.Click += new System.EventHandler(this.buttonCopyMacroContent_Click);
+            this.buttonCopyMacroContent.Click += new System.EventHandler(this.buttonCopyMacroContent_Click);
             // 
             // buttonCopyMacroName
             // 
@@ -372,7 +372,7 @@
             this.buttonCopyMacroName.TabIndex = 5;
             this.buttonCopyMacroName.Text = "Copy Name";
             this.buttonCopyMacroName.UseVisualStyleBackColor = true;
-            //this.buttonCopyMacroName.Click += new System.EventHandler(this.buttonCopyMacroName_Click);
+            this.buttonCopyMacroName.Click += new System.EventHandler(this.buttonCopyMacroName_Click);
             // 
             // textBoxMacroName
             // 
@@ -396,7 +396,7 @@
             this.listBoxGeneratedMacros.Name = "listBoxGeneratedMacros";
             this.listBoxGeneratedMacros.Size = new System.Drawing.Size(136, 329);
             this.listBoxGeneratedMacros.TabIndex = 2;
-            //this.listBoxGeneratedMacros.SelectedIndexChanged += new System.EventHandler(this.listBoxGeneratedMacros_SelectedIndexChanged);
+            this.listBoxGeneratedMacros.SelectedIndexChanged += new System.EventHandler(this.listBoxGeneratedMacros_SelectedIndexChanged);
             // 
             // listBoxMacroGenCharacterSelect
             // 
@@ -405,7 +405,7 @@
             this.listBoxMacroGenCharacterSelect.Name = "listBoxMacroGenCharacterSelect";
             this.listBoxMacroGenCharacterSelect.Size = new System.Drawing.Size(213, 329);
             this.listBoxMacroGenCharacterSelect.TabIndex = 0;
-            //this.listBoxMacroGenCharacterSelect.SelectedIndexChanged += new System.EventHandler(this.listBoxMacroGenCharacterSelect_SelectedIndexChanged);
+            this.listBoxMacroGenCharacterSelect.SelectedIndexChanged += new System.EventHandler(this.listBoxMacroGenCharacterSelect_SelectedIndexChanged);
             // 
             // statusStripMainStatus
             // 

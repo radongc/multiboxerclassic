@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -44,6 +45,9 @@ namespace Multiboxer
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         static extern bool PostMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
 
+        [DllImport("user32.dll")]
+        static extern int SetWindowText(IntPtr hWnd, string text);
+
         /* Native method wrappers */
 
         private static void PostMessageSafe(IntPtr hWnd, uint msg, int wParam, int lParam)
@@ -80,6 +84,13 @@ namespace Multiboxer
         }
 
         // Helpful methods
+
+        // Window
+
+        internal static void RenameWindow(Process p, string name)
+        {
+            SetWindowText(p.MainWindowHandle, name);
+        }
 
 
         // Keyboard

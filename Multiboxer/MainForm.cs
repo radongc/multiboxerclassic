@@ -147,7 +147,7 @@ namespace Multiboxer
 
             foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
             {
-                listBoxSelectMasterClient.Items.Add($"{c.GameProcess.ProcessName} - {c.GameProcess.Id}");
+                listBoxSelectMasterClient.Items.Add($"{c.GameProcess.MainWindowTitle} - {c.GameProcess.Id}");
             }
         }
 
@@ -259,7 +259,6 @@ namespace Multiboxer
         }
         #endregion IGNORE LIST TAB
 
-        
         #region MACRO GENERATOR TAB
 
         private void listBoxMacroGenCharacterSelect_SelectedIndexChanged(object sender, EventArgs e)
@@ -274,7 +273,7 @@ namespace Multiboxer
 
                         foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
                         {
-                            if (listBoxMacroGenCharacterSelect.SelectedItem.ToString() == c.GameProcess.Id.ToString())
+                            if (listBoxMacroGenCharacterSelect.SelectedItem.ToString() == c.GameProcess.MainWindowTitle)
                             {
                                 selectedClient = c;
                                 break;
@@ -282,7 +281,7 @@ namespace Multiboxer
                         }
 
                         // did we select the master?
-                        if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.GameProcess.Id.ToString()))
+                        if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.GameProcess.MainWindowTitle))
                         {
                             PopulateMacroList(true, Enums.Game.PlayerClass.Mage); // new method; pop macro list for master ('true')
                         }
@@ -309,7 +308,7 @@ namespace Multiboxer
             {
                 if (listBoxGeneratedMacros.SelectedItem != null) // Avoid unecessary exceptions
                 {
-                    if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.GameProcess.Id.ToString())) // did we select the master?
+                    if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.GameProcess.MainWindowTitle)) // did we select the master?
                     {
                         PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _masterMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
                     }
@@ -358,7 +357,7 @@ namespace Multiboxer
 
             foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
             {
-                listBoxMacroGenCharacterSelect.Items.Add(c.GameProcess.Id);
+                listBoxMacroGenCharacterSelect.Items.Add(c.GameProcess.MainWindowTitle);
             }
         }
 

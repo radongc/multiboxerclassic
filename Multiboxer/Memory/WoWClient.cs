@@ -10,6 +10,8 @@ namespace Multiboxer
 {
     public class WoWClient
     {
+        public static int CurrentGameNum; // set in ProcessManager.RefreshClientProcList()
+
         // Properties
         public Process GameProcess { get; private set; }
 
@@ -34,10 +36,21 @@ namespace Multiboxer
                 Process client = Process.GetProcessById(procId);
 
                 GameProcess = client;
+
+                WindowInit();
             }
             catch (Exception b)
             {
                 //
+            }
+        }
+
+        private void WindowInit()
+        {
+            if (GameProcess.MainWindowTitle == "World of Warcraft")
+            {
+                WindowUtil.RenameWindow(GameProcess, "Game " + CurrentGameNum);
+                CurrentGameNum++;
             }
         }
     }

@@ -360,7 +360,7 @@
             this.buttonCopyMacroContent.Name = "buttonCopyMacroContent";
             this.buttonCopyMacroContent.Size = new System.Drawing.Size(105, 45);
             this.buttonCopyMacroContent.TabIndex = 6;
-            this.buttonCopyMacroContent.Text = "Copy Content";
+            this.buttonCopyMacroContent.Text = "Copy Macro";
             this.buttonCopyMacroContent.UseVisualStyleBackColor = true;
             this.buttonCopyMacroContent.Click += new System.EventHandler(this.buttonCopyMacroContent_Click);
             // 

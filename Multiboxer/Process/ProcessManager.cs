@@ -113,6 +113,8 @@ namespace Multiboxer
         {
             try
             {
+                WoWClient.CurrentGameNum = 1; // make sure it doesnt keep renaming windows higher and higher
+
                 Process[] procs = Process.GetProcesses();
 
                 int i = 0;

@@ -36,8 +36,6 @@ namespace Multiboxer
 
         private void InputCallback_OnKeyDown(object sender, KeyEventArgs e) // TODO: add error handling to input callbacks
         {
-            ProcManager.RefreshClientProcList();
-
             if (ProcManager.IgnoreListEnabled)
             {
                 if (ProcManager.IgnoreListType == ProcessManager.IgnoreType.BLACKLIST) // BLACKLIST
@@ -174,8 +172,6 @@ namespace Multiboxer
 
         private void InputCallback_OnKeyUp(object sender, KeyEventArgs e)
         {
-            ProcManager.RefreshClientProcList();
-
             if (ProcManager.IgnoreListEnabled)
             {
                 if (ProcManager.IgnoreListType == ProcessManager.IgnoreType.BLACKLIST) // BLACKLIST

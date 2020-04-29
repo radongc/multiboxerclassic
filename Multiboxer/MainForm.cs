@@ -153,6 +153,8 @@ namespace Multiboxer
 
         private void StartStopMultiboxing()
         {
+            InputCallback.ProcManager.RefreshClientProcList();
+
             bool errorOccurred = false;
 
             if (!isListening)

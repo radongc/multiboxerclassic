@@ -139,6 +139,12 @@ namespace Multiboxer
             config.UpdateStatus($"Found {InputCallback.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
         }
 
+        private void buttonConfigureChars_Click(object sender, EventArgs e)
+        {
+            CharacterConfigForm charForm = new CharacterConfigForm();
+            charForm.ShowDialog();
+        }
+
         #region Private Methods - Multiboxing Tab
 
         private void PopulateClientList()

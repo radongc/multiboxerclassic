@@ -62,6 +62,7 @@
             this.statusStripMainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
+            this.buttonConfigureChars = new System.Windows.Forms.Button();
             this.tabControlMainWindow.SuspendLayout();
             this.tabPageMultiboxing.SuspendLayout();
             this.tabPageIgnoreList.SuspendLayout();
@@ -92,6 +93,7 @@
             // 
             // tabPageMultiboxing
             // 
+            this.tabPageMultiboxing.Controls.Add(this.buttonConfigureChars);
             this.tabPageMultiboxing.Controls.Add(this.buttonClearConsole);
             this.tabPageMultiboxing.Controls.Add(this.checkBoxLogErrors);
             this.tabPageMultiboxing.Controls.Add(this.checkBoxLogDebugs);
@@ -423,6 +425,16 @@
             this.toolStripStatusLabelStatus.Size = new System.Drawing.Size(16, 17);
             this.toolStripStatusLabelStatus.Text = "...";
             // 
+            // buttonConfigureChars
+            // 
+            this.buttonConfigureChars.Location = new System.Drawing.Point(57, 316);
+            this.buttonConfigureChars.Name = "buttonConfigureChars";
+            this.buttonConfigureChars.Size = new System.Drawing.Size(88, 34);
+            this.buttonConfigureChars.TabIndex = 10;
+            this.buttonConfigureChars.Text = "Configure";
+            this.buttonConfigureChars.UseVisualStyleBackColor = true;
+            this.buttonConfigureChars.Click += new System.EventHandler(this.buttonConfigureChars_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -484,6 +496,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonMacroGenHelp;
+        private System.Windows.Forms.Button buttonConfigureChars;
     }
 }
 

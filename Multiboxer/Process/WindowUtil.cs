@@ -27,18 +27,18 @@ namespace Multiboxer
         /* Windows messages */
 
         // keyboard
-        const uint WM_KEYDOWN = 0x100;
-        const uint WM_KEYUP = 0x101;
+        public const uint WM_KEYDOWN = 0x100;
+        public const uint WM_KEYUP = 0x101;
 
         // mouse
-        const uint WM_LBUTTONDOWN = 0x201; // Left button
-        const uint WM_LBUTTONUP = 0x202;
+        public const uint WM_LBUTTONDOWN = 0x201; // Left button
+        public const uint WM_LBUTTONUP = 0x202;
 
-        const uint WM_RBUTTONDOWN = 0x204; // Right button
-        const uint WM_RBUTTONUP = 0x205;
+        public const uint WM_RBUTTONDOWN = 0x204; // Right button
+        public const uint WM_RBUTTONUP = 0x205;
 
-        const uint WM_MBUTTONDOWN = 0x207; // Middle button
-        const uint WM_MBUTTONUP = 0x208;
+        public const uint WM_MBUTTONDOWN = 0x207; // Middle button
+        public const uint WM_MBUTTONUP = 0x208;
 
         /* Native method imports */
 
@@ -50,7 +50,7 @@ namespace Multiboxer
 
         /* Native method wrappers */
 
-        private static void PostMessageSafe(IntPtr hWnd, uint msg, int wParam, int lParam)
+        private static void PostMessageSafe(IntPtr hWnd, string windowTitle, uint msg, int wParam, int lParam)
         {
             bool returnValue = PostMessage(hWnd, msg, wParam, lParam);
 
@@ -79,7 +79,7 @@ namespace Multiboxer
                         break;
                 }
 
-                consoleWriter.DebugLog($"Send msg {msgName} {(Keys)wParam} to client {hWnd}", ConfigurationManager.LogType.DEBUG);
+                consoleWriter.DebugLog($"Send msg {msgName} {(Keys)wParam} to client {windowTitle}", ConfigurationManager.LogType.DEBUG);
             }
         }
 
@@ -95,44 +95,45 @@ namespace Multiboxer
 
         // Keyboard
 
-        internal static async void PostKey(IntPtr hWnd, Keys key)
+        internal static async void PostKey(IntPtr hWnd, string windowTitle, Keys key)
         {
-            PostMessageSafe(hWnd, WM_KEYDOWN, (int)key, 0);
+            PostMessageSafe(hWnd, windowTitle, WM_KEYDOWN, (int)key, 0);
             await Task.Delay(100);
-            PostMessageSafe(hWnd, WM_KEYUP, (int)key, 0);
+            PostMessageSafe(hWnd, windowTitle, WM_KEYUP, (int)key, 0);
         }
 
-        internal static void PostKeyDown(IntPtr hWnd, Keys key)
+        internal static void PostKeyDown(IntPtr hWnd, string windowTitle, Keys key)
         {
-            PostMessageSafe(hWnd, WM_KEYDOWN, (int)key, 0);
+            PostMessageSafe(hWnd, windowTitle, WM_KEYDOWN, (int)key, 0);
         }
 
-        internal static void PostKeyUp(IntPtr hWnd, Keys key)
+        internal static void PostKeyUp(IntPtr hWnd, string windowTitle, Keys key)
         {
-            PostMessageSafe(hWnd, WM_KEYUP, (int)key, 0);
+            PostMessageSafe(hWnd, windowTitle, WM_KEYUP, (int)key, 0);
         }
 
 
-        // Mouse
+        // Mouse (unused)
 
-        internal static void PostMouseLeftDown(IntPtr hWnd)
+
+        internal static void PostMouseLeftDown(IntPtr hWnd, string windowTitle)
         {
-            PostMessageSafe(hWnd, WM_LBUTTONDOWN, 0, 0);
+            PostMessageSafe(hWnd, windowTitle, WM_LBUTTONDOWN, 0, 0);
         }
 
-        internal static void PostMouseLeftUp(IntPtr hWnd)
+        internal static void PostMouseLeftUp(IntPtr hWnd, string windowTitle)
         {
-            PostMessageSafe(hWnd, WM_LBUTTONUP, 0, 0);
+            PostMessageSafe(hWnd, windowTitle, WM_LBUTTONUP, 0, 0);
         }
 
-        internal static void PostMouseRightDown(IntPtr hWnd)
+        internal static void PostMouseRightDown(IntPtr hWnd, string windowTitle)
         {
-            PostMessageSafe(hWnd, WM_RBUTTONDOWN, 0, 0);
+            PostMessageSafe(hWnd, windowTitle, WM_RBUTTONDOWN, 0, 0);
         }
 
-        internal static void PostMouseRightUp(IntPtr hWnd)
+        internal static void PostMouseRightUp(IntPtr hWnd, string windowTitle)
         {
-            PostMessageSafe(hWnd, WM_RBUTTONUP, 0, 0);
+            PostMessageSafe(hWnd, windowTitle, WM_RBUTTONUP, 0, 0);
         }
     }
 }

@@ -41,9 +41,19 @@ namespace Multiboxer
          * Mouse broadcasting? (P4) */
 
         #region Initialization
+
+        public static MainForm instance;
+
         public MainForm()
         {
             InitializeComponent();
+
+            if (instance != null)
+            {
+                // not good
+            }
+
+            instance = this;
         }
         // Event Handlers
 
@@ -54,7 +64,7 @@ namespace Multiboxer
 
             if (!config.IsFirstRun())
             {
-                config.LoadFromConfig(richTextBoxIgnoreList); // load into ignore list from cfg
+                config.LoadIgnoreListFromConfig(richTextBoxIgnoreList); // load into ignore list from cfg
                 InputCallback.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList); // save ignore list
             }
 
@@ -65,6 +75,7 @@ namespace Multiboxer
             InputCallback.ProcManager.RefreshClientProcList();
 
             PopulateClientList();
+            PopulateGameWindowList();
             PopulateCharacterList();
 
             config.UpdateStatus($"Found {InputCallback.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
@@ -139,12 +150,6 @@ namespace Multiboxer
             config.UpdateStatus($"Found {InputCallback.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
         }
 
-        private void buttonConfigureChars_Click(object sender, EventArgs e)
-        {
-            CharacterConfigForm charForm = new CharacterConfigForm();
-            charForm.ShowDialog();
-        }
-
         #region Private Methods - Multiboxing Tab
 
         private void PopulateClientList()
@@ -157,7 +162,7 @@ namespace Multiboxer
             }
         }
 
-        private void StartStopMultiboxing()
+        public void StartStopMultiboxing()
         {
             InputCallback.ProcManager.RefreshClientProcList();
 
@@ -197,12 +202,66 @@ namespace Multiboxer
 
         #endregion MULTIBOXING TAB
 
+        #region CHAR CONFIG TAB
+
+        private void listBoxConfigGameWindows_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (listBoxConfigGameWindows.SelectedItem != null) // avoid unecessary exceptions
+                {
+                    if (InputCallback.ProcManager.MasterClient != null)
+                    {
+                        WoWClient selectedClient = new WoWClient();
+
+                        foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+                        {
+                            if (listBoxMacroGenCharacterSelect.SelectedItem.ToString() == c.GameProcess.MainWindowTitle)
+                            {
+                                selectedClient = c;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(StaticTextLibrary.ErrorText.MasterClientMacro, "Character Configuration", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            catch (Exception b)
+            {
+                consoleWriterMain.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
+            }
+        }
+
+        private void checkBoxConfigIsClientMaster_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        #region Private Methods - Char Config Tab
+
+        private void PopulateGameWindowList()
+        {
+            listBoxConfigGameWindows.Items.Clear();
+
+            foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+            {
+                listBoxConfigGameWindows.Items.Add(c.GameProcess.MainWindowTitle);
+            }
+        }
+
+        #endregion Private Methods - Char Config Tab
+
+        #endregion CHAR CONFIG TAB
+
         #region IGNORE LIST TAB
         private void buttonSaveIgnoreList_Click(object sender, EventArgs e)
         {
             InputCallback.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList);
 
-            config.SaveToConfig(richTextBoxIgnoreList.Lines);
+            config.SaveIgnoreListToConfig(richTextBoxIgnoreList.Lines);
 
             config.UpdateStatus($"Saved IgnoreList to config file successfully.", ConfigurationManager.LogType.MESSAGE);
         }

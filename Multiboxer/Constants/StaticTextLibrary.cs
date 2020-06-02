@@ -31,6 +31,8 @@ namespace Multiboxer
             internal static string MasterClientMain = "Please select the Master Client (the client in which you are going to be playing on) before starting the Multiboxer.";
 
             internal static string MasterClientMacro = "Please select the Master Client (the client in which you are going to be playing on) in the main Multiboxing tab before trying to generate macros.";
+
+            internal static string MasterClientConfig = "Please select the Master Client (the client in which you are going to be playing on) in the main Multiboxing tab before entering character information.";
         }
     }
 }

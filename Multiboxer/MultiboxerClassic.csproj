@@ -58,12 +58,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharacterConfigForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CharacterConfigForm.Designer.cs">
-      <DependentUpon>CharacterConfigForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Config\ConfigurationManager.cs" />
     <Compile Include="Constants\Enums.cs" />
     <Compile Include="Constants\StaticTextLibrary.cs" />
@@ -82,9 +76,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Process\WindowUtil.cs" />
-    <EmbeddedResource Include="CharacterConfigForm.resx">
-      <DependentUpon>CharacterConfigForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

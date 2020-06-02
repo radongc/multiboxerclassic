@@ -15,6 +15,14 @@ namespace Multiboxer
          * Handles loading, saving, and config condition checking. */
 
         private ConsoleWriter consoleWriter;
+
+        private string _ignoreListStartSequence = ":IGNORELIST:";
+        private string _ignoreListEndSequence = ":ENDIGNORELIST:";
+
+        private string _charInfoStartSequence = ":CHARINFO:";
+        private string _charInfoEndSequence = ":ENDCHARINFO:";
+
+        private int _currentConfigIndex = 0;
         
         public string ConfigFilePath { get; }
         public ToolStripStatusLabel MainStatusLabel { get; private set; }
@@ -85,17 +93,44 @@ namespace Multiboxer
 
         // Save config file
 
-        public void SaveToConfig(string[] contents)
+        public void SaveIgnoreListToConfig(string[] contents)
         {
-            string[] cfgContent = new string[contents.Length];
+            string[] cfgContent = new string[contents.Length + 2];
 
-            int i = 0;
+            cfgContent[0] = _ignoreListStartSequence;
+
+            int i = 1;
 
             foreach (string line in contents)
             {
                 cfgContent[i] = line;
                 i++;
             }
+
+            cfgContent[i] = _ignoreListEndSequence;
+
+            _currentConfigIndex += i;
+
+            WriteToConfig(cfgContent);
+        }
+
+        public void SaveCharInfoToConfig(string[] contents)
+        {
+            string[] cfgContent = new string[contents.Length + 2];
+
+            cfgContent[0] = _charInfoStartSequence;
+
+            int i = 1;
+
+            foreach (string line in contents)
+            {
+                cfgContent[i] = line;
+                i++;
+            }
+
+            cfgContent[i] = _charInfoEndSequence;
+
+            _currentConfigIndex += i;
 
             WriteToConfig(cfgContent);
         }
@@ -115,25 +150,61 @@ namespace Multiboxer
 
         // Read config file
 
-        public void LoadFromConfig(RichTextBox rtb)
+        public void LoadIgnoreListFromConfig(RichTextBox rtb)
         {
             string path = ConfigFilePath;
 
             string[] cfgLines = File.ReadAllLines(path);
 
+            List<string> ignoreList = new List<string>();
+
+            int ignoreListStartIndex = 0;
+            int ignoreListEndIndex = 0;
+
             int i = 0;
 
             foreach (string line in cfgLines)
             {
-                if (i == (cfgLines.Length - 1))
+                if (cfgLines[i] == _ignoreListStartSequence)
                 {
-                    rtb.AppendText(cfgLines[i]);
-                    i++;
+                    ignoreListStartIndex = i;
+                    break;
+                }
+
+                i++;
+            }
+
+            int j = 0;
+
+            foreach (string line in cfgLines)
+            {
+                if (cfgLines[j] == _ignoreListEndSequence)
+                {
+                    ignoreListEndIndex = j;
+                    break;
+                }
+
+                j++;
+            }
+
+            for (int y = ignoreListStartIndex + 1; y <= ignoreListEndIndex - 1; y++)
+            {
+                ignoreList.Add(cfgLines[y]);
+            }
+
+            int x = 0;
+
+            foreach(string line in ignoreList)
+            {
+                if (x == (ignoreList.Count - 1))
+                {
+                    rtb.AppendText(ignoreList[x]);
+                    x++;
                 }
                 else
                 {
-                    rtb.AppendText(cfgLines[i] + "\n");
-                    i++;
+                    rtb.AppendText(ignoreList[x] + "\n");
+                    x++;
                 }
             }
         }

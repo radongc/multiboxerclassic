@@ -40,6 +40,17 @@
             this.labelSelectMasterClient = new System.Windows.Forms.Label();
             this.buttonRefreshClients = new System.Windows.Forms.Button();
             this.listBoxSelectMasterClient = new System.Windows.Forms.ListBox();
+            this.tabPageCharacterConfiguration = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.panelConfigCharInfo = new System.Windows.Forms.Panel();
+            this.checkBoxConfigIsClientMaster = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.buttonConfigSaveCharacters = new System.Windows.Forms.Button();
+            this.textBoxConfigCharacterName = new System.Windows.Forms.TextBox();
+            this.comboBoxConfigCharacterClass = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.listBoxConfigGameWindows = new System.Windows.Forms.ListBox();
             this.tabPageIgnoreList = new System.Windows.Forms.TabPage();
             this.checkBoxWhitelist = new System.Windows.Forms.CheckBox();
             this.checkBoxBlacklist = new System.Windows.Forms.CheckBox();
@@ -62,9 +73,10 @@
             this.statusStripMainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
-            this.buttonConfigureChars = new System.Windows.Forms.Button();
             this.tabControlMainWindow.SuspendLayout();
             this.tabPageMultiboxing.SuspendLayout();
+            this.tabPageCharacterConfiguration.SuspendLayout();
+            this.panelConfigCharInfo.SuspendLayout();
             this.tabPageIgnoreList.SuspendLayout();
             this.tabPageMacroGenerator.SuspendLayout();
             this.statusStripMainStatus.SuspendLayout();
@@ -83,6 +95,7 @@
             // tabControlMainWindow
             // 
             this.tabControlMainWindow.Controls.Add(this.tabPageMultiboxing);
+            this.tabControlMainWindow.Controls.Add(this.tabPageCharacterConfiguration);
             this.tabControlMainWindow.Controls.Add(this.tabPageIgnoreList);
             this.tabControlMainWindow.Controls.Add(this.tabPageMacroGenerator);
             this.tabControlMainWindow.Location = new System.Drawing.Point(-2, 3);
@@ -93,7 +106,6 @@
             // 
             // tabPageMultiboxing
             // 
-            this.tabPageMultiboxing.Controls.Add(this.buttonConfigureChars);
             this.tabPageMultiboxing.Controls.Add(this.buttonClearConsole);
             this.tabPageMultiboxing.Controls.Add(this.checkBoxLogErrors);
             this.tabPageMultiboxing.Controls.Add(this.checkBoxLogDebugs);
@@ -208,6 +220,131 @@
             this.listBoxSelectMasterClient.TabIndex = 1;
             this.listBoxSelectMasterClient.SelectedIndexChanged += new System.EventHandler(this.listBoxSelectMasterClient_SelectedIndexChanged);
             // 
+            // tabPageCharacterConfiguration
+            // 
+            this.tabPageCharacterConfiguration.Controls.Add(this.label7);
+            this.tabPageCharacterConfiguration.Controls.Add(this.panelConfigCharInfo);
+            this.tabPageCharacterConfiguration.Controls.Add(this.label6);
+            this.tabPageCharacterConfiguration.Controls.Add(this.listBoxConfigGameWindows);
+            this.tabPageCharacterConfiguration.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCharacterConfiguration.Name = "tabPageCharacterConfiguration";
+            this.tabPageCharacterConfiguration.Size = new System.Drawing.Size(669, 375);
+            this.tabPageCharacterConfiguration.TabIndex = 3;
+            this.tabPageCharacterConfiguration.Text = "Character Configuration";
+            this.tabPageCharacterConfiguration.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(370, 3);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(101, 18);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "Character Info";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panelConfigCharInfo
+            // 
+            this.panelConfigCharInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelConfigCharInfo.Controls.Add(this.checkBoxConfigIsClientMaster);
+            this.panelConfigCharInfo.Controls.Add(this.label4);
+            this.panelConfigCharInfo.Controls.Add(this.buttonConfigSaveCharacters);
+            this.panelConfigCharInfo.Controls.Add(this.textBoxConfigCharacterName);
+            this.panelConfigCharInfo.Controls.Add(this.comboBoxConfigCharacterClass);
+            this.panelConfigCharInfo.Controls.Add(this.label5);
+            this.panelConfigCharInfo.Location = new System.Drawing.Point(203, 24);
+            this.panelConfigCharInfo.Name = "panelConfigCharInfo";
+            this.panelConfigCharInfo.Size = new System.Drawing.Size(454, 342);
+            this.panelConfigCharInfo.TabIndex = 14;
+            // 
+            // checkBoxConfigIsClientMaster
+            // 
+            this.checkBoxConfigIsClientMaster.AutoSize = true;
+            this.checkBoxConfigIsClientMaster.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBoxConfigIsClientMaster.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxConfigIsClientMaster.Location = new System.Drawing.Point(11, 96);
+            this.checkBoxConfigIsClientMaster.Name = "checkBoxConfigIsClientMaster";
+            this.checkBoxConfigIsClientMaster.Size = new System.Drawing.Size(195, 22);
+            this.checkBoxConfigIsClientMaster.TabIndex = 14;
+            this.checkBoxConfigIsClientMaster.Text = "Client Selected as Master";
+            this.checkBoxConfigIsClientMaster.UseVisualStyleBackColor = true;
+            this.checkBoxConfigIsClientMaster.CheckedChanged += new System.EventHandler(this.checkBoxConfigIsClientMaster_CheckedChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(9, 55);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(50, 18);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Class:";
+            // 
+            // buttonConfigSaveCharacters
+            // 
+            this.buttonConfigSaveCharacters.Location = new System.Drawing.Point(318, 295);
+            this.buttonConfigSaveCharacters.Name = "buttonConfigSaveCharacters";
+            this.buttonConfigSaveCharacters.Size = new System.Drawing.Size(131, 42);
+            this.buttonConfigSaveCharacters.TabIndex = 13;
+            this.buttonConfigSaveCharacters.Text = "Save Configuration";
+            this.buttonConfigSaveCharacters.UseVisualStyleBackColor = true;
+            // 
+            // textBoxConfigCharacterName
+            // 
+            this.textBoxConfigCharacterName.Location = new System.Drawing.Point(67, 12);
+            this.textBoxConfigCharacterName.Name = "textBoxConfigCharacterName";
+            this.textBoxConfigCharacterName.Size = new System.Drawing.Size(142, 20);
+            this.textBoxConfigCharacterName.TabIndex = 9;
+            // 
+            // comboBoxConfigCharacterClass
+            // 
+            this.comboBoxConfigCharacterClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxConfigCharacterClass.FormattingEnabled = true;
+            this.comboBoxConfigCharacterClass.Items.AddRange(new object[] {
+            "Warrior",
+            "Paladin",
+            "Hunter",
+            "Rogue",
+            "Priest",
+            "Shaman",
+            "Mage",
+            "Warlock",
+            "Druid"});
+            this.comboBoxConfigCharacterClass.Location = new System.Drawing.Point(67, 55);
+            this.comboBoxConfigCharacterClass.Name = "comboBoxConfigCharacterClass";
+            this.comboBoxConfigCharacterClass.Size = new System.Drawing.Size(142, 21);
+            this.comboBoxConfigCharacterClass.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(9, 12);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(52, 18);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Name:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(45, 3);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(115, 18);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Game Windows";
+            // 
+            // listBoxConfigGameWindows
+            // 
+            this.listBoxConfigGameWindows.FormattingEnabled = true;
+            this.listBoxConfigGameWindows.Location = new System.Drawing.Point(12, 24);
+            this.listBoxConfigGameWindows.Name = "listBoxConfigGameWindows";
+            this.listBoxConfigGameWindows.Size = new System.Drawing.Size(185, 342);
+            this.listBoxConfigGameWindows.TabIndex = 7;
+            this.listBoxConfigGameWindows.SelectedIndexChanged += new System.EventHandler(this.listBoxConfigGameWindows_SelectedIndexChanged);
+            // 
             // tabPageIgnoreList
             // 
             this.tabPageIgnoreList.Controls.Add(this.checkBoxWhitelist);
@@ -222,7 +359,7 @@
             this.tabPageIgnoreList.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageIgnoreList.Size = new System.Drawing.Size(669, 375);
             this.tabPageIgnoreList.TabIndex = 1;
-            this.tabPageIgnoreList.Text = "Ignore List";
+            this.tabPageIgnoreList.Text = "Key Configuration";
             this.tabPageIgnoreList.UseVisualStyleBackColor = true;
             // 
             // checkBoxWhitelist
@@ -425,16 +562,6 @@
             this.toolStripStatusLabelStatus.Size = new System.Drawing.Size(16, 17);
             this.toolStripStatusLabelStatus.Text = "...";
             // 
-            // buttonConfigureChars
-            // 
-            this.buttonConfigureChars.Location = new System.Drawing.Point(57, 316);
-            this.buttonConfigureChars.Name = "buttonConfigureChars";
-            this.buttonConfigureChars.Size = new System.Drawing.Size(88, 34);
-            this.buttonConfigureChars.TabIndex = 10;
-            this.buttonConfigureChars.Text = "Configure";
-            this.buttonConfigureChars.UseVisualStyleBackColor = true;
-            this.buttonConfigureChars.Click += new System.EventHandler(this.buttonConfigureChars_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -449,6 +576,10 @@
             this.tabControlMainWindow.ResumeLayout(false);
             this.tabPageMultiboxing.ResumeLayout(false);
             this.tabPageMultiboxing.PerformLayout();
+            this.tabPageCharacterConfiguration.ResumeLayout(false);
+            this.tabPageCharacterConfiguration.PerformLayout();
+            this.panelConfigCharInfo.ResumeLayout(false);
+            this.panelConfigCharInfo.PerformLayout();
             this.tabPageIgnoreList.ResumeLayout(false);
             this.tabPageIgnoreList.PerformLayout();
             this.tabPageMacroGenerator.ResumeLayout(false);
@@ -496,7 +627,17 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonMacroGenHelp;
-        private System.Windows.Forms.Button buttonConfigureChars;
+        private System.Windows.Forms.TabPage tabPageCharacterConfiguration;
+        private System.Windows.Forms.Button buttonConfigSaveCharacters;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox comboBoxConfigCharacterClass;
+        private System.Windows.Forms.TextBox textBoxConfigCharacterName;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ListBox listBoxConfigGameWindows;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Panel panelConfigCharInfo;
+        private System.Windows.Forms.CheckBox checkBoxConfigIsClientMaster;
     }
 }
 

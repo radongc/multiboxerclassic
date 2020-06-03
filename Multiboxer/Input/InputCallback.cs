@@ -42,13 +42,13 @@ namespace Multiboxer
 
         private void InputCallback_OnKeyDown(object sender, KeyEventArgs e) // TODO there are some bugs here. 1) when executing combo sequences (ex SHIFT+E) there is sometimes a delay and the combo must be pressed multiple times. 2) if one combo is executed and then another one is tried to be executed before SHIFT (or other combo key) is released, it won't register.
         {
-            if (e.KeyCode == Keys.NumPad8)
+            if (_subscribed || e.KeyCode == Keys.NumPad8)
             {
-                MainForm.instance.StartStopMultiboxing();
-            }
+                if (e.KeyCode == Keys.NumPad8)
+                {
+                    MainForm.instance.StartStopMultiboxing();
+                }
 
-            if (_subscribed)
-            {
                 if (ProcManager.IgnoreListEnabled)
                 {
                     if (ProcManager.IgnoreListType == ProcessManager.IgnoreType.BLACKLIST) // BLACKLIST

@@ -84,7 +84,7 @@
             // 
             // buttonStartMultiboxing
             // 
-            this.buttonStartMultiboxing.Location = new System.Drawing.Point(505, 316);
+            this.buttonStartMultiboxing.Location = new System.Drawing.Point(721, 473);
             this.buttonStartMultiboxing.Name = "buttonStartMultiboxing";
             this.buttonStartMultiboxing.Size = new System.Drawing.Size(152, 35);
             this.buttonStartMultiboxing.TabIndex = 0;
@@ -101,7 +101,7 @@
             this.tabControlMainWindow.Location = new System.Drawing.Point(-2, 3);
             this.tabControlMainWindow.Name = "tabControlMainWindow";
             this.tabControlMainWindow.SelectedIndex = 0;
-            this.tabControlMainWindow.Size = new System.Drawing.Size(677, 401);
+            this.tabControlMainWindow.Size = new System.Drawing.Size(887, 540);
             this.tabControlMainWindow.TabIndex = 1;
             // 
             // tabPageMultiboxing
@@ -119,14 +119,14 @@
             this.tabPageMultiboxing.Location = new System.Drawing.Point(4, 22);
             this.tabPageMultiboxing.Name = "tabPageMultiboxing";
             this.tabPageMultiboxing.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMultiboxing.Size = new System.Drawing.Size(669, 375);
+            this.tabPageMultiboxing.Size = new System.Drawing.Size(879, 514);
             this.tabPageMultiboxing.TabIndex = 0;
             this.tabPageMultiboxing.Text = "Multiboxing";
             this.tabPageMultiboxing.UseVisualStyleBackColor = true;
             // 
             // buttonClearConsole
             // 
-            this.buttonClearConsole.Location = new System.Drawing.Point(183, 316);
+            this.buttonClearConsole.Location = new System.Drawing.Point(178, 473);
             this.buttonClearConsole.Name = "buttonClearConsole";
             this.buttonClearConsole.Size = new System.Drawing.Size(49, 35);
             this.buttonClearConsole.TabIndex = 9;
@@ -139,7 +139,7 @@
             this.checkBoxLogErrors.AutoSize = true;
             this.checkBoxLogErrors.Checked = true;
             this.checkBoxLogErrors.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxLogErrors.Location = new System.Drawing.Point(574, 9);
+            this.checkBoxLogErrors.Location = new System.Drawing.Point(788, 9);
             this.checkBoxLogErrors.Name = "checkBoxLogErrors";
             this.checkBoxLogErrors.Size = new System.Drawing.Size(74, 17);
             this.checkBoxLogErrors.TabIndex = 8;
@@ -152,7 +152,7 @@
             this.checkBoxLogDebugs.AutoSize = true;
             this.checkBoxLogDebugs.Checked = true;
             this.checkBoxLogDebugs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxLogDebugs.Location = new System.Drawing.Point(475, 9);
+            this.checkBoxLogDebugs.Location = new System.Drawing.Point(689, 9);
             this.checkBoxLogDebugs.Name = "checkBoxLogDebugs";
             this.checkBoxLogDebugs.Size = new System.Drawing.Size(84, 17);
             this.checkBoxLogDebugs.TabIndex = 7;
@@ -165,7 +165,7 @@
             this.checkBoxLogMessages.AutoSize = true;
             this.checkBoxLogMessages.Checked = true;
             this.checkBoxLogMessages.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxLogMessages.Location = new System.Drawing.Point(362, 9);
+            this.checkBoxLogMessages.Location = new System.Drawing.Point(576, 9);
             this.checkBoxLogMessages.Name = "checkBoxLogMessages";
             this.checkBoxLogMessages.Size = new System.Drawing.Size(95, 17);
             this.checkBoxLogMessages.TabIndex = 6;
@@ -175,16 +175,16 @@
             // 
             // richTextBoxMainDebugConsole
             // 
-            this.richTextBoxMainDebugConsole.Location = new System.Drawing.Point(183, 34);
+            this.richTextBoxMainDebugConsole.Location = new System.Drawing.Point(178, 34);
             this.richTextBoxMainDebugConsole.Name = "richTextBoxMainDebugConsole";
             this.richTextBoxMainDebugConsole.ReadOnly = true;
-            this.richTextBoxMainDebugConsole.Size = new System.Drawing.Size(474, 276);
+            this.richTextBoxMainDebugConsole.Size = new System.Drawing.Size(693, 433);
             this.richTextBoxMainDebugConsole.TabIndex = 5;
             this.richTextBoxMainDebugConsole.Text = "";
             // 
             // buttonMasterClientListHelp
             // 
-            this.buttonMasterClientListHelp.Location = new System.Drawing.Point(145, 34);
+            this.buttonMasterClientListHelp.Location = new System.Drawing.Point(136, 34);
             this.buttonMasterClientListHelp.Name = "buttonMasterClientListHelp";
             this.buttonMasterClientListHelp.Size = new System.Drawing.Size(27, 24);
             this.buttonMasterClientListHelp.TabIndex = 4;
@@ -195,7 +195,7 @@
             // labelSelectMasterClient
             // 
             this.labelSelectMasterClient.AutoSize = true;
-            this.labelSelectMasterClient.Location = new System.Drawing.Point(29, 40);
+            this.labelSelectMasterClient.Location = new System.Drawing.Point(20, 40);
             this.labelSelectMasterClient.Name = "labelSelectMasterClient";
             this.labelSelectMasterClient.Size = new System.Drawing.Size(104, 13);
             this.labelSelectMasterClient.TabIndex = 3;
@@ -203,7 +203,7 @@
             // 
             // buttonRefreshClients
             // 
-            this.buttonRefreshClients.Location = new System.Drawing.Point(57, 216);
+            this.buttonRefreshClients.Location = new System.Drawing.Point(48, 216);
             this.buttonRefreshClients.Name = "buttonRefreshClients";
             this.buttonRefreshClients.Size = new System.Drawing.Size(88, 34);
             this.buttonRefreshClients.TabIndex = 2;
@@ -214,7 +214,7 @@
             // listBoxSelectMasterClient
             // 
             this.listBoxSelectMasterClient.FormattingEnabled = true;
-            this.listBoxSelectMasterClient.Location = new System.Drawing.Point(32, 63);
+            this.listBoxSelectMasterClient.Location = new System.Drawing.Point(23, 63);
             this.listBoxSelectMasterClient.Name = "listBoxSelectMasterClient";
             this.listBoxSelectMasterClient.Size = new System.Drawing.Size(140, 147);
             this.listBoxSelectMasterClient.TabIndex = 1;
@@ -228,7 +228,7 @@
             this.tabPageCharacterConfiguration.Controls.Add(this.listBoxConfigGameWindows);
             this.tabPageCharacterConfiguration.Location = new System.Drawing.Point(4, 22);
             this.tabPageCharacterConfiguration.Name = "tabPageCharacterConfiguration";
-            this.tabPageCharacterConfiguration.Size = new System.Drawing.Size(669, 375);
+            this.tabPageCharacterConfiguration.Size = new System.Drawing.Size(879, 514);
             this.tabPageCharacterConfiguration.TabIndex = 3;
             this.tabPageCharacterConfiguration.Text = "Character Configuration";
             this.tabPageCharacterConfiguration.UseVisualStyleBackColor = true;
@@ -237,7 +237,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(370, 3);
+            this.label7.Location = new System.Drawing.Point(584, 3);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(101, 18);
             this.label7.TabIndex = 15;
@@ -255,7 +255,7 @@
             this.panelConfigCharInfo.Controls.Add(this.label5);
             this.panelConfigCharInfo.Location = new System.Drawing.Point(203, 24);
             this.panelConfigCharInfo.Name = "panelConfigCharInfo";
-            this.panelConfigCharInfo.Size = new System.Drawing.Size(454, 342);
+            this.panelConfigCharInfo.Size = new System.Drawing.Size(668, 487);
             this.panelConfigCharInfo.TabIndex = 14;
             // 
             // checkBoxConfigIsClientMaster
@@ -283,7 +283,7 @@
             // 
             // buttonConfigSaveCharacters
             // 
-            this.buttonConfigSaveCharacters.Location = new System.Drawing.Point(318, 295);
+            this.buttonConfigSaveCharacters.Location = new System.Drawing.Point(532, 440);
             this.buttonConfigSaveCharacters.Name = "buttonConfigSaveCharacters";
             this.buttonConfigSaveCharacters.Size = new System.Drawing.Size(131, 42);
             this.buttonConfigSaveCharacters.TabIndex = 13;
@@ -341,7 +341,7 @@
             this.listBoxConfigGameWindows.FormattingEnabled = true;
             this.listBoxConfigGameWindows.Location = new System.Drawing.Point(12, 24);
             this.listBoxConfigGameWindows.Name = "listBoxConfigGameWindows";
-            this.listBoxConfigGameWindows.Size = new System.Drawing.Size(185, 342);
+            this.listBoxConfigGameWindows.Size = new System.Drawing.Size(185, 407);
             this.listBoxConfigGameWindows.TabIndex = 7;
             this.listBoxConfigGameWindows.SelectedIndexChanged += new System.EventHandler(this.listBoxConfigGameWindows_SelectedIndexChanged);
             // 
@@ -357,7 +357,7 @@
             this.tabPageIgnoreList.Location = new System.Drawing.Point(4, 22);
             this.tabPageIgnoreList.Name = "tabPageIgnoreList";
             this.tabPageIgnoreList.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageIgnoreList.Size = new System.Drawing.Size(669, 375);
+            this.tabPageIgnoreList.Size = new System.Drawing.Size(879, 514);
             this.tabPageIgnoreList.TabIndex = 1;
             this.tabPageIgnoreList.Text = "Key Configuration";
             this.tabPageIgnoreList.UseVisualStyleBackColor = true;
@@ -451,7 +451,7 @@
             this.tabPageMacroGenerator.Location = new System.Drawing.Point(4, 22);
             this.tabPageMacroGenerator.Name = "tabPageMacroGenerator";
             this.tabPageMacroGenerator.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMacroGenerator.Size = new System.Drawing.Size(669, 375);
+            this.tabPageMacroGenerator.Size = new System.Drawing.Size(879, 514);
             this.tabPageMacroGenerator.TabIndex = 2;
             this.tabPageMacroGenerator.Text = "Macro Generator";
             this.tabPageMacroGenerator.UseVisualStyleBackColor = true;
@@ -551,9 +551,9 @@
             this.statusStripMainStatus.ImageScalingSize = new System.Drawing.Size(18, 18);
             this.statusStripMainStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabelStatus});
-            this.statusStripMainStatus.Location = new System.Drawing.Point(0, 403);
+            this.statusStripMainStatus.Location = new System.Drawing.Point(0, 546);
             this.statusStripMainStatus.Name = "statusStripMainStatus";
-            this.statusStripMainStatus.Size = new System.Drawing.Size(671, 22);
+            this.statusStripMainStatus.Size = new System.Drawing.Size(885, 22);
             this.statusStripMainStatus.TabIndex = 3;
             // 
             // toolStripStatusLabelStatus
@@ -566,7 +566,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(671, 425);
+            this.ClientSize = new System.Drawing.Size(885, 568);
             this.Controls.Add(this.statusStripMainStatus);
             this.Controls.Add(this.tabControlMainWindow);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

@@ -27,18 +27,63 @@ namespace Multiboxer
         private ConfigurationManager.ConsoleWriter consoleWriterMain;
 
         /* TODO NEXT *
-         * Find out a way to make DebugLog and UpdateStatus linked  (DONE)
-         * Find out a way to make DebugLog instance accessible from all classes (SEMI-DONE) (P3)
-         * Make Master Client selector show the character name (read memory) (DONE)
-         * Create a hotkey for starting/stopping multiboxing that is customizable (P1)
-         * Add more/better UI elements such as tab control for settings (P2)
-         * Test out hotkey creator that can send commands to window such as: (P3)
-         * <Press Enter><Type "/script AcceptGroup"> etc. and possibly look at creating an addon for simpler macros, such as "/mb p a" for accepting group
-         * Figure out how to send complex keystrokes to windows, such as shift-4 (DONE)
-         * Re-make blacklist with better options and pressing keys to add instead of manually typing out names (P2)
-         * Blacklist options: (P1)
-         * Blacklist profiles, ability to enable/disable profiles, ability to create whitelist instead of blacklist
-         * Mouse broadcasting? (P4) */
+         * <Total revamp of Multiboxer> 
+         * 
+         * HOW IT CURRENTLY WORKS:
+         * 
+         * In order to start multiboxing, game windows must be started manually. Once all of the game windows are
+         * started, you must select a master client from a list within the multiboxer. This cannot be changed while
+         * playing, and you must select a new master from within the multiboxer whenever you want to change who you
+         * are playing on. There is one universal blacklist/whitelist for all windows, and keys are specified using
+         * the windows forms keys enum identifier for each key. There cannot be any errors whatsoever in the blacklist
+         * or you will run into issues. The char config tab currently does nothing. There is a "macro generator" tab,
+         * where currently it just generates macros for each window/role depending on which client is master, and these
+         * macros must be manually copy/pasted and created into each wow client, action bars configured. Ie, everything
+         * is done manually. 
+         * 
+         * CURRENT KNOWN ISSUES/BUGS:
+         * 
+         * Keystrokes are sent irregularly/erratically, and something like typing in chat would not work; it would come
+         * out looking something like this: 
+         * (Sentence desired) Hey, how are you doing?
+         * (Sentence typed) Hhehyhy   hhhowowooww   aaraaerre   yoy  oyououoyouo d ddoddiinggnng??
+         * 
+         * HOW IT WILL WORK:
+         * 
+         * Profiles will be created for each window/game desired to be played. These profiles will be pre-configured
+         * before starting the game, and will contain parameters such as:
+         * - path to game client
+         * - profile name
+         * - character name
+         * - character class
+         * - individual blacklist (true/false) (let this window have it's own blacklist or use global one?)
+         * - individual blacklist keys
+         * - more later
+         * 
+         * Once all of your profiles are finished, you can configure the window layout for each client using a GUI, 
+         * with each profile being named in the window config area, including the master. The macro generator will use
+         * the info collected from each profile in order to generate macros for each character. After configuration, 
+         * a button can be pressed to start the game windows. Once they are started/being used, you may switch between 
+         * clients as master/followers by clicking their windows. If a window is brought to active status, it switches 
+         * positions and is placed in the master spot, with the old master being placed in it's old spot. Additional 
+         * features will be cursor mirroring, turning broadcasting on/off with a hotkey (both keys and mouse), and 
+         * perhaps in the future, an addon to better facilitate much of the technicalities of multiboxing (such as 
+         * character macros or things such as inviting, following, assisting, and spellcasting.)
+         * 
+         * RELEASE PLAN:
+         * Do some simple advertising on ownedcore and other websites, set up a website dedicated to selling the multiboxer, 
+         * and offer it for
+         * a very cheap price, monthly or yearly, with a generous free trial and other deals. Have the multiboxer be linked
+         * to accounts created on your website (hyp3.us), with some monitoring of how it is being used and/or if an account
+         * is being shared (possibly find a way to prohibit concurrent use in more than one location, since hyp3 users will
+         * need to be logged in in order to be using the multiboxer.
+         * 
+         * CURRENT PRICING IDEAS:
+         * $0.99-$1.99 per month, $10 per year.
+         * 1 week free trial.
+         * Other deals to encourage people to invite friends, such as receiving a month free when you refer a friend who
+         * subscribes for their first month; possibly also giving the friend a discounted yearly deal.
+         */ 
 
         #region Initialization
 

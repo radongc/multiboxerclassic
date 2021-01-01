@@ -1,6 +1,5 @@
-# vanillamultiboxer
-A hobby-level project I decided to take up because I couldn't find a multiboxing program for WoW 1.12.1 that I liked.
-Basic multiboxer with simple blacklisting/memory reading capabilities.
+# Multiboxer Classic
+My Wow 1.12.1 multiboxer converted and trimmed down to work with Wow Classic, and with a little extra functionality.
 
 # How to compile
 - Download the source .zip, extract it
@@ -16,8 +15,8 @@ Basic multiboxer with simple blacklisting/memory reading capabilities.
 
 # Features
 - Basic blacklisting/whitelisting capabilities
-- Basic memory reading capabilities
-- Macro generator
+- Ability to concurrently play as many clients as you want
+- Functional key broadcasting, including multi-key keystrokes (ex. Shift+C)
 
 # Pictures
 ![Main Multiboxing tab](https://i.imgur.com/tvyLyqk.png)

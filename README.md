@@ -18,7 +18,7 @@ My Wow 1.12.1 multiboxer converted and trimmed down to work with Wow Classic, an
 - Ability to concurrently play as many clients as you want
 - Functional key broadcasting, including multi-key keystrokes (ex. Shift+C)
 
-# Pictures
+# Pictures (old, from 1.12.1)
 ![Main Multiboxing tab](https://i.imgur.com/tvyLyqk.png)
 
 ![IgnoreList (blacklist/whitelist) tab](https://i.imgur.com/PF7E9cC.png)

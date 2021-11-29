@@ -52,6 +52,16 @@
             this.label6 = new System.Windows.Forms.Label();
             this.listBoxConfigGameWindows = new System.Windows.Forms.ListBox();
             this.tabPageIgnoreList = new System.Windows.Forms.TabPage();
+            this.label8 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxF8 = new System.Windows.Forms.CheckBox();
+            this.checkBoxF9 = new System.Windows.Forms.CheckBox();
+            this.checkBoxSingleClick = new System.Windows.Forms.CheckBox();
+            this.checkBoxUP = new System.Windows.Forms.CheckBox();
+            this.checkBoxF10 = new System.Windows.Forms.CheckBox();
+            this.checkBoxF11 = new System.Windows.Forms.CheckBox();
+            this.checkBoxF12OrAlt = new System.Windows.Forms.CheckBox();
+            this.checkBoxF12 = new System.Windows.Forms.CheckBox();
             this.checkBoxWhitelist = new System.Windows.Forms.CheckBox();
             this.checkBoxBlacklist = new System.Windows.Forms.CheckBox();
             this.checkBoxEnableIgnoreList = new System.Windows.Forms.CheckBox();
@@ -78,6 +88,7 @@
             this.tabPageCharacterConfiguration.SuspendLayout();
             this.panelConfigCharInfo.SuspendLayout();
             this.tabPageIgnoreList.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.tabPageMacroGenerator.SuspendLayout();
             this.statusStripMainStatus.SuspendLayout();
             this.SuspendLayout();
@@ -347,6 +358,8 @@
             // 
             // tabPageIgnoreList
             // 
+            this.tabPageIgnoreList.Controls.Add(this.label8);
+            this.tabPageIgnoreList.Controls.Add(this.panel1);
             this.tabPageIgnoreList.Controls.Add(this.checkBoxWhitelist);
             this.tabPageIgnoreList.Controls.Add(this.checkBoxBlacklist);
             this.tabPageIgnoreList.Controls.Add(this.checkBoxEnableIgnoreList);
@@ -361,6 +374,118 @@
             this.tabPageIgnoreList.TabIndex = 1;
             this.tabPageIgnoreList.Text = "Key Configuration";
             this.tabPageIgnoreList.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(658, 28);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(84, 13);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "Default Bindings";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.checkBoxF8);
+            this.panel1.Controls.Add(this.checkBoxF9);
+            this.panel1.Controls.Add(this.checkBoxSingleClick);
+            this.panel1.Controls.Add(this.checkBoxUP);
+            this.panel1.Controls.Add(this.checkBoxF10);
+            this.panel1.Controls.Add(this.checkBoxF11);
+            this.panel1.Controls.Add(this.checkBoxF12OrAlt);
+            this.panel1.Controls.Add(this.checkBoxF12);
+            this.panel1.Location = new System.Drawing.Point(531, 47);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(340, 264);
+            this.panel1.TabIndex = 7;
+            // 
+            // checkBoxF8
+            // 
+            this.checkBoxF8.AutoSize = true;
+            this.checkBoxF8.Location = new System.Drawing.Point(13, 176);
+            this.checkBoxF8.Name = "checkBoxF8";
+            this.checkBoxF8.Size = new System.Drawing.Size(159, 17);
+            this.checkBoxF8.TabIndex = 7;
+            this.checkBoxF8.Text = "W Key => Follow macro (F8)";
+            this.checkBoxF8.UseVisualStyleBackColor = true;
+            this.checkBoxF8.CheckedChanged += new System.EventHandler(this.checkBoxF8_CheckedChanged);
+            // 
+            // checkBoxF9
+            // 
+            this.checkBoxF9.AutoSize = true;
+            this.checkBoxF9.Location = new System.Drawing.Point(13, 153);
+            this.checkBoxF9.Name = "checkBoxF9";
+            this.checkBoxF9.Size = new System.Drawing.Size(193, 17);
+            this.checkBoxF9.TabIndex = 6;
+            this.checkBoxF9.Text = "Double Click => setview macro (F9)";
+            this.checkBoxF9.UseVisualStyleBackColor = true;
+            this.checkBoxF9.CheckedChanged += new System.EventHandler(this.checkBoxF9_CheckedChanged);
+            // 
+            // checkBoxSingleClick
+            // 
+            this.checkBoxSingleClick.AutoSize = true;
+            this.checkBoxSingleClick.Location = new System.Drawing.Point(13, 130);
+            this.checkBoxSingleClick.Name = "checkBoxSingleClick";
+            this.checkBoxSingleClick.Size = new System.Drawing.Size(158, 17);
+            this.checkBoxSingleClick.TabIndex = 5;
+            this.checkBoxSingleClick.Text = "Double Click => Single click";
+            this.checkBoxSingleClick.UseVisualStyleBackColor = true;
+            this.checkBoxSingleClick.CheckedChanged += new System.EventHandler(this.checkBoxSingleClick_CheckedChanged);
+            // 
+            // checkBoxUP
+            // 
+            this.checkBoxUP.AutoSize = true;
+            this.checkBoxUP.Location = new System.Drawing.Point(13, 107);
+            this.checkBoxUP.Name = "checkBoxUP";
+            this.checkBoxUP.Size = new System.Drawing.Size(160, 17);
+            this.checkBoxUP.TabIndex = 4;
+            this.checkBoxUP.Text = "Left + Right Click => UP key";
+            this.checkBoxUP.UseVisualStyleBackColor = true;
+            this.checkBoxUP.CheckedChanged += new System.EventHandler(this.checkBoxUP_CheckedChanged);
+            // 
+            // checkBoxF10
+            // 
+            this.checkBoxF10.AutoSize = true;
+            this.checkBoxF10.Location = new System.Drawing.Point(13, 84);
+            this.checkBoxF10.Name = "checkBoxF10";
+            this.checkBoxF10.Size = new System.Drawing.Size(188, 17);
+            this.checkBoxF10.TabIndex = 3;
+            this.checkBoxF10.Text = "Right Click => confirm macro (F10)";
+            this.checkBoxF10.UseVisualStyleBackColor = true;
+            this.checkBoxF10.CheckedChanged += new System.EventHandler(this.checkBoxF10_CheckedChanged);
+            // 
+            // checkBoxF11
+            // 
+            this.checkBoxF11.AutoSize = true;
+            this.checkBoxF11.Location = new System.Drawing.Point(13, 61);
+            this.checkBoxF11.Name = "checkBoxF11";
+            this.checkBoxF11.Size = new System.Drawing.Size(214, 17);
+            this.checkBoxF11.TabIndex = 2;
+            this.checkBoxF11.Text = "Right Click => Interact with Target (F11)";
+            this.checkBoxF11.UseVisualStyleBackColor = true;
+            this.checkBoxF11.CheckedChanged += new System.EventHandler(this.checkBoxF11_CheckedChanged);
+            // 
+            // checkBoxF12OrAlt
+            // 
+            this.checkBoxF12OrAlt.AutoSize = true;
+            this.checkBoxF12OrAlt.Location = new System.Drawing.Point(13, 38);
+            this.checkBoxF12OrAlt.Name = "checkBoxF12OrAlt";
+            this.checkBoxF12OrAlt.Size = new System.Drawing.Size(180, 17);
+            this.checkBoxF12OrAlt.TabIndex = 1;
+            this.checkBoxF12OrAlt.Text = "Right Click => assist macro (F12)";
+            this.checkBoxF12OrAlt.UseVisualStyleBackColor = true;
+            this.checkBoxF12OrAlt.CheckedChanged += new System.EventHandler(this.checkBoxF12OrAlt_CheckedChanged);
+            // 
+            // checkBoxF12
+            // 
+            this.checkBoxF12.AutoSize = true;
+            this.checkBoxF12.Location = new System.Drawing.Point(13, 15);
+            this.checkBoxF12.Name = "checkBoxF12";
+            this.checkBoxF12.Size = new System.Drawing.Size(173, 17);
+            this.checkBoxF12.TabIndex = 0;
+            this.checkBoxF12.Text = "Left Click => assist macro (F12)";
+            this.checkBoxF12.UseVisualStyleBackColor = true;
+            this.checkBoxF12.CheckedChanged += new System.EventHandler(this.checkBoxF12_CheckedChanged);
             // 
             // checkBoxWhitelist
             // 
@@ -571,7 +696,7 @@
             this.Controls.Add(this.tabControlMainWindow);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MainForm";
-            this.Text = "Multiboxer";
+            this.Text = "Game Manager 2021";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControlMainWindow.ResumeLayout(false);
             this.tabPageMultiboxing.ResumeLayout(false);
@@ -582,6 +707,8 @@
             this.panelConfigCharInfo.PerformLayout();
             this.tabPageIgnoreList.ResumeLayout(false);
             this.tabPageIgnoreList.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.tabPageMacroGenerator.ResumeLayout(false);
             this.tabPageMacroGenerator.PerformLayout();
             this.statusStripMainStatus.ResumeLayout(false);
@@ -638,6 +765,16 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panelConfigCharInfo;
         private System.Windows.Forms.CheckBox checkBoxConfigIsClientMaster;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox checkBoxF12;
+        private System.Windows.Forms.CheckBox checkBoxF8;
+        private System.Windows.Forms.CheckBox checkBoxF9;
+        private System.Windows.Forms.CheckBox checkBoxSingleClick;
+        private System.Windows.Forms.CheckBox checkBoxUP;
+        private System.Windows.Forms.CheckBox checkBoxF10;
+        private System.Windows.Forms.CheckBox checkBoxF11;
+        private System.Windows.Forms.CheckBox checkBoxF12OrAlt;
     }
 }
 

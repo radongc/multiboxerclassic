@@ -22,67 +22,12 @@ namespace Multiboxer
         private Dictionary<string, string> _childMacroList;
 
         // class instances
-        private InputCallback input;
+        private InputManager input;
         private ConfigurationManager config;
         private ConfigurationManager.ConsoleWriter consoleWriterMain;
 
         /* TODO NEXT *
-         * <Total revamp of Multiboxer> 
-         * 
-         * HOW IT CURRENTLY WORKS:
-         * 
-         * In order to start multiboxing, game windows must be started manually. Once all of the game windows are
-         * started, you must select a master client from a list within the multiboxer. This cannot be changed while
-         * playing, and you must select a new master from within the multiboxer whenever you want to change who you
-         * are playing on. There is one universal blacklist/whitelist for all windows, and keys are specified using
-         * the windows forms keys enum identifier for each key. There cannot be any errors whatsoever in the blacklist
-         * or you will run into issues. The char config tab currently does nothing. There is a "macro generator" tab,
-         * where currently it just generates macros for each window/role depending on which client is master, and these
-         * macros must be manually copy/pasted and created into each wow client, action bars configured. Ie, everything
-         * is done manually. 
-         * 
-         * CURRENT KNOWN ISSUES/BUGS:
-         * 
-         * Keystrokes are sent irregularly/erratically, and something like typing in chat would not work; it would come
-         * out looking something like this: 
-         * (Sentence desired) Hey, how are you doing?
-         * (Sentence typed) Hhehyhy   hhhowowooww   aaraaerre   yoy  oyououoyouo d ddoddiinggnng??
-         * 
-         * HOW IT WILL WORK:
-         * 
-         * Profiles will be created for each window/game desired to be played. These profiles will be pre-configured
-         * before starting the game, and will contain parameters such as:
-         * - path to game client
-         * - profile name
-         * - character name
-         * - character class
-         * - individual blacklist (true/false) (let this window have it's own blacklist or use global one?)
-         * - individual blacklist keys
-         * - more later
-         * 
-         * Once all of your profiles are finished, you can configure the window layout for each client using a GUI, 
-         * with each profile being named in the window config area, including the master. The macro generator will use
-         * the info collected from each profile in order to generate macros for each character. After configuration, 
-         * a button can be pressed to start the game windows. Once they are started/being used, you may switch between 
-         * clients as master/followers by clicking their windows. If a window is brought to active status, it switches 
-         * positions and is placed in the master spot, with the old master being placed in it's old spot. Additional 
-         * features will be cursor mirroring, turning broadcasting on/off with a hotkey (both keys and mouse), and 
-         * perhaps in the future, an addon to better facilitate much of the technicalities of multiboxing (such as 
-         * character macros or things such as inviting, following, assisting, and spellcasting.)
-         * 
-         * RELEASE PLAN:
-         * Do some simple advertising on ownedcore and other websites, set up a website dedicated to selling the multiboxer, 
-         * and offer it for
-         * a very cheap price, monthly or yearly, with a generous free trial and other deals. Have the multiboxer be linked
-         * to accounts created on your website (hyp3.us), with some monitoring of how it is being used and/or if an account
-         * is being shared (possibly find a way to prohibit concurrent use in more than one location, since hyp3 users will
-         * need to be logged in in order to be using the multiboxer.
-         * 
-         * CURRENT PRICING IDEAS:
-         * $0.99-$1.99 per month, $10 per year.
-         * 1 week free trial.
-         * Other deals to encourage people to invite friends, such as receiving a month free when you refer a friend who
-         * subscribes for their first month; possibly also giving the friend a discounted yearly deal.
+         * Next to add: key translation. Ex: I press W, it sends F12 to minions. This way, very simple actions can be performed to do more complex things. Assist can be done just by attacking an enemy.
          */ 
 
         #region Initialization
@@ -110,20 +55,20 @@ namespace Multiboxer
             if (!config.IsFirstRun())
             {
                 config.LoadIgnoreListFromConfig(richTextBoxIgnoreList); // load into ignore list from cfg
-                InputCallback.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList); // save ignore list
+                InputManager.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList); // save ignore list
             }
 
             Console.SetOut(consoleWriterMain); // route console output to debug window
 
             // Check for running wow procs and populate the GUI list
 
-            InputCallback.ProcManager.RefreshClientProcList();
+            InputManager.ProcManager.RefreshClientProcList();
 
             PopulateClientList();
             PopulateGameWindowList();
             PopulateCharacterList();
 
-            config.UpdateStatus($"Found {InputCallback.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
+            config.UpdateStatus($"Found {InputManager.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
         }
 
         private void InitializeClasses()
@@ -132,11 +77,11 @@ namespace Multiboxer
             _childMacroList = new Dictionary<string, string>();
 
             // Init input callbacks and config manager
-            input = new InputCallback();
+            input = new InputManager();
             config = new ConfigurationManager("config.cfg", toolStripStatusLabelStatus);
             consoleWriterMain = new ConfigurationManager.ConsoleWriter(richTextBoxMainDebugConsole, "logs", checkBoxLogMessages.Checked, checkBoxLogDebugs.Checked, checkBoxLogErrors.Checked);
 
-            InputCallback.ProcManager.SetConsoleWriter(consoleWriterMain); // allow procManager to write to console
+            InputManager.ProcManager.SetConsoleWriter(consoleWriterMain); // allow procManager to write to console
             config.SetConsoleWriter(consoleWriterMain);
             WindowUtil.SetConsoleWriter(consoleWriterMain);
         }
@@ -171,7 +116,7 @@ namespace Multiboxer
 
                     string[] procData = procDataFormatted.Split('-');
 
-                    InputCallback.ProcManager.SetMasterClient(Convert.ToInt32(procData[1]));
+                    InputManager.ProcManager.SetMasterClient(Convert.ToInt32(procData[1]));
                 }
             }
             catch (Exception b)
@@ -187,12 +132,12 @@ namespace Multiboxer
 
         private void buttonRefreshClients_Click(object sender, EventArgs e)
         {
-            InputCallback.ProcManager.RefreshClientProcList();
+            InputManager.ProcManager.RefreshClientProcList();
 
             PopulateClientList();
             //PopulateCharacterList();
 
-            config.UpdateStatus($"Found {InputCallback.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
+            config.UpdateStatus($"Found {InputManager.ProcManager.GameProcList.Length} process(es).", ConfigurationManager.LogType.MESSAGE);
         }
 
         #region Private Methods - Multiboxing Tab
@@ -201,7 +146,7 @@ namespace Multiboxer
         {
             listBoxSelectMasterClient.Items.Clear();
 
-            foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+            foreach (WoWClient c in InputManager.ProcManager.GameClientList)
             {
                 listBoxSelectMasterClient.Items.Add($"{c.GameProcess.MainWindowTitle} - {c.GameProcess.Id}");
             }
@@ -209,13 +154,13 @@ namespace Multiboxer
 
         public void StartStopMultiboxing()
         {
-            InputCallback.ProcManager.RefreshClientProcList();
+            InputManager.ProcManager.RefreshClientProcList();
 
             bool errorOccurred = false;
 
             if (!isListening)
             {
-                if (InputCallback.ProcManager.MasterClient == null) // error checking
+                if (InputManager.ProcManager.MasterClient == null) // error checking
                 {
                     errorOccurred = true;
                     MessageBox.Show(StaticTextLibrary.ErrorText.MasterClientMain, "Multiboxer", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -255,11 +200,11 @@ namespace Multiboxer
             {
                 if (listBoxConfigGameWindows.SelectedItem != null) // avoid unecessary exceptions
                 {
-                    if (InputCallback.ProcManager.MasterClient != null)
+                    if (InputManager.ProcManager.MasterClient != null)
                     {
                         WoWClient selectedClient = new WoWClient();
 
-                        foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+                        foreach (WoWClient c in InputManager.ProcManager.GameClientList)
                         {
                             if (listBoxMacroGenCharacterSelect.SelectedItem.ToString() == c.GameProcess.MainWindowTitle)
                             {
@@ -291,7 +236,7 @@ namespace Multiboxer
         {
             listBoxConfigGameWindows.Items.Clear();
 
-            foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+            foreach (WoWClient c in InputManager.ProcManager.GameClientList)
             {
                 listBoxConfigGameWindows.Items.Add(c.GameProcess.MainWindowTitle);
             }
@@ -304,7 +249,7 @@ namespace Multiboxer
         #region IGNORE LIST TAB
         private void buttonSaveIgnoreList_Click(object sender, EventArgs e)
         {
-            InputCallback.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList);
+            InputManager.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList);
 
             config.SaveIgnoreListToConfig(richTextBoxIgnoreList.Lines);
 
@@ -318,7 +263,7 @@ namespace Multiboxer
 
         private void checkBoxEnableIgnoreList_CheckedChanged(object sender, EventArgs e)
         {
-            InputCallback.ProcManager.SetIgnoreListEnabled(checkBoxEnableIgnoreList.Checked);
+            InputManager.ProcManager.SetIgnoreListEnabled(checkBoxEnableIgnoreList.Checked);
 
             switch(checkBoxEnableIgnoreList.Checked)
             {
@@ -342,7 +287,7 @@ namespace Multiboxer
                     config.UpdateStatus("IgnoreList setting changed to blacklist.", ConfigurationManager.LogType.MESSAGE); // needs to be put here to avoid being sent every time it is clicked, even if setting is not actually changing
                 }
 
-                InputCallback.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.BLACKLIST);
+                InputManager.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.BLACKLIST);
             }
 
             if (!checkBoxBlacklist.Checked && !checkBoxWhitelist.Checked)
@@ -361,7 +306,7 @@ namespace Multiboxer
                     config.UpdateStatus("IgnoreList setting changed to whitelist.", ConfigurationManager.LogType.MESSAGE); // needs to be put here to avoid being sent every time it is clicked, even if setting is not actually changing
                 }
 
-                InputCallback.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.WHITELIST);
+                InputManager.ProcManager.SetIgnoreListType(ProcessManager.IgnoreType.WHITELIST);
             }
 
             if (!checkBoxBlacklist.Checked && !checkBoxWhitelist.Checked)
@@ -379,11 +324,11 @@ namespace Multiboxer
             {
                 if (listBoxMacroGenCharacterSelect.SelectedItem != null) // avoid unecessary exceptions
                 {
-                    if (InputCallback.ProcManager.MasterClient != null)
+                    if (InputManager.ProcManager.MasterClient != null)
                     {
                         WoWClient selectedClient = new WoWClient();
 
-                        foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+                        foreach (WoWClient c in InputManager.ProcManager.GameClientList)
                         {
                             if (listBoxMacroGenCharacterSelect.SelectedItem.ToString() == c.GameProcess.MainWindowTitle)
                             {
@@ -393,7 +338,7 @@ namespace Multiboxer
                         }
 
                         // did we select the master?
-                        if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.GameProcess.MainWindowTitle))
+                        if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputManager.ProcManager.MasterClient.GameProcess.MainWindowTitle))
                         {
                             PopulateMacroList(true, Enums.Game.PlayerClass.Mage); // new method; pop macro list for master ('true')
                         }
@@ -420,7 +365,7 @@ namespace Multiboxer
             {
                 if (listBoxGeneratedMacros.SelectedItem != null) // Avoid unecessary exceptions
                 {
-                    if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputCallback.ProcManager.MasterClient.GameProcess.MainWindowTitle)) // did we select the master?
+                    if (listBoxMacroGenCharacterSelect.SelectedItem.ToString().Equals(InputManager.ProcManager.MasterClient.GameProcess.MainWindowTitle)) // did we select the master?
                     {
                         PopulateMacroData(listBoxGeneratedMacros.SelectedItem.ToString(), _masterMacroList[listBoxGeneratedMacros.SelectedItem.ToString()]); // new method; pop macro data by selected item (key) and content value of selected item (key)
                     }
@@ -467,7 +412,7 @@ namespace Multiboxer
         {
             listBoxMacroGenCharacterSelect.Items.Clear();
 
-            foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+            foreach (WoWClient c in InputManager.ProcManager.GameClientList)
             {
                 listBoxMacroGenCharacterSelect.Items.Add(c.GameProcess.MainWindowTitle);
             }
@@ -481,13 +426,13 @@ namespace Multiboxer
             {
                 _masterMacroList.Clear();
 
-                string[] childNames = new string[InputCallback.ProcManager.GameClientList.Length - 1]; // it is the size of all clients minus master
+                string[] childNames = new string[InputManager.ProcManager.GameClientList.Length - 1]; // it is the size of all clients minus master
 
                 int i = 0;
 
-                foreach (WoWClient c in InputCallback.ProcManager.GameClientList)
+                foreach (WoWClient c in InputManager.ProcManager.GameClientList)
                 {
-                    if (c.GameProcess.Id != InputCallback.ProcManager.MasterClient.GameProcess.Id)
+                    if (c.GameProcess.Id != InputManager.ProcManager.MasterClient.GameProcess.Id)
                     {
                         childNames[i] = "{PartyMember}";
                         i++;
@@ -525,5 +470,45 @@ namespace Multiboxer
         #endregion Private Methods - Macro Generator Tab
 
         #endregion MACRO GENERATOR TAB
+
+        private void checkBoxF12_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxF12OrAlt_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxF11_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxF10_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxUP_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxSingleClick_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxF9_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxF8_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

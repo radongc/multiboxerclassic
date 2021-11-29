@@ -47,11 +47,11 @@ namespace Multiboxer
 
         private void WindowInit()
         {
-            if (GameProcess.MainWindowTitle == "World of Warcraft")
+/*            if (GameProcess.MainWindowTitle == "World of Warcraft")
             {
                 WindowUtil.RenameWindow(GameProcess, "Game " + CurrentGameNum);
                 CurrentGameNum++;
-            }
+            }*/
         }
     }
 }

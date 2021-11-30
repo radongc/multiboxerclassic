@@ -19,6 +19,11 @@ namespace Multiboxer
         /* InputCallback
          * Handles subscribe/unsubscribe from global keyboard/mouse hooks and callback methods.
          * Also holds the main ProcessManager instance, which is accessible only through InputCallback */
+        /*
+         * FUTURE APPROACH:
+         * Have a dictionary that translates key pressed to key sent, and check those first. If no key is in that dictionary, then just unpress the key physically pressed.
+         * Currently, it does this in a hardcoded, non-variable way. This whole class should be analyzed and rewritten.
+         */
 
         public static ProcessManager ProcManager;
 
@@ -27,8 +32,7 @@ namespace Multiboxer
         private bool _subscribed = false;
 
         private Keys _lastKeyPressed;
-        private Keys _lastKeySent; // different from pressed, because sometimes we translate one key into another key
-        private List<Keys> _multiBroadcastQueue; // when multiple keys are sent on a single click (key translation), they are stored here to be unpressed
+        private List<Keys> _multiBroadcastMouseTranslationQueue;  // when multiple keys are sent on a single click (key translation), they are stored here to be unpressed
         private MouseButtons _lastMouseButtonPressed;
         private int _lastMousePressTimestamp;
 
@@ -45,7 +49,7 @@ namespace Multiboxer
             m_GlobalHook.KeyDown += InputCallback_OnKeyDown;
             m_GlobalHook.KeyUp += InputCallback_OnKeyUp;
 
-            _multiBroadcastQueue = new List<Keys>();
+            _multiBroadcastMouseTranslationQueue = new List<Keys>();
 
             DefaultBindingMap = new Dictionary<string, bool>();
             DefaultBindingMap.Add("F12Key", false);
@@ -218,7 +222,26 @@ namespace Multiboxer
                 {
                     if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                     {
-                        SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, _lastKeySent);
+/*                        if (_multiBroadcastQueue.Count > 0)
+                        {
+                            foreach (Keys key in _multiBroadcastQueue)
+                            {
+                                WindowUtil.PostKeyUp(p.MainWindowHandle, p.MainWindowTitle, key);
+                            }
+
+                            _multiBroadcastQueue.Clear();
+                        }
+                        else
+                        {*/
+                        if (e.KeyCode == Keys.W)
+                        {
+                            SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, Keys.F8);
+                        }
+                        else
+                        {
+                            SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, e.KeyCode);
+                        }
+                        /*}*/
 
                         if (_comboKeyPressed)
                         {
@@ -292,26 +315,22 @@ namespace Multiboxer
                     {
                         if (_lastMouseButtonPressed == MouseButtons.Left && e.Timestamp - _lastMousePressTimestamp <= 300)
                         {
-                            SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F9);
+                            SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F9);
                         }
                         else
                         {
-                            SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F12);
+                            SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F12);
                         }
                     }
                     else if (e.Button == MouseButtons.Right)
                     {
-                        WindowUtil.PostKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F12);
-                        WindowUtil.PostKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F11);
-                        WindowUtil.PostKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F10);
-
-                        _multiBroadcastQueue.Add(Keys.F12);
-                        _multiBroadcastQueue.Add(Keys.F11);
-                        _multiBroadcastQueue.Add(Keys.F10);
+                        SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F12);
+                        SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F11);
+                        SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F10);
                     }
                     else if (e.Button == MouseButtons.XButton2)
                     {
-                        SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.Up);
+                        SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.Up);
                     }
                 }
             }
@@ -329,18 +348,14 @@ namespace Multiboxer
             {
                 if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                 {
-                    if (_multiBroadcastQueue.Count > 0)
+                    if (_multiBroadcastMouseTranslationQueue.Count > 0)
                     {
-                        foreach(Keys key in _multiBroadcastQueue)
+                        foreach(Keys key in _multiBroadcastMouseTranslationQueue)
                         {
                             WindowUtil.PostKeyUp(p.MainWindowHandle, p.MainWindowTitle, key);
                         }
 
-                        _multiBroadcastQueue.Clear();
-                    }
-                    else
-                    {
-                        SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, _lastKeySent);
+                        _multiBroadcastMouseTranslationQueue.Clear();
                     }
 
                     if (_comboKeyPressed)
@@ -354,7 +369,12 @@ namespace Multiboxer
         public void SendKeyDown(IntPtr hWnd, string windowTitle, Keys key)
         {
             WindowUtil.PostKeyDown(hWnd, windowTitle, key);
-            _lastKeySent = key;
+        }
+
+        public void SendMouseTranslationKeyDown(IntPtr hWnd, string windowTitle, Keys key)
+        {
+            WindowUtil.PostKeyDown(hWnd, windowTitle, key);
+            _multiBroadcastMouseTranslationQueue.Add(key);
         }
 
         public void SendKeyUp(IntPtr hWnd, string windowTitle, Keys key)

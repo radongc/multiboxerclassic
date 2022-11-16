@@ -29,7 +29,7 @@ Simple, easy to use Multiboxer for World of Warcraft (written for Classic) with 
 
 ![Key Configuration tab](https://i.imgur.com/3slU04f.png)
 
-![Binding Macros tab](https://i.imgur.com/MuxdCg7.png)
+![Binding Macros tab](https://i.imgur.com/4zUQS7R.png)
 
 # License Restrictions
 This project is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license. The restrictions of this license are summarized below.

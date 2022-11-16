@@ -40,6 +40,9 @@ namespace Multiboxer
         public const uint WM_MBUTTONDOWN = 0x207; // Middle button
         public const uint WM_MBUTTONUP = 0x208;
 
+        public const uint MK_LBUTTON = 1;
+        public const uint MK_RBUTTON = 2;
+
         /* Native method imports */
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
@@ -49,6 +52,11 @@ namespace Multiboxer
         static extern int SetWindowText(IntPtr hWnd, string text);
 
         /* Native method wrappers */
+
+        private static int MAKELPARAM(int p, int p_2)
+        {
+            return ((p_2 << 16) | (p & 0xFFFF));
+        }
 
         private static void PostMessageSafe(IntPtr hWnd, string windowTitle, uint msg, int wParam, int lParam)
         {
@@ -114,26 +122,50 @@ namespace Multiboxer
 
 
         // Mouse (unused)
-
-
-        internal static void PostMouseLeftDown(IntPtr hWnd, string windowTitle)
+        internal static void PostMouseLeft(IntPtr hWnd, string windowTitle, int posX, int posY)
         {
-            PostMessageSafe(hWnd, windowTitle, WM_LBUTTONDOWN, 0, 0);
+            Thread backgroundThread = new Thread(() => {
+                PostMessageSafe(hWnd, windowTitle, WM_LBUTTONDOWN, (int)MK_LBUTTON, MAKELPARAM(posX, posY));
+
+                Thread.Sleep(100);
+
+                PostMessageSafe(hWnd, windowTitle, WM_LBUTTONUP, (int)MK_LBUTTON, MAKELPARAM(posX, posY));
+            });
+
+            backgroundThread.Start();
         }
 
-        internal static void PostMouseLeftUp(IntPtr hWnd, string windowTitle)
+        internal static void PostMouseRight(IntPtr hWnd, string windowTitle, int posX, int posY)
         {
-            PostMessageSafe(hWnd, windowTitle, WM_LBUTTONUP, 0, 0);
+            Thread backgroundThread = new Thread(() => {
+                PostMessageSafe(hWnd, windowTitle, WM_RBUTTONDOWN, (int)MK_RBUTTON, MAKELPARAM(posX, posY));
+
+                Thread.Sleep(100);
+
+                PostMessageSafe(hWnd, windowTitle, WM_RBUTTONUP, (int)MK_RBUTTON, MAKELPARAM(posX, posY));
+            });
+
+            backgroundThread.Start();
         }
 
-        internal static void PostMouseRightDown(IntPtr hWnd, string windowTitle)
+        internal static void PostMouseLeftDown(IntPtr hWnd, string windowTitle, int posX, int posY)
         {
-            PostMessageSafe(hWnd, windowTitle, WM_RBUTTONDOWN, 0, 0);
+            PostMessageSafe(hWnd, windowTitle, WM_LBUTTONDOWN, 0x1, MAKELPARAM(posX, posY));
         }
 
-        internal static void PostMouseRightUp(IntPtr hWnd, string windowTitle)
+        internal static void PostMouseLeftUp(IntPtr hWnd, string windowTitle, int posX, int posY)
         {
-            PostMessageSafe(hWnd, windowTitle, WM_RBUTTONUP, 0, 0);
+            PostMessageSafe(hWnd, windowTitle, WM_LBUTTONUP, 0x1, MAKELPARAM(posX, posY));
+        }
+
+        internal static void PostMouseRightDown(IntPtr hWnd, string windowTitle, int posX, int posY)
+        {
+            PostMessageSafe(hWnd, windowTitle, WM_RBUTTONDOWN, 0x1, MAKELPARAM(posX, posY));
+        }
+
+        internal static void PostMouseRightUp(IntPtr hWnd, string windowTitle, int posX, int posY)
+        {
+            PostMessageSafe(hWnd, windowTitle, WM_RBUTTONUP, 0x1, MAKELPARAM(posX, posY));
         }
     }
 }

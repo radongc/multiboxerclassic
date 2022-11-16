@@ -18,12 +18,13 @@ namespace Multiboxer
             "\n\nSyntax: To specify a key to ignore, you must enter the name that corresponds with the .NET Keys enum identifier for that key. For a full list of Keys, please visit https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.keys?view=netframework-4.8." +
             "\n\nExample: If you wanted to ignore the key '7' on the keyboard, you would enter 'D7' (the Keys enum identifer for that key). Each key that you would like to ignore should be placed on a new line with ABSOLUTELY NO whitespace! Good luck!";
 
+            internal static string DefaultBindings = "These options allow you to translate one action into another for a smoother multiboxing experience. Mouse clicks can be translated into keystrokes, sometimes a single click to multiple keys, to eliminate the need to be constantly pressing buttons to make your child characters assist, attack, accept quests, and so on." +
+            "\n\nTo set up these bindings, create a macro for each of the different bindings (you can find some basic macros for each one in the Macro tab), and add them to your action bar bound to the key that will be broadcasted. For non-macro bindings such as Interact with Target, bind the desired action to the key that will be broadcasted on your child characters." +
+            "\n\nFor others, no set up is needed (such as the 'UP' key binding).";
+
             internal static string MasterClient = "The Master Client is the client in which you are actively using (ie. playing on). The master client must be specified before starting the Multiboxer in order to prevent Keystrokes from being sent to it.";
 
-            internal static string MacroGenerator = "The Macro Generator generates multiboxing macros for you, based on the roles of the characters (follower/master?), the characters classes and the characters names.\n\nIn order to use the Macro Generator, " +
-            "make sure the client list is current (refresh it,) select a Master Client (the client in which you will be playing on), and simply select a character to see what macros he/she has available.\n\nWhen you select a macro, simply copy the content " +
-            "(and optionally, the title), open the Macros window in-game, create a new macro and paste the content/title into it. If using class-specific macros, it is recommended to make the macro icon match the in-game ability icon.\n\n" +
-            "If the macro explicitly states it, bind certain macros to the same key on all characters for smoother gameplay (for example, the Invite/AcceptGroup macros.) For other macros, bind them to any key you like and the macro will be used when you press the bound key on any window. Enjoy!";
+            internal static string MacroList = "These are some example macros required for the default bindings (in the Key Configuration tab). Copy the names/content of each macro into WoW for each child character, and bind them to the corresponding key that will be broadcasted.";
         }
 
         internal static class ErrorText

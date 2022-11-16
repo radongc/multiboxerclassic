@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace Multiboxer
         private bool _comboKeyPressed = false;
 
         private bool _subscribed = false;
+        private bool _mouseBroadcastingEnabled = false;
 
         private Keys _lastKeyPressed;
         private List<Keys> _multiBroadcastMouseTranslationQueue;  // when multiple keys are sent on a single click (key translation), they are stored here to be unpressed
@@ -38,7 +40,9 @@ namespace Multiboxer
 
         private IKeyboardMouseEvents m_GlobalHook;
 
-        public Dictionary<string, bool> DefaultBindingMap { get; private set; }
+        public Dictionary<string, DefaultBinding> DefaultBindingList { get; private set; }
+
+        private ConfigurationManager.ConsoleWriter _consoleWriter;
 
         public InputManager()
         {
@@ -48,321 +52,359 @@ namespace Multiboxer
 
             m_GlobalHook.KeyDown += InputCallback_OnKeyDown;
             m_GlobalHook.KeyUp += InputCallback_OnKeyUp;
+            m_GlobalHook.MouseDownExt += InputCallback_OnMouseDown;
+            m_GlobalHook.MouseUp += InputCallback_OnMouseUp;
 
             _multiBroadcastMouseTranslationQueue = new List<Keys>();
 
-            DefaultBindingMap = new Dictionary<string, bool>();
-            DefaultBindingMap.Add("F12Key", false);
-            DefaultBindingMap.Add("F12OrAltKey", false);
-            DefaultBindingMap.Add("F11Key", false);
-            DefaultBindingMap.Add("F10Key", false);
-            DefaultBindingMap.Add("UPKey", false);
-            DefaultBindingMap.Add("SingleClickMouse", false);
-            DefaultBindingMap.Add("F9Key", false);
-            DefaultBindingMap.Add("F8Key", false);
+            DefaultBindingList = new Dictionary<string, DefaultBinding>();
+            DefaultBindingList.Add("F12Key", new DefaultMouseBinding("F12Key", false, false, new InGameMacro("Assist", "/assist Party1"), MouseButtons.Left, Keys.F12));
+            DefaultBindingList.Add("F12OrAltKey", new DefaultMouseBinding("F12OrAltKey", false, false, new InGameMacro("Assist", "/assist Party1"), MouseButtons.Right, Keys.F12));
+            DefaultBindingList.Add("F11Key", new DefaultMouseBinding("F11Key", false, false, null, MouseButtons.Right, Keys.F11));
+            DefaultBindingList.Add("F10Key", new DefaultMouseBinding("F10Key", false, false, new InGameMacro("ConfirmQuest", "/script SelectGossipAvailableQuest(1)\n/script AcceptQuest(1)\n/script CompleteQuest()\n/script GetQuestReward()"), MouseButtons.Right, Keys.F10));
+            DefaultBindingList.Add("UPKey", new DefaultMouseBinding("UPKey", false, false, null, MouseButtons.XButton2, Keys.Up));
+            DefaultBindingList.Add("ToggleMouseBroadcasting", new SpecialBinding("ToggleMouseBroadcasting", false, false, Keys.LControlKey, () => _mouseBroadcastingEnabled = !_mouseBroadcastingEnabled));
+            DefaultBindingList.Add("F9Key", new DefaultMouseBinding("F9Key", false, true, new InGameMacro("SetView", "/script SetView(5);SetView(5);"), MouseButtons.Left, Keys.F9));
+            DefaultBindingList.Add("F8Key", new DefaultKeyBinding("F8Key", false, false, new InGameMacro("Follow", "/follow Party1"), Keys.W, Keys.F8));
+        }
+
+        internal void SetConsoleWriter(ConfigurationManager.ConsoleWriter writer)
+        {
+            _consoleWriter = writer;
         }
 
         public void ToggleDefaultBinding(string bindingKey, bool value)
         {
-            DefaultBindingMap[bindingKey] = value;
+            try
+            {
+                DefaultBindingList[bindingKey].SetEnabled(value);
+            }
+            catch (Exception b)
+            {
+                _consoleWriter.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
+            }
         }
 
         public void Subscribe()
         {
             _subscribed = true;
-            m_GlobalHook.MouseDownExt += InputCallback_OnMouseDown;
-            m_GlobalHook.MouseUp += InputCallback_OnMouseUp;
         }
 
         private void InputCallback_OnKeyDown(object sender, KeyEventArgs e) // TODO there are some bugs here. 1) when executing combo sequences (ex SHIFT+E) there is sometimes a delay and the combo must be pressed multiple times. 2) if one combo is executed and then another one is tried to be executed before SHIFT (or other combo key) is released, it won't register.
         {
-            if (_subscribed || e.KeyCode == Keys.Oem5)
+            try
             {
-                if (e.KeyCode == Keys.Oem5)
+                if (_subscribed || e.KeyCode == Keys.Oem5)
                 {
-                    MainForm.instance.StartStopMultiboxing();
-                }
+                    if (e.KeyCode == Keys.Oem5)
+                    {
+                        MainForm.instance.StartStopMultiboxing();
+                    }
 
+                    foreach (KeyValuePair<string, DefaultBinding> binding in DefaultBindingList)
+                    {
+                        if (!(binding.Value is SpecialBinding))
+                            continue;
 
-                // HARDCODED DEFAULT BINDING; NEEDS TO BE REWRITTEN
-                if (e.KeyCode == Keys.W)
-                {
+                        if (binding.Value.BindingEnabled)
+                        {
+                            if (e.KeyCode == ((SpecialBinding)binding.Value).BindingPressKey)
+                            {
+                                ((SpecialBinding)binding.Value).SpecialAction();
+                            }
+                        }
+                    }
+
                     foreach (Process p in ProcManager.GameProcList)
                     {
                         if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                         {
-                            SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F8);
-                        }
-                    }
-                }
-                //
-
-                if (ProcManager.IgnoreListEnabled)
-                {
-                    if (ProcManager.IgnoreListType == ProcessManager.IgnoreType.BLACKLIST) // BLACKLIST
-                    {
-                        bool keyIsBlacklisted = ProcManager.IgnoredKeys.Contains(e.KeyCode);
-
-                        if (keyIsBlacklisted && !_comboKeyPressed)
-                        {
-                            return;
-                        }
-                        else if (!keyIsBlacklisted || keyIsBlacklisted && _comboKeyPressed)
-                        {
-                            foreach (Process p in ProcManager.GameProcList)
+                            foreach (KeyValuePair<string, DefaultBinding> binding in DefaultBindingList)
                             {
-                                if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
-                                {
-                                    if (e.Control) // Press control
-                                    {
-                                        SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
-                                        _comboKeyPressed = true;
-                                    }
+                                if (!(binding.Value is DefaultKeyBinding))
+                                    continue;
 
-                                    // Replace bad values
-                                    if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                                if (binding.Value.BindingEnabled)
+                                {
+                                    if (e.KeyCode == ((DefaultKeyBinding)binding.Value).BindingPressKey)
                                     {
-                                        SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ShiftKey);
-                                        _comboKeyPressed = true;
-                                    }
-                                    else if (e.KeyValue == (int)Keys.LControlKey)
-                                    {
-                                        SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
-                                        _comboKeyPressed = true;
-                                    }
-                                    else
-                                    {
-                                        SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, e.KeyCode);
+                                        SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, ((DefaultKeyBinding)binding.Value).BindingBroadcastKey);
                                     }
                                 }
                             }
                         }
                     }
-                    else if (ProcManager.IgnoreListType == ProcessManager.IgnoreType.WHITELIST)
+
+                    if (ProcManager.IgnoreListEnabled)
                     {
-                        bool keyIsWhitelisted = ProcManager.IgnoredKeys.Contains(e.KeyCode);
-
-                        if (keyIsWhitelisted || !keyIsWhitelisted && _comboKeyPressed) // essentially just do the opposite of what is done in the blacklist
+                        if (ProcManager.IgnoreListType == ProcessManager.IgnoreType.BLACKLIST) // BLACKLIST
                         {
-                            foreach (Process p in ProcManager.GameProcList)
-                            {
-                                if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
-                                {
-                                    if (e.Control) // Press control
-                                    {
-                                        SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
-                                        _comboKeyPressed = true;
-                                    }
+                            bool keyIsBlacklisted = ProcManager.IgnoredKeys.Contains(e.KeyCode);
 
-                                    // Replace bad values
-                                    if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                            if (keyIsBlacklisted && !_comboKeyPressed)
+                            {
+                                return;
+                            }
+                            else if (!keyIsBlacklisted || keyIsBlacklisted && _comboKeyPressed)
+                            {
+                                foreach (Process p in ProcManager.GameProcList)
+                                {
+                                    if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                                     {
-                                        SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ShiftKey);
-                                        _comboKeyPressed = true;
-                                    }
-                                    else if (e.KeyValue == (int)Keys.LControlKey)
-                                    {
-                                        SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
-                                        _comboKeyPressed = true;
-                                    }
-                                    else
-                                    {
-                                        SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, (Keys)e.KeyValue);
+                                        if (e.Control) // Press control
+                                        {
+                                            SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
+                                            _comboKeyPressed = true;
+                                        }
+
+                                        // Replace bad values
+                                        if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                                        {
+                                            SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ShiftKey);
+                                            _comboKeyPressed = true;
+                                        }
+                                        else if (e.KeyValue == (int)Keys.LControlKey)
+                                        {
+                                            SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
+                                            _comboKeyPressed = true;
+                                        }
+                                        else
+                                        {
+                                            SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, e.KeyCode);
+                                        }
                                     }
                                 }
                             }
                         }
-                        else if (!keyIsWhitelisted && !_comboKeyPressed)
+                        else if (ProcManager.IgnoreListType == ProcessManager.IgnoreType.WHITELIST)
                         {
-                            return;
+                            bool keyIsWhitelisted = ProcManager.IgnoredKeys.Contains(e.KeyCode);
+
+                            if (keyIsWhitelisted || !keyIsWhitelisted && _comboKeyPressed) // essentially just do the opposite of what is done in the blacklist
+                            {
+                                foreach (Process p in ProcManager.GameProcList)
+                                {
+                                    if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
+                                    {
+                                        if (e.Control) // Press control
+                                        {
+                                            SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
+                                            _comboKeyPressed = true;
+                                        }
+
+                                        // Replace bad values
+                                        if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                                        {
+                                            SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ShiftKey);
+                                            _comboKeyPressed = true;
+                                        }
+                                        else if (e.KeyValue == (int)Keys.LControlKey)
+                                        {
+                                            SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
+                                            _comboKeyPressed = true;
+                                        }
+                                        else
+                                        {
+                                            SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, (Keys)e.KeyValue);
+                                        }
+                                    }
+                                }
+                            }
+                            else if (!keyIsWhitelisted && !_comboKeyPressed)
+                            {
+                                return;
+                            }
                         }
                     }
-                }
-                else // Ignore list disabled
-                {
-                    foreach (Process p in ProcManager.GameProcList)
+                    else // Ignore list disabled
                     {
-                        if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
+                        foreach (Process p in ProcManager.GameProcList)
                         {
-                            if (e.Control) // Press control
+                            if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                             {
-                                SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
-                            }
+                                if (e.Control) // Press control
+                                {
+                                    SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
+                                }
 
-                            // Replace bad values
-                            if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
-                            {
-                                SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ShiftKey);
-                            }
-                            else if (e.KeyValue == (int)Keys.LControlKey)
-                            {
-                                SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
-                            }
-                            else
-                            {
-                                SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, (Keys)e.KeyValue);
+                                // Replace bad values
+                                if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                                {
+                                    SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ShiftKey);
+                                }
+                                else if (e.KeyValue == (int)Keys.LControlKey)
+                                {
+                                    SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
+                                }
+                                else
+                                {
+                                    SendKeyDown(p.MainWindowHandle, p.MainWindowTitle, (Keys)e.KeyValue);
+                                }
                             }
                         }
                     }
-                }
 
-                _lastKeyPressed = e.KeyCode;
+                    _lastKeyPressed = e.KeyCode;
+                }
+                else
+                {
+                    return;
+                }
             }
-            else
+            catch (Exception b)
             {
-                return;
+                _consoleWriter.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
             }
         }
 
         private void InputCallback_OnKeyUp(object sender, KeyEventArgs e)
         {
-            if (_subscribed)
+            try
             {
-                foreach (Process p in ProcManager.GameProcList)
+                if (_subscribed)
                 {
-                    if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
-                    {
-/*                        if (_multiBroadcastQueue.Count > 0)
-                        {
-                            foreach (Keys key in _multiBroadcastQueue)
-                            {
-                                WindowUtil.PostKeyUp(p.MainWindowHandle, p.MainWindowTitle, key);
-                            }
+                    bool keyIsBinding = false;
 
-                            _multiBroadcastQueue.Clear();
-                        }
-                        else
-                        {*/
-                        if (e.KeyCode == Keys.W)
-                        {
-                            SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, Keys.F8);
-                        }
-                        else
-                        {
-                            SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, e.KeyCode);
-                        }
-                        /*}*/
-
-                        if (_comboKeyPressed)
-                        {
-                            _comboKeyPressed = false;
-                        }
-                    }
-                }
-            }
-        }
-
-        /*private void InputCallback_OnKeyUp(object sender, KeyEventArgs e) // TODO find a solution to the inefficiency of this method. it sends a WM_KEYUP msg to child clients for ALL keys, regardless of whether they are blacklisted/whitelisted or not.
-        {
-            if (_subscribed)
-            {
-                // DEFAULT BINDINGS
-                foreach (Process p in ProcManager.GameProcList)
-                {
-                    if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
-                    {
-                        if (e.KeyCode == Keys.W)
-                        {
-                            SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, Keys.F8);
-                        }
-                    }
-                }
-
-                if ((ProcManager.IgnoreListEnabled && ProcManager.IgnoredKeys.Contains(e.KeyCode) && comboKeyPressed) || (ProcManager.IgnoreListEnabled && !ProcManager.IgnoredKeys.Contains(e.KeyCode)) || !ProcManager.IgnoreListEnabled)
-                {
                     foreach (Process p in ProcManager.GameProcList)
                     {
                         if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                         {
+                            foreach (KeyValuePair<string, DefaultBinding> binding in DefaultBindingList)
+                            {
+                                if (!(binding.Value is DefaultKeyBinding))
+                                    continue;
 
-                            if (e.Control) // Press control
-                            {
-                                SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
-                                comboKeyPressed = false;
+                                if (e.KeyCode == ((DefaultKeyBinding)binding.Value).BindingPressKey)
+                                {
+                                    keyIsBinding = true;
+                                    SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, ((DefaultKeyBinding)binding.Value).BindingBroadcastKey);
+                                }
                             }
 
-                            // Replace bad values
-                            if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                            if (!keyIsBinding)
                             {
-                                SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, Keys.ShiftKey);
-                                comboKeyPressed = false;
+                                SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, e.KeyCode);
                             }
-                            else if (e.KeyValue == (int)Keys.LControlKey)
+
+                            if (_comboKeyPressed)
                             {
-                                SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
-                                comboKeyPressed = false;
-                            }
-                            else
-                            {
-                                SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, (Keys)e.KeyValue); // Converting the KeyValue from int to Keys enum (the int in KeyValue is the identifier for the Key in the Keys enum..)
+                                _comboKeyPressed = false;
                             }
                         }
                     }
                 }
             }
-        }*/
+            catch (Exception b)
+            {
+                _consoleWriter.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
+            }
+        }
 
         private void InputCallback_OnMouseDown(object sender, MouseEventExtArgs e)
         {
-            ProcManager.RefreshClientProcList();
-
-            // ALL HARDCODED DEFAULT VALS
-            foreach (Process p in ProcManager.GameProcList)
+            try
             {
-                if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
+                if (_subscribed)
                 {
-                    if (e.Button == MouseButtons.Left)
+                    ProcManager.RefreshClientProcList();
+
+                    foreach (Process p in ProcManager.GameProcList)
                     {
-                        if (_lastMouseButtonPressed == MouseButtons.Left && e.Timestamp - _lastMousePressTimestamp <= 300)
+                        if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                         {
-                            SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F9);
+                            foreach (KeyValuePair<string, DefaultBinding> binding in DefaultBindingList)
+                            {
+                                if (!(binding.Value is DefaultMouseBinding))
+                                    continue;
+
+                                if (binding.Value.BindingEnabled)
+                                {
+                                    if (e.Button == ((DefaultMouseBinding)binding.Value).BindingPressButton)
+                                    {
+                                        if (!binding.Value.IsDoublePress)
+                                        {
+                                            SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, ((DefaultMouseBinding)binding.Value).BindingBroadcastKey);
+                                        }
+                                        else
+                                        {
+                                            if (_lastMouseButtonPressed == ((DefaultMouseBinding)binding.Value).BindingPressButton && e.Timestamp - _lastMousePressTimestamp <= 300)
+                                            {
+                                                SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, ((DefaultMouseBinding)binding.Value).BindingBroadcastKey);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (_mouseBroadcastingEnabled)
+                            {
+                                if (e.Button == MouseButtons.Left)
+                                {
+                                    SendMouseDown(p.MainWindowHandle, p.MainWindowTitle, MouseButtons.Left, e.Location);
+                                }
+                                else if (e.Button == MouseButtons.Right)
+                                {
+                                    SendMouseDown(p.MainWindowHandle, p.MainWindowTitle, MouseButtons.Right, e.Location);
+                                }
+                            }
                         }
-                        else
-                        {
-                            SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F12);
-                        }
                     }
-                    else if (e.Button == MouseButtons.Right)
-                    {
-                        SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F12);
-                        SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F11);
-                        SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.F10);
-                    }
-                    else if (e.Button == MouseButtons.XButton2)
-                    {
-                        SendMouseTranslationKeyDown(p.MainWindowHandle, p.MainWindowTitle, Keys.Up);
-                    }
+
+                    _lastMouseButtonPressed = e.Button;
+                    _lastMousePressTimestamp = e.Timestamp;
                 }
             }
-
-            _lastMouseButtonPressed = e.Button;
-            _lastMousePressTimestamp = e.Timestamp;
+            catch (Exception b)
+            {
+                _consoleWriter.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
+            }
         }
 
         private void InputCallback_OnMouseUp(object sender, MouseEventArgs e)
         {
-            ProcManager.RefreshClientProcList();
-
-            // ALL HARDCODED DEFAULT VALS
-            foreach (Process p in ProcManager.GameProcList)
+            try
             {
-                if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
+                if (_subscribed)
                 {
-                    if (_multiBroadcastMouseTranslationQueue.Count > 0)
+                    ProcManager.RefreshClientProcList();
+
+                    foreach (Process p in ProcManager.GameProcList)
                     {
-                        foreach(Keys key in _multiBroadcastMouseTranslationQueue)
+                        if (!p.Id.Equals(ProcManager.MasterClient.GameProcess.Id))
                         {
-                            WindowUtil.PostKeyUp(p.MainWindowHandle, p.MainWindowTitle, key);
+                            if (_multiBroadcastMouseTranslationQueue.Count > 0)
+                            {
+                                foreach (Keys key in _multiBroadcastMouseTranslationQueue)
+                                {
+                                    WindowUtil.PostKeyUp(p.MainWindowHandle, p.MainWindowTitle, key);
+                                }
+
+                                _multiBroadcastMouseTranslationQueue.Clear();
+                            }
+
+                            if (_comboKeyPressed)
+                            {
+                                _comboKeyPressed = false;
+                            }
+
+/*                            if (_mouseBroadcastingEnabled)
+                            {
+                                if (e.Button == MouseButtons.Left)
+                                {
+                                    SendMouseUp(p.MainWindowHandle, p.MainWindowTitle, MouseButtons.Left, e.Location);
+                                }
+                                else if (e.Button == MouseButtons.Right)
+                                {
+                                    SendMouseUp(p.MainWindowHandle, p.MainWindowTitle, MouseButtons.Right, e.Location);
+                                }
+                            }*/
                         }
-
-                        _multiBroadcastMouseTranslationQueue.Clear();
-                    }
-
-                    if (_comboKeyPressed)
-                    {
-                        _comboKeyPressed = false;
                     }
                 }
+            }
+            catch (Exception b)
+            {
+                _consoleWriter.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
             }
         }
 
@@ -382,11 +424,33 @@ namespace Multiboxer
             WindowUtil.PostKeyUp(hWnd, windowTitle, key);
         }
 
+        public void SendMouseDown(IntPtr hWnd, string windowTitle, MouseButtons button, Point location)
+        {
+            if (button == MouseButtons.Left)
+            {
+                WindowUtil.PostMouseLeft(hWnd, windowTitle, location.X, location.Y);
+            }
+            else if (button == MouseButtons.Right)
+            {
+                WindowUtil.PostMouseRight(hWnd, windowTitle, location.X, location.Y);
+            }
+        }
+
+        public void SendMouseUp(IntPtr hWnd, string windowTitle, MouseButtons button, Point location)
+        {
+            if (button == MouseButtons.Left)
+            {
+                WindowUtil.PostMouseLeftUp(hWnd, windowTitle, location.X, location.Y);
+            }
+            else if (button == MouseButtons.Right)
+            {
+                WindowUtil.PostMouseRightUp(hWnd, windowTitle, location.X, location.Y);
+            }
+        }
+
         public void Unsubscribe()
         {
             _subscribed = false;
-            m_GlobalHook.MouseDownExt -= InputCallback_OnMouseDown;
-            m_GlobalHook.MouseUp -= InputCallback_OnMouseUp;
         }
 
         public void Terminate()

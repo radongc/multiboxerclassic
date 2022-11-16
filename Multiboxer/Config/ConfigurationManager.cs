@@ -23,7 +23,9 @@ namespace Multiboxer
         private string _charInfoEndSequence = ":ENDCHARINFO:";
 
         private int _currentConfigIndex = 0;
-        
+
+        public string MultiboxerVersion = "0.3.3";
+
         public string ConfigFilePath { get; }
         public ToolStripStatusLabel MainStatusLabel { get; private set; }
 

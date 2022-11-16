@@ -17,6 +17,7 @@ namespace Multiboxer
         // Fields
 
         private readonly string _gameProcessNamePartial = "WowClassic";
+        private readonly string _gameProcessNameLegacyPartial = "WoW";
 
         private ConfigurationManager.ConsoleWriter consoleWriter;
 
@@ -65,41 +66,48 @@ namespace Multiboxer
 
         public void SetIgnoredKeys(RichTextBox rtb)
         {
-            if (rtb.Lines.Length > 0) // avoiding exceptions
+            try
             {
-                if (!rtb.Lines[rtb.Lines.Length - 1].ToString().Equals("")) // avoiding exceptions
+                if (rtb.Lines.Length > 0) // avoiding exceptions
                 {
-                    IgnoredKeys = new Keys[rtb.Lines.Length];
-
-                    int j = 0;
-
-                    foreach (string line in rtb.Lines)
+                    if (!rtb.Lines[rtb.Lines.Length - 1].ToString().Equals("")) // avoiding exceptions
                     {
-                        try
+                        IgnoredKeys = new Keys[rtb.Lines.Length];
+
+                        int j = 0;
+
+                        foreach (string line in rtb.Lines)
                         {
-                            string formatLine = line.Replace("\n", "");
+                            try
+                            {
+                                string formatLine = line.Replace("\n", "");
 
-                            IgnoredKeys[j] = (Keys)Enum.Parse(typeof(Keys), formatLine, false);
-                            j++;
+                                IgnoredKeys[j] = (Keys)Enum.Parse(typeof(Keys), formatLine, false);
+                                j++;
+                            }
+                            catch (Exception b) // TODO add error handling/logging
+                            {
+                                consoleWriter.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
+                                break;
+                            }
                         }
-                        catch (Exception b) // TODO add error handling/logging
+
+                        consoleWriter.DebugLog("Saved IgnoreList:", ConfigurationManager.LogType.CONFIG);
+
+                        for (int i = 0; i < IgnoredKeys.Length; i++)
                         {
-                            consoleWriter.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
-                            break;
+                            consoleWriter.DebugLog(IgnoredKeys[i].ToString(), ConfigurationManager.LogType.CONFIG);
                         }
-                    }
-
-                    consoleWriter.DebugLog("Saved IgnoreList:", ConfigurationManager.LogType.CONFIG);
-
-                    for (int i = 0; i < IgnoredKeys.Length; i++)
-                    {
-                        consoleWriter.DebugLog(IgnoredKeys[i].ToString(), ConfigurationManager.LogType.CONFIG);
                     }
                 }
+                else
+                {
+                    IgnoredKeys = new Keys[0];
+                }
             }
-            else
+            catch (Exception b)
             {
-                IgnoredKeys = new Keys[0];
+                consoleWriter.DebugLog(b.ToString(), ConfigurationManager.LogType.ERROR);
             }
         }
 
@@ -121,7 +129,7 @@ namespace Multiboxer
 
                 foreach (Process p in procs)
                 {
-                    if (p.ProcessName.Contains(_gameProcessNamePartial))
+                    if (p.ProcessName.Contains(_gameProcessNamePartial) || p.ProcessName.Contains(_gameProcessNameLegacyPartial))
                     {
                         i++;
                     }
@@ -138,7 +146,7 @@ namespace Multiboxer
                         break;
                     }
 
-                    if (p.ProcessName.Contains(_gameProcessNamePartial))
+                    if (p.ProcessName.Contains(_gameProcessNamePartial) || p.ProcessName.Contains(_gameProcessNameLegacyPartial))
                     {
                         tempClientList[j] = new WoWClient(p.Id);
                         j++;

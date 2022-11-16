@@ -25,11 +25,6 @@ namespace Multiboxer
         private ConfigurationManager _configManager;
         private ConfigurationManager.ConsoleWriter _consoleWriterMain;
 
-        /* TODO NEXT *
-         * Add obfuscation to make it impossible to decompile/patch program with dnSpy, Reflector etc.
-         * Clean up program more, remove macro generator tab, come up with some other useful features. Create an updater, authentication system, and maybe even license key system. Can use firebaseAuth for logging in.
-         */ 
-
         #region Initialization
 
         public static MainForm instance;

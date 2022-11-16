@@ -27,6 +27,6 @@ Simple, easy to use Multiboxer for World of Warcraft (written for Classic) with 
 # Pictures
 ![Main Multiboxing tab](https://i.imgur.com/jIpJyO3.png)
 
-![Key Configuration tab](https://i.imgur.com/ks4lF3N.png)
+![Key Configuration tab](https://i.imgur.com/3slU04f.png)
 
 ![Binding Macros tab](https://i.imgur.com/MuxdCg7.png)

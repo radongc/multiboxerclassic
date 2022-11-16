@@ -3,7 +3,7 @@ Simple, easy to use Multiboxer for World of Warcraft (written for Classic) with 
 
 # How to compile
 - Download the source .zip, extract it (or clone the project)
-- Open Multiboxer.sln in Visual Studio 2019 (VS 2022 will also work)
+- Open Multiboxer.sln in Visual Studio 2022 (VS 2019 will also work)
 - Press Build -> Build Solution
 - Open Multiboxer/bin/Debug/Multiboxer.exe
 - Done!

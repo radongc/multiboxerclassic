@@ -23,7 +23,7 @@ Simple, easy to use Multiboxer for World of Warcraft (written for Classic) with 
 - List of basic essential multiboxing Macros that are copy+paste ready and which correspond to the keystroke translation options
 - More in-depth help available for each tab within the software
 
-# Pictures (old, from 1.12.1)
+# Pictures (old, from 1.12.1 vanillamultiboxer project)
 ![Main Multiboxing tab](https://i.imgur.com/tvyLyqk.png)
 
 ![IgnoreList (blacklist/whitelist) tab](https://i.imgur.com/PF7E9cC.png)

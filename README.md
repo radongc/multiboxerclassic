@@ -24,7 +24,7 @@ Simple, easy to use Multiboxer for World of Warcraft (written for Classic) with 
 - Inconspicuous window name for some basic detection avoidance :^)
 - More in-depth help available for each tab within the software
 
-# Pictures (old, from 1.12.1 vanillamultiboxer project)
+# Pictures
 ![Main Multiboxing tab](https://i.imgur.com/jIpJyO3.png)
 
 ![Key Configuration tab](https://i.imgur.com/ks4lF3N.png)

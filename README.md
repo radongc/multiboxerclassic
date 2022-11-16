@@ -24,8 +24,8 @@ Simple, easy to use Multiboxer for World of Warcraft (written for Classic) with 
 - More in-depth help available for each tab within the software
 
 # Pictures (old, from 1.12.1 vanillamultiboxer project)
-![Main Multiboxing tab](https://i.imgur.com/tvyLyqk.png)
+![Main Multiboxing tab](https://i.imgur.com/jIpJyO3.png)
 
-![IgnoreList (blacklist/whitelist) tab](https://i.imgur.com/PF7E9cC.png)
+![Key Configuration tab](https://i.imgur.com/ks4lF3N.png)
 
-![Macro Generator tab](https://i.imgur.com/FoFKRxV.png)
+![Binding Macros tab](https://i.imgur.com/MuxdCg7.png)

@@ -21,6 +21,7 @@ Simple, easy to use Multiboxer for World of Warcraft (written for Classic) with 
 - Functional mouse click broadcasting
 - Variety of keystroke/mouse click translation options
 - List of basic essential multiboxing Macros that are copy+paste ready and which correspond to the keystroke translation options
+- Inconspicuous window name for some basic detection avoidance :^)
 - More in-depth help available for each tab within the software
 
 # Pictures (old, from 1.12.1 vanillamultiboxer project)

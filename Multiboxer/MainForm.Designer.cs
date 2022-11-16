@@ -74,6 +74,7 @@
             this.statusStripMainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.helpProvider_IgnoreList = new System.Windows.Forms.HelpProvider();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabControlMainWindow.SuspendLayout();
             this.tabPageMultiboxing.SuspendLayout();
             this.tabPageIgnoreList.SuspendLayout();
@@ -438,6 +439,7 @@
             // 
             // tabPageMacroList
             // 
+            this.tabPageMacroList.Controls.Add(this.label1);
             this.tabPageMacroList.Controls.Add(this.labelShouldBeBoundToKey);
             this.tabPageMacroList.Controls.Add(this.labelShouldBeBoundToText);
             this.tabPageMacroList.Controls.Add(this.buttonMacroGenHelp);
@@ -470,8 +472,9 @@
             this.labelShouldBeBoundToText.AutoSize = true;
             this.labelShouldBeBoundToText.Location = new System.Drawing.Point(712, 33);
             this.labelShouldBeBoundToText.Name = "labelShouldBeBoundToText";
-            this.labelShouldBeBoundToText.Size = new System.Drawing.Size(0, 13);
+            this.labelShouldBeBoundToText.Size = new System.Drawing.Size(103, 13);
             this.labelShouldBeBoundToText.TabIndex = 11;
+            this.labelShouldBeBoundToText.Text = "Should be bound to:";
             // 
             // buttonMacroGenHelp
             // 
@@ -561,6 +564,15 @@
             this.toolStripStatusLabelStatus.Size = new System.Drawing.Size(16, 17);
             this.toolStripStatusLabelStatus.Text = "...";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(712, 88);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(103, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "In World of Warcraft";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -636,6 +648,7 @@
         private System.Windows.Forms.Label labelShouldBeBoundToText;
         private System.Windows.Forms.Label labelShouldBeBoundToKey;
         private System.Windows.Forms.GroupBox groupBoxDefaultBindings;
+        private System.Windows.Forms.Label label1;
     }
 }
 

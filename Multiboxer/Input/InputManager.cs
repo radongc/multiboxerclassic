@@ -67,15 +67,18 @@ namespace Multiboxer
 
             _multiBroadcastMouseTranslationQueue = new List<Keys>();
 
-            DefaultBindingList = new Dictionary<string, DefaultBinding>();
-            DefaultBindingList.Add("F12Key", new DefaultMouseBinding("F12Key", false, false, new InGameMacro("Assist", "/assist Party1"), MouseButtons.Left, Keys.F12));
-            DefaultBindingList.Add("F12OrAltKey", new DefaultMouseBinding("F12OrAltKey", false, false, new InGameMacro("Assist", "/assist Party1"), MouseButtons.Right, Keys.F12));
-            DefaultBindingList.Add("F11Key", new DefaultMouseBinding("F11Key", false, false, null, MouseButtons.Right, Keys.F11));
-            DefaultBindingList.Add("F10Key", new DefaultMouseBinding("F10Key", false, false, new InGameMacro("ConfirmQuest", "/script SelectGossipAvailableQuest(1)\n/script AcceptQuest(1)\n/script CompleteQuest()\n/script GetQuestReward()"), MouseButtons.Right, Keys.F10));
-            DefaultBindingList.Add("UPKey", new DefaultMouseBinding("UPKey", false, false, null, MouseButtons.XButton2, Keys.Up));
-            DefaultBindingList.Add("ToggleMouseBroadcasting", new SpecialBinding("ToggleMouseBroadcasting", false, false, Keys.LControlKey, () => _mouseBroadcastingEnabled = !_mouseBroadcastingEnabled));
-            DefaultBindingList.Add("F9Key", new DefaultMouseBinding("F9Key", false, true, new InGameMacro("SetView", "/script SetView(5);SetView(5);"), MouseButtons.Left, Keys.F9));
-            DefaultBindingList.Add("F8Key", new DefaultKeyBinding("F8Key", false, false, new InGameMacro("Follow", "/follow Party1"), Keys.W, Keys.F8));
+            DefaultBindingList = new Dictionary<string, DefaultBinding>
+            {
+                { "F12Key", new DefaultMouseBinding("F12Key", false, false, new InGameMacro("Assist", "/assist Party1"), MouseButtons.Left, Keys.F12) },
+                { "F12OrAltKey", new DefaultMouseBinding("F12OrAltKey", false, false, new InGameMacro("Assist", "/assist Party1"), MouseButtons.Right, Keys.F12) },
+                { "F11Key", new DefaultMouseBinding("F11Key", false, false, null, MouseButtons.Right, Keys.F11) },
+                { "F10Key", new DefaultMouseBinding("F10Key", false, false, new InGameMacro("ConfirmQuest", "/script SelectGossipAvailableQuest(1)\n/script AcceptQuest(1)\n/script CompleteQuest()\n/script GetQuestReward()"), MouseButtons.Right, Keys.F10) },
+                { "UPKey", new DefaultMouseBinding("UPKey", false, false, null, MouseButtons.XButton2, Keys.Up) },
+                { "ToggleMouseBroadcasting", new SpecialBinding("ToggleMouseBroadcasting", false, false, Keys.LControlKey, () => _mouseBroadcastingEnabled = !_mouseBroadcastingEnabled) },
+                { "F9Key", new DefaultMouseBinding("F9Key", false, true, new InGameMacro("SetView", "/script SetView(5);SetView(5);"), MouseButtons.Left, Keys.F9) },
+                { "F8Key", new DefaultKeyBinding("F8Key", false, false, new InGameMacro("Follow", "/follow Party1"), Keys.W, Keys.F8) },
+                { "BroadcastJump", new DefaultKeyBinding("BroadcastJump", false, false, null, Keys.Space, Keys.Space) }
+            };
         }
 
         internal void SetConsoleWriter(ConfigurationManager.ConsoleWriter writer)
@@ -110,6 +113,9 @@ namespace Multiboxer
                     {
                         MainForm.instance.StartStopMultiboxing();
                     }
+
+                    if (WindowUtil.GetActiveWindowPID() != ProcManager.MasterClient.GameProcess.Id)
+                        return;
 
                     foreach (KeyValuePair<string, DefaultBinding> binding in DefaultBindingList)
                     {
@@ -273,6 +279,9 @@ namespace Multiboxer
             {
                 if (_subscribed)
                 {
+                    if (WindowUtil.GetActiveWindowPID() != ProcManager.MasterClient.GameProcess.Id)
+                        return;
+
                     bool keyIsBinding = false;
 
                     foreach (Process p in ProcManager.GameProcList)
@@ -293,7 +302,24 @@ namespace Multiboxer
 
                             if (!keyIsBinding)
                             {
-                                SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, e.KeyCode);
+                                if (e.Control) // Press control
+                                {
+                                    SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
+                                }
+
+                                // Replace bad values
+                                if (e.KeyValue == (int)Keys.LShiftKey) // Replace LShiftKey with ShiftKey
+                                {
+                                    SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, Keys.ShiftKey);
+                                }
+                                else if (e.KeyValue == (int)Keys.LControlKey)
+                                {
+                                    SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, Keys.ControlKey);
+                                }
+                                else
+                                {
+                                    SendKeyUp(p.MainWindowHandle, p.MainWindowTitle, (Keys)e.KeyValue);
+                                }
                             }
 
                             if (_comboKeyPressed)
@@ -316,6 +342,9 @@ namespace Multiboxer
             {
                 if (_subscribed)
                 {
+                    if (WindowUtil.GetActiveWindowPID() != ProcManager.MasterClient.GameProcess.Id)
+                        return;
+
                     ProcManager.RefreshClientProcList();
 
                     foreach (Process p in ProcManager.GameProcList)
@@ -376,6 +405,9 @@ namespace Multiboxer
             {
                 if (_subscribed)
                 {
+                    if (WindowUtil.GetActiveWindowPID() != ProcManager.MasterClient.GameProcess.Id)
+                        return;
+
                     ProcManager.RefreshClientProcList();
 
                     foreach (Process p in ProcManager.GameProcList)

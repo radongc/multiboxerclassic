@@ -310,6 +310,12 @@ namespace Multiboxer
         {
             _inputManager.ToggleDefaultBinding("F8Key", checkBoxF8.Checked);
         }
+
+        private void checkBoxSpace_CheckedChanged(object sender, EventArgs e)
+        {
+            _inputManager.ToggleDefaultBinding("BroadcastJump", checkBoxSpace.Checked);
+        }
+
         #endregion IGNORE LIST TAB
 
         #region MACRO GENERATOR TAB

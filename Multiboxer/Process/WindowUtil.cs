@@ -61,6 +61,13 @@ namespace Multiboxer
         [DllImport("user32.dll")]
         static extern int SetWindowText(IntPtr hWnd, string text);
 
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
         /* Native method wrappers */
 
         private static int MAKELPARAM(int p, int p_2)
@@ -104,6 +111,22 @@ namespace Multiboxer
         // Helpful methods
 
         // Window
+
+        internal static uint GetActiveWindowPID()
+        {
+            IntPtr hwnd = GetForegroundWindow();
+
+            if (hwnd == IntPtr.Zero)
+            {
+                Console.WriteLine("No active window.");
+                return 0;
+            }
+
+            uint pid;
+            GetWindowThreadProcessId(hwnd, out pid);
+
+            return pid;
+        }
 
         internal static void RenameWindow(Process p, string name)
         {

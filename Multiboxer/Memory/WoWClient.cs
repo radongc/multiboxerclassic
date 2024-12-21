@@ -22,8 +22,17 @@ namespace Multiboxer
     {
         public static int CurrentGameNum; // set in ProcessManager.RefreshClientProcList()
 
+        // Position settings
+        public int WindowPosX { get; private set; }
+        public int WindowPosY { get; private set; }
+
+        // Size settings
+        public int WindowHeight { get; private set; }
+        public int WindowWidth { get; private set; }
+
         // Properties
         public Process GameProcess { get; private set; }
+        public string GameTitle { get; private set; }
 
         // Constructors
 
@@ -55,13 +64,33 @@ namespace Multiboxer
             }
         }
 
+        public void SetSizeAndPosition(int width, int height, int posX, int posY)
+        {
+            WindowWidth = width;
+            WindowHeight = height;
+            WindowPosX = posX;
+            WindowPosY = posY;
+        }
+
+        public void UpdatePosition()
+        {
+            WindowUtil.MoveAndResizeWindow(GameProcess, WindowPosX, WindowPosY, WindowWidth, WindowHeight);
+        }
+
         private void WindowInit()
         {
-/*            if (GameProcess.MainWindowTitle == "World of Warcraft")
+            string gameTitle = "World of Warcraft";
+
+            if (GameProcess.MainWindowTitle.Contains("World of Warcraft"))
             {
-                WindowUtil.RenameWindow(GameProcess, "Game " + CurrentGameNum);
+                gameTitle = "Game " + CurrentGameNum;
+                WindowUtil.RenameWindow(GameProcess, gameTitle);
                 CurrentGameNum++;
-            }*/
+            }
+
+            GameTitle = gameTitle;
+
+            // TODO: Resize and position here?
         }
     }
 }

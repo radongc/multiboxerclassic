@@ -64,6 +64,16 @@ namespace Multiboxer
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
 
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+
 
         [DllImport("user32.dll")]
         private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
@@ -133,6 +143,10 @@ namespace Multiboxer
             SetWindowText(p.MainWindowHandle, name);
         }
 
+        internal static void MoveAndResizeWindow(Process p, int x, int y, int width, int height)
+        {
+            MoveWindow(p.MainWindowHandle, x, y, width, height, true);
+        }
 
         // Keyboard
 

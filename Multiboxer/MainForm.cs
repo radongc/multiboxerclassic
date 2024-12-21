@@ -15,6 +15,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,7 +60,7 @@ namespace Multiboxer
 
             if (!_configManager.IsFirstRun())
             {
-                _configManager.LoadIgnoreListFromConfig(richTextBoxIgnoreList); // load into ignore list from cfg
+                _configManager.LoadIgnoreListToRichTextBox(richTextBoxIgnoreList); // load into ignore list from cfg
                 InputManager.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList); // save ignore list
             }
 
@@ -155,6 +156,8 @@ namespace Multiboxer
             {
                 listBoxSelectMasterClient.Items.Add($"{c.GameProcess.MainWindowTitle} - {c.GameProcess.Id}");
             }
+
+            WindowTab_PopulateGameWindowVisualizers();
         }
 
         public void StartStopMultiboxing()
@@ -202,7 +205,7 @@ namespace Multiboxer
         {
             InputManager.ProcManager.SetIgnoredKeys(richTextBoxIgnoreList);
 
-            _configManager.SaveIgnoreListToConfig(richTextBoxIgnoreList.Lines);
+            _configManager.SaveIgnoreList(richTextBoxIgnoreList.Lines.ToList());
 
             _configManager.UpdateStatus($"Saved IgnoreList to config file successfully.", ConfigurationManager.LogType.MESSAGE);
         }
@@ -392,5 +395,196 @@ namespace Multiboxer
         #endregion Private Methods - Macro Generator Tab
 
         #endregion MACRO GENERATOR TAB
+
+        #region GAME WINDOW TAB
+
+        private Dictionary<WoWClient, Panel> gameWindowPanels = new Dictionary<WoWClient, Panel>();
+        private bool isDragging = false;
+        private Point dragStart;
+        private Panel selectedPanel = null;
+        private bool isResizing = false;
+
+        private void WindowTab_PopulateGameWindowVisualizers()
+        {
+            gameWindowPanels.Clear();
+            panelScreenVisualizer.Controls.Clear();
+
+            foreach (WoWClient client in InputManager.ProcManager.GameClientList)
+            {
+                AddWindowBox(client, client.GameTitle);
+            }
+        }
+
+        private void AddWindowBox(WoWClient gameClient, string title)
+        {
+            // Create the main panel representing the window
+            Panel windowPanel = new Panel
+            {
+                BackColor = Color.LightBlue,
+                BorderStyle = BorderStyle.FixedSingle,
+                Size = new Size(200, 100),
+                Tag = title
+            };
+
+            // Add a title label
+            Label titleLabel = new Label
+            {
+                Text = title,
+                Dock = DockStyle.Top,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BackColor = Color.SteelBlue,
+                ForeColor = Color.White,
+                Height = 20
+            };
+
+            // Add a bottom-right corner indicator for resizing
+            Label resizeGrip = new Label
+            {
+                BackColor = Color.Gray,
+                Size = new Size(10, 10),
+                Location = new Point(windowPanel.Width - 10, windowPanel.Height - 10), // Position at bottom-right
+                Cursor = Cursors.SizeNWSE
+            };
+
+            // Adjust position dynamically when panel resizes
+            resizeGrip.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+            // Add mouse event handlers for resizing
+            resizeGrip.MouseDown += ResizeGrip_MouseDown;
+            resizeGrip.MouseMove += ResizeGrip_MouseMove;
+            resizeGrip.MouseUp += ResizeGrip_MouseUp;
+
+            // Add controls to the main panel
+            windowPanel.Controls.Add(titleLabel);
+            windowPanel.Controls.Add(resizeGrip);
+
+            // Add drag events for the main panel
+            windowPanel.MouseDown += WindowPanel_MouseDown;
+            windowPanel.MouseMove += WindowPanel_MouseMove;
+            windowPanel.MouseUp += WindowPanel_MouseUp;
+
+            // Add the window panel to the workspace
+            panelScreenVisualizer.Controls.Add(windowPanel);
+            gameWindowPanels.Add(gameClient, windowPanel);
+        }
+
+        private Point resizeStart; // Initial cursor position during resize
+
+        private void ResizeGrip_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (sender is Label grip)
+            {
+                selectedPanel = grip.Parent as Panel;
+                resizeStart = e.Location;
+                isResizing = true;
+            }
+        }
+
+        private void ResizeGrip_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isResizing && selectedPanel != null)
+            {
+                // Calculate the new size based on cursor movement
+                int newWidth = selectedPanel.Width + (e.X - resizeStart.X);
+                int newHeight = selectedPanel.Height + (e.Y - resizeStart.Y);
+
+                // Clamp size to stay within parent panel and maintain minimum size
+                newWidth = Math.Max(50, Math.Min(newWidth, panelScreenVisualizer.Width - selectedPanel.Location.X));
+                newHeight = Math.Max(50, Math.Min(newHeight, panelScreenVisualizer.Height - selectedPanel.Location.Y));
+
+                selectedPanel.Size = new Size(newWidth, newHeight);
+            }
+        }
+
+        private void ResizeGrip_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (isResizing)
+            {
+                isResizing = false;
+                selectedPanel = null;
+            }
+        }
+
+        private void WindowPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (sender is Panel panel && !isResizing)
+            {
+                selectedPanel = panel;
+                dragStart = e.Location;
+                isDragging = true;
+            }
+        }
+
+        private void WindowPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging && selectedPanel != null)
+            {
+                // Dragging logic
+                Point newLocation = selectedPanel.Location;
+                newLocation.Offset(e.X - dragStart.X, e.Y - dragStart.Y);
+
+                // Restrict movement within parent panel bounds
+                newLocation.X = Math.Max(0, Math.Min(newLocation.X, panelScreenVisualizer.Width - selectedPanel.Width));
+                newLocation.Y = Math.Max(0, Math.Min(newLocation.Y, panelScreenVisualizer.Height - selectedPanel.Height));
+
+                selectedPanel.Location = newLocation;
+            }
+        }
+
+        private void WindowPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                isDragging = false;
+                selectedPanel = null;
+            }
+        }
+
+        private void buttonResizeWindows_Click(object sender, EventArgs e)
+        {
+            // Get the monitor's resolution (primary screen)
+            int monitorWidth = Screen.PrimaryScreen.Bounds.Width;
+            int monitorHeight = Screen.PrimaryScreen.Bounds.Height;
+
+            // Calculate scaling factors
+            float scaleX = (float)monitorWidth / panelScreenVisualizer.Width;
+            float scaleY = (float)monitorHeight / panelScreenVisualizer.Height;
+
+            foreach (KeyValuePair<WoWClient, Panel> gWindow in gameWindowPanels)
+            {
+                // Get the panel's current position and size
+                int panelX = gWindow.Value.Location.X;
+                int panelY = gWindow.Value.Location.Y;
+                int panelWidth = gWindow.Value.Size.Width;
+                int panelHeight = gWindow.Value.Size.Height;
+
+                // Scale position and size to match the monitor's resolution
+                int scaledX = (int)(panelX * scaleX);
+                int scaledY = (int)(panelY * scaleY);
+                int scaledWidth = (int)(panelWidth * scaleX);
+                int scaledHeight = (int)(panelHeight * scaleY);
+
+                // Resize and reposition the game window
+                WindowUtil.MoveAndResizeWindow(gWindow.Key.GameProcess, scaledX, scaledY, scaledWidth, scaledHeight);
+            }
+
+
+        }
+
+        #endregion
+        #region SETTINGS TAB
+
+        private void buttonSelectGameLocation_Click(object sender, EventArgs e)
+        {
+            openFileDialogSelectWowInstallLocation.ShowDialog();
+        }
+
+        private void openFileDialogSelectWowInstallLocation_FileOk(object sender, CancelEventArgs e)
+        {
+            textBoxWowInstallLocation.Text = openFileDialogSelectWowInstallLocation.FileName;
+            _configManager.SaveWowInstallPath(textBoxWowInstallLocation.Text);
+        }
+
+        #endregion
     }
 }

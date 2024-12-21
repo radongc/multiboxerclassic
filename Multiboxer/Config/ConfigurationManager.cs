@@ -12,9 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Windows.Forms;
 
 namespace Multiboxer
@@ -25,14 +25,6 @@ namespace Multiboxer
          * Handles loading, saving, and config condition checking. */
 
         private ConsoleWriter consoleWriter;
-
-        private string _ignoreListStartSequence = ":IGNORELIST:";
-        private string _ignoreListEndSequence = ":ENDIGNORELIST:";
-
-        private string _charInfoStartSequence = ":CHARINFO:";
-        private string _charInfoEndSequence = ":ENDCHARINFO:";
-
-        private int _currentConfigIndex = 0;
 
         public string MultiboxerVersion = "0.3.3";
 
@@ -47,27 +39,41 @@ namespace Multiboxer
             ERROR
         }
 
+        public class GameWindowConfig
+        {
+            public int PosX { get; set; }
+            public int PosY { get; set; }
+            public int Height { get; set; }
+            public int Width { get; set; }
+        }
+
+        public class Configuration
+        {
+            public string WowInstallPath { get; set; }
+            public List<string> IgnoreList { get; set; } = new List<string>();
+            public List<GameWindowConfig> GameWindowConfigs { get; set; } = new List<GameWindowConfig>();
+        }
+
+        public Configuration CurrentConfig { get; private set; } = new Configuration();
+
         public ConfigurationManager(string cfgFilePath, ToolStripStatusLabel mainStatusLabel)
         {
             ConfigFilePath = cfgFilePath;
             MainStatusLabel = mainStatusLabel;
-        }
 
-        public bool IsFirstRun()
-        {
             if (File.Exists(ConfigFilePath))
             {
-                return false;
+                LoadConfig();
             }
             else
             {
-                return true;
+                SaveConfig();
             }
         }
 
         public void SetConsoleWriter(ConsoleWriter writer) => consoleWriter = writer;
 
-        public void UpdateStatus(string text, LogType logType) // Use UpdateStatus if you want the statusbar and the console to log. Use DebugLog if you only want the message to be logged to the console
+        public void UpdateStatus(string text, LogType logType)
         {
             Color newColor;
 
@@ -76,19 +82,15 @@ namespace Multiboxer
                 case LogType.MESSAGE:
                     newColor = Color.Blue;
                     break;
-
                 case LogType.DEBUG:
                     newColor = Color.YellowGreen;
                     break;
-
                 case LogType.CONFIG:
                     newColor = Color.DarkGreen;
                     break;
-
                 case LogType.ERROR:
                     newColor = Color.Red;
                     break;
-
                 default:
                     newColor = Color.White;
                     break;
@@ -97,137 +99,71 @@ namespace Multiboxer
             MainStatusLabel.ForeColor = newColor;
             MainStatusLabel.Text = text;
 
-            if (consoleWriter != null)
+            consoleWriter?.DebugLog(text, logType);
+        }
+
+        public bool IsFirstRun() => !File.Exists(ConfigFilePath);
+
+        public void SaveConfig()
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            File.WriteAllText(ConfigFilePath, JsonSerializer.Serialize(CurrentConfig, options));
+            UpdateStatus("Configuration saved.", LogType.CONFIG);
+        }
+
+        public void LoadConfig()
+        {
+            try
             {
-                consoleWriter.DebugLog(text, logType);
+                string json = File.ReadAllText(ConfigFilePath);
+                CurrentConfig = JsonSerializer.Deserialize<Configuration>(json) ?? new Configuration();
+                UpdateStatus("Configuration loaded.", LogType.CONFIG);
+            }
+            catch (Exception ex)
+            {
+                UpdateStatus($"Failed to load configuration: {ex.Message}", LogType.ERROR);
             }
         }
 
-        // Save config file
-
-        public void SaveIgnoreListToConfig(string[] contents)
+        public void SaveWowInstallPath(string path)
         {
-            string[] cfgContent = new string[contents.Length + 2];
-
-            cfgContent[0] = _ignoreListStartSequence;
-
-            int i = 1;
-
-            foreach (string line in contents)
-            {
-                cfgContent[i] = line;
-                i++;
-            }
-
-            cfgContent[i] = _ignoreListEndSequence;
-
-            _currentConfigIndex += i;
-
-            WriteToConfig(cfgContent);
+            CurrentConfig.WowInstallPath = path;
+            SaveConfig();
         }
 
-        public void SaveCharInfoToConfig(string[] contents)
+        public void SaveIgnoreList(List<string> ignoreList)
         {
-            string[] cfgContent = new string[contents.Length + 2];
-
-            cfgContent[0] = _charInfoStartSequence;
-
-            int i = 1;
-
-            foreach (string line in contents)
-            {
-                cfgContent[i] = line;
-                i++;
-            }
-
-            cfgContent[i] = _charInfoEndSequence;
-
-            _currentConfigIndex += i;
-
-            WriteToConfig(cfgContent);
+            CurrentConfig.IgnoreList = ignoreList;
+            SaveConfig();
         }
 
-        private void WriteToConfig(string[] contents)
+        public void SaveWindowConfigs(Dictionary<WoWClient, Panel> windows)
         {
-            string path = ConfigFilePath;
+            CurrentConfig.GameWindowConfigs.Clear();
 
-            using (StreamWriter sw = File.CreateText(path))
+            foreach (KeyValuePair<WoWClient, Panel> gWindow in windows)
             {
-                foreach (string line in contents)
-                {
-                    sw.WriteLine(line);
-                }
+                CurrentConfig.GameWindowConfigs.Add(new ConfigurationManager.GameWindowConfig() { PosX = gWindow.Value.Location.X, PosY = gWindow.Value.Location.Y, Width = gWindow.Value.Size.Width, Height = gWindow.Value.Size.Height });
             }
+            
+            SaveConfig();
         }
 
-        // Read config file
-
-        public void LoadIgnoreListFromConfig(RichTextBox rtb)
+        public void LoadIgnoreListToRichTextBox(RichTextBox rtb)
         {
-            string path = ConfigFilePath;
-
-            string[] cfgLines = File.ReadAllLines(path);
-
-            List<string> ignoreList = new List<string>();
-
-            int ignoreListStartIndex = 0;
-            int ignoreListEndIndex = 0;
-
-            int i = 0;
-
-            foreach (string line in cfgLines)
+            rtb.Clear();
+            foreach (string item in CurrentConfig.IgnoreList)
             {
-                if (cfgLines[i] == _ignoreListStartSequence)
-                {
-                    ignoreListStartIndex = i;
-                    break;
-                }
-
-                i++;
-            }
-
-            int j = 0;
-
-            foreach (string line in cfgLines)
-            {
-                if (cfgLines[j] == _ignoreListEndSequence)
-                {
-                    ignoreListEndIndex = j;
-                    break;
-                }
-
-                j++;
-            }
-
-            for (int y = ignoreListStartIndex + 1; y <= ignoreListEndIndex - 1; y++)
-            {
-                ignoreList.Add(cfgLines[y]);
-            }
-
-            int x = 0;
-
-            foreach(string line in ignoreList)
-            {
-                if (x == (ignoreList.Count - 1))
-                {
-                    rtb.AppendText(ignoreList[x]);
-                    x++;
-                }
-                else
-                {
-                    rtb.AppendText(ignoreList[x] + "\n");
-                    x++;
-                }
+                rtb.AppendText(item + "\n");
             }
         }
 
         public class ConsoleWriter : TextWriter
         {
-            private RichTextBox _myRtb;
-            private string _logFilePath;
+            private readonly RichTextBox _myRtb;
+            private readonly string _logFilePath;
 
             public string LogDirectoryPath { get; }
-
             public bool LogMessages { get; set; }
             public bool LogDebugs { get; set; }
             public bool LogErrors { get; set; }
@@ -235,9 +171,8 @@ namespace Multiboxer
             public ConsoleWriter(RichTextBox control, string logDirPath, bool logMessages, bool logDebugs, bool logErrors)
             {
                 _myRtb = control;
-
                 LogDirectoryPath = logDirPath;
-                _logFilePath = $"{LogDirectoryPath}/{DateTime.Now.ToLocalTime().ToString("MM-dd-yyyy")}.log";
+                _logFilePath = Path.Combine(LogDirectoryPath, $"{DateTime.Now:MM-dd-yyyy}.log");
 
                 LogMessages = logMessages;
                 LogDebugs = logDebugs;
@@ -246,40 +181,29 @@ namespace Multiboxer
                 InitDirectories();
             }
 
-            public void InitDirectories()
+            private void InitDirectories()
             {
                 if (!Directory.Exists(LogDirectoryPath))
                 {
                     Directory.CreateDirectory(LogDirectoryPath);
                 }
 
-                using (StreamWriter sw = File.AppendText(_logFilePath)) // create & open logfile
-                {
-                    sw.WriteLineAsync("----------START OF NEW SESSION----------");
-                }
+                File.AppendAllText(_logFilePath, "----------START OF NEW SESSION----------\n");
             }
 
             public override void Write(char value)
             {
-                _myRtb.AppendText(value.ToString() + "\n");
+                _myRtb.AppendText(value.ToString());
             }
 
             public override void Write(string value)
             {
-                string logText = $"[{DateTime.Now.ToLocalTime()}] {value}\n";
-
+                string logText = $"[{DateTime.Now}] {value}\n";
                 _myRtb.AppendText(logText);
-
-                using (StreamWriter sw = File.AppendText(_logFilePath)) // opens log file
-                {
-                    sw.WriteLineAsync(logText);
-                }
+                File.AppendAllText(_logFilePath, logText);
             }
 
-            public override Encoding Encoding
-            {
-                get => Encoding.Unicode;
-            }
+            public override Encoding Encoding => Encoding.Unicode;
 
             public void DebugLog(string text, LogType logType)
             {
@@ -289,53 +213,25 @@ namespace Multiboxer
                 switch (logType)
                 {
                     case LogType.MESSAGE:
-                        if (LogMessages)
-                        {
-                            newColor = Color.Blue;
-                            prefix = "[MESSAGE]";
-                        }
-                        else
-                        {
-                            return;
-                        }
+                        if (!LogMessages) return;
+                        newColor = Color.Blue;
+                        prefix = "[MESSAGE]";
                         break;
-
                     case LogType.DEBUG:
-                        if (LogDebugs)
-                        {
-                            newColor = Color.YellowGreen;
-                            prefix = "[DEBUG]";
-                        }
-                        else
-                        {
-                            return;
-                        }
+                        if (!LogDebugs) return;
+                        newColor = Color.YellowGreen;
+                        prefix = "[DEBUG]";
                         break;
-
                     case LogType.CONFIG:
-                        if (LogDebugs)
-                        {
-                            newColor = Color.DarkGreen;
-                            prefix = "[CONFIG]";
-                        }
-                        else
-                        {
-                            return;
-                        }
+                        if (!LogDebugs) return;
+                        newColor = Color.DarkGreen;
+                        prefix = "[CONFIG]";
                         break;
-
                     case LogType.ERROR:
-                        if (LogErrors)
-                        {
-                            newColor = Color.Red;
-                            prefix = "[ERROR]";
-                        }
-                        else
-                        {
-                            return;
-                        }
+                        if (!LogErrors) return;
+                        newColor = Color.Red;
+                        prefix = "[ERROR]";
                         break;
-
                     default:
                         newColor = Color.Black;
                         prefix = "";
@@ -343,7 +239,7 @@ namespace Multiboxer
                 }
 
                 _myRtb.SelectionColor = newColor;
-                Console.Write($"{prefix} {text}");
+                _myRtb.AppendText($"{prefix} {text}\n");
             }
 
             public void Clear()
